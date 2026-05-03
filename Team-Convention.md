@@ -12,29 +12,64 @@ Tech stack
 
 Folder structure & component conventions
 --------------------------------------
-We follow a standard React project layout. Two kinds of UI units:
+Feature-based folders scale best for complex apps. Group related components, hooks, and services by feature, and keep simple atoms in a shared directory.
 
-1) Scalable / feature components (create a folder)
-	 - When a feature is more than a small reusable atom (e.g., Navbar, Dashboard, Auth, TaskList), create a folder under `src/components/` (or `src/features/`) with the component name and use an entry file named `index.js` or `index.tsx`.
-	 - Example: to add a Navbar feature:
+Top-level layout suggestion:
 
-		 src/components/navbar/
-		 ├─ index.jsx        # main component (export default)
-		 ├─ Navbar.module.css
-		 ├─ Navbar.test.jsx
-		 └─ helpers.js
+src/
+├─ components/        # Global UI atoms (buttons, inputs, icons)
+├─ features/          # Feature folders (each complex feature lives here)
+├─ hooks/             # Shared hooks
+├─ services/          # Shared services / api clients
+└─ utils/             # Shared utilities
 
-	 - Use folder-scoped CSS or module files and colocate tests and small helper files.
+`src/components/`: Houses global UI elements like buttons and inputs. Keep only small, reusable atoms here.
 
-2) Small reusable components (single file in `src/components/`)
-	 - Atoms and small UI pieces that are reused across the app live as single files inside `src/components/` (no extra folder unless they grow).
-	 - Example small components:
-		 - Button
-		 - Icon
-		 - Input / TextField
-		 - Avatar
-		 - Badge
-		 - Spinner / Loader
+`src/features/`: Contains sub-folders for each complex feature. Each feature folder encapsulates feature-specific UI, logic, and data access.
+
+Feature folder structure (per-feature):
+
+feature-name/
+├─ components/       # UI specific to this feature
+├─ hooks/            # Feature-specific hooks
+├─ api/              # Data-fetching services / adapters
+├─ types/            # Feature types/interfaces (optional)
+├─ tests/            # Feature-level tests (optional)
+└─ index.ts          # Entry point exporting the feature's main components
+
+Example: `src/features/navbar/`
+├─ components/
+│  └─ MobileMenu.tsx
+├─ hooks/
+│  └─ useNavbarState.ts
+├─ api/
+│  └─ navbarService.ts
+└─ index.ts
+
+Benefits:
+- Encapsulates feature concerns and keeps imports local to the feature.
+- Easier to scale: add new features without polluting global directories.
+- Simplifies code ownership and testing.
+
+Guidelines when to create a feature folder:
+- Create a feature folder when the UI requires multiple components, feature-specific hooks, or API services (e.g., `Auth`, `Dashboard`, `BountyFlow`).
+- Keep simple, reusable UI atoms (e.g., `Button`, `Icon`, `Input`) in `src/components/` as single files until they grow.
+
+Small reusable components examples (stay in `src/components/`):
+- Button
+- Icon
+- Input / TextField
+- Avatar
+- Badge
+- Spinner / Loader
+
+Feature (big) components examples (create feature folder in `src/features/`):
+- Navbar
+- Dashboard
+- Auth
+- TaskCard
+- BountyFlow
+- ProfilePage
 
 Examples — Big vs Small components
 ---------------------------------
@@ -59,10 +94,8 @@ Branching & PR Rules
 3. Push your branch to remote and open a Pull Request targeting `main` when the feature is complete.
 4. PR requirements:
 	 - Provide a descriptive title and a detailed description of what changed and why.
-	 - Include screenshots or gifs for UI changes.
-	 - Add unit/integration tests for new behavior where applicable.
 	 - Link any related issue or task.
-	 - Tag the TeamLead (@me) in the PR description or as a reviewer.
+	 - Tag the TeamLead (@Dave) as a reviewer.
 
 Commit message guidance
 -----------------------
@@ -92,14 +125,12 @@ PR checklist (before requesting review)
 - [ ] All tests pass
 - [ ] Linting/formatting applied
 - [ ] Documentation updated (if applicable)
-- [ ] Screenshots or recording attached for UI changes
 
 AI-assisted coding rules
 ------------------------
 - You may use AI tools to draft code, but you must:
 	- Ensure generated code is readable, idiomatic, and well-named; do not keep unclear variable or function names.
 	- Run linters and formatters (`eslint --fix`, `prettier`) on AI-generated code.
-	- Add or update unit tests covering important logic.
 	- Review and understand every line before committing; remove any unused or unclear code.
 	- If you paste a code snippet inspired by AI, add a short comment in the commit or PR describing this and any sources used.
 
@@ -108,16 +139,6 @@ Developer etiquette
 - Keep PRs focused and small when possible.
 - Ask for help early — open a draft PR or ping the TeamLead.
 - Document assumptions and trade-offs in PR descriptions.
-
-Where to put this document
---------------------------
-- This file `Team-Convention.md` is the canonical team convention. Add a short pointer from the repo `README.md` to this file.
-
-Next steps for contributors
---------------------------
-1. Read this document and follow the branching rules.
-2. When assigned a feature, create `FEATURE-(name)` branch and work there.
-3. Open a PR with clear title, description, and tag the TeamLead (`@me`).
 
 Thank you — keep code clean, documented, and review-ready.
 
