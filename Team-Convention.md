@@ -14,8 +14,6 @@ This document defines our team workflow, folder structure, component conventions
 
 Feature-based folders scale best for complex apps. Group related components, hooks, and data access by feature, and keep truly shared code in top-level `src/` directories.
 
-We do not need to create `src/` manually in this repository right now. The React app scaffold will generate it, and we will organize the project inside that folder once the app is created.
-
 Top-level layout suggestion:
 
 src/
@@ -28,7 +26,6 @@ src/
 ├─ lib/ # Shared helpers and library adapters
 ├─ stores/ # Shared state stores
 ├─ testing/ # Test utilities, mocks, and setup helpers
-├─ types/ # Shared TypeScript types and interfaces
 └─ utils/ # Shared utilities
 
 `src/app/`: Holds the application shell and wiring that composes the features together.
@@ -49,8 +46,6 @@ src/
 
 `src/testing/`: Stores shared test helpers, mocks, fixtures, and setup utilities.
 
-`src/types/`: Stores shared types and interfaces that are used across features.
-
 `src/utils/`: Stores shared utility functions that do not belong to a feature.
 
 Codebase architecture rule:
@@ -66,7 +61,6 @@ feature-name/
 ├─ components/ # UI specific to this feature
 ├─ hooks/ # Feature-specific hooks
 ├─ api/ # Data-fetching services / adapters
-├─ types/ # Feature types/interfaces (optional)
 ├─ tests/ # Feature-level tests (optional)
 └─ index.ts # Entry point exporting the feature's main components
 
@@ -118,7 +112,7 @@ Feature (big) components examples (create feature folder in `src/features/`):
 
 - Scalable component folder: use lowercase or kebab-case for folder (`navbar` or `task-card`) and `index.js`/`index.tsx` inside.
 - Files that export React components should use PascalCase for the component name (e.g., `function Navbar() {}` in `index.js`).
-- Keep file extensions consistent: use `.tsx` for TypeScript React files and `.jsx` or `.js` for JS projects.
+- Keep file extensions consistent: use `.jsx` or `.js` for JS Files.
 
 ## Branching & PR Rules
 
