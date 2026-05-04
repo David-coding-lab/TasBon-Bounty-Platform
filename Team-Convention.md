@@ -8,7 +8,7 @@ This document defines our team workflow, folder structure, component conventions
 
 - Frontend: React (JavaScript or TypeScript)
 - State: (decide per feature — e.g., Context, Redux, Zustand)
-- Styling: CSS Modules / Styled Components / Tailwind (team decision per repo)
+- Styling: Tailwind CSS
 
 ## Folder structure & component conventions
 
