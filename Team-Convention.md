@@ -12,28 +12,53 @@ This document defines our team workflow, folder structure, component conventions
 
 ## Folder structure & component conventions
 
-Feature-based folders scale best for complex apps. Group related components, hooks, and services by feature, and keep simple atoms in a shared directory.
+Feature-based folders scale best for complex apps. Group related components, hooks, and data access by feature, and keep truly shared code in top-level `src/` directories.
 
 We do not need to create `src/` manually in this repository right now. The React app scaffold will generate it, and we will organize the project inside that folder once the app is created.
 
 Top-level layout suggestion:
 
 src/
-├─ components/ # Global UI atoms (buttons, inputs, icons)
+├─ app/ # App composition, providers, routing, and startup wiring
+├─ assets/ # Static assets imported by the app
+├─ components/ # Shared UI atoms and reusable presentational pieces
+├─ config/ # Environment and app configuration
 ├─ features/ # Feature folders (each complex feature lives here)
 ├─ hooks/ # Shared hooks
-├─ services/ # Shared services / api clients
+├─ lib/ # Shared helpers and library adapters
+├─ stores/ # Shared state stores
+├─ testing/ # Test utilities, mocks, and setup helpers
+├─ types/ # Shared TypeScript types and interfaces
 └─ utils/ # Shared utilities
 
-`src/components/`: Houses global UI elements like buttons and inputs. Keep only small, reusable atoms here.
+`src/app/`: Holds the application shell and wiring that composes the features together.
+
+`src/assets/`: Stores static images, icons, and other imported assets.
+
+`src/components/`: Houses shared UI elements like buttons and inputs. Keep only small, reusable atoms here.
+
+`src/config/`: Stores app-wide configuration values and environment-specific settings.
 
 `src/features/`: Contains sub-folders for each complex feature. Each feature folder encapsulates feature-specific UI, logic, and data access.
+
+`src/hooks/`: Stores shared hooks that can be reused across multiple features.
+
+`src/lib/`: Stores reusable helpers, adapters, and integrations for third-party libraries.
+
+`src/stores/`: Stores shared state containers when the app uses a global store.
+
+`src/testing/`: Stores shared test helpers, mocks, fixtures, and setup utilities.
+
+`src/types/`: Stores shared types and interfaces that are used across features.
+
+`src/utils/`: Stores shared utility functions that do not belong to a feature.
 
 Codebase architecture rule:
 
 - Shared code should stay reusable and stay outside feature-specific folders.
 - Features should stay isolated from one another and should not import from other feature folders directly.
 - The app layer should compose features together.
+- Keep feature-local UI, hooks, and data access inside the feature folder instead of promoting them too early.
 
 Feature folder structure (per-feature):
 
@@ -46,13 +71,14 @@ feature-name/
 └─ index.ts # Entry point exporting the feature's main components
 
 Example: `src/features/navbar/`
-├─ components/
-│ └─ MobileMenu.tsx
-├─ hooks/
-│ └─ useNavbarState.ts
-├─ api/
-│ └─ navbarService.ts
-└─ index.ts
+
+    components/
+      MobileMenu.tsx
+    hooks/
+      useNavbarState.ts
+    api/
+      navbarService.ts
+    index.ts
 
 Benefits:
 
