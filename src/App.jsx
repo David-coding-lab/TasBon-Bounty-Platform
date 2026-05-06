@@ -11,6 +11,7 @@ function App() {
       <div className="flex justify-center items-center gap-5 mt-5">
         <button className="p-5 rounded-2xl cursor-pointer w-32 bg-red-100">
           Sign Up
+          <span class="material-symbols-outlined">close</span>{' '}
         </button>
         <button className="p-5 rounded-2xl cursor-pointer w-32 bg-red-100">
           Login
