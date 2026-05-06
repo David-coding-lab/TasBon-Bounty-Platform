@@ -1,6 +1,9 @@
 import './App.css'
+import { Link, Navigate, Route, Routes } from 'react-router-dom'
+import SignIn from './Features/SignIn/Index'
+import SignUp from './Features/SignUp/Index'
 
-function App() {
+function Home() {
   return (
     <div className="App">
       <div className="text-3xl text-center font-bold mt-10">
@@ -9,15 +12,31 @@ function App() {
       </div>
 
       <div className="flex justify-center items-center gap-5 mt-5">
-        <button className="p-5 rounded-2xl cursor-pointer w-32 bg-red-100">
+        <Link
+          to="/signup"
+          className="p-5 rounded-2xl cursor-pointer w-32 bg-red-100 text-center"
+        >
           Sign Up
-          <span class="material-symbols-outlined">close</span>{' '}
-        </button>
-        <button className="p-5 rounded-2xl cursor-pointer w-32 bg-red-100">
+        </Link>
+        <Link
+          to="/signin"
+          className="p-5 rounded-2xl cursor-pointer w-32 bg-red-100 text-center"
+        >
           Login
-        </button>
+        </Link>
       </div>
     </div>
+  )
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/signin" element={<SignIn />} />
+      <Route path="/signup" element={<SignUp />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   )
 }
 

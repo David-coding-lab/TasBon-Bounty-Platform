@@ -1,2 +1,10 @@
 /* stylelint-disable-next-line */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Sora:wght@100..800&display=swap');
 @import 'tailwindcss';
+
+@theme {
+  --color-primary: #34a563;
+  --color-secondary: #ecf9e1;
+  --font-sora: 'Sora', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+}
