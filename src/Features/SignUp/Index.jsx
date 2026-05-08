@@ -1,17 +1,87 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Hero from './Assets/Hero-bg.png'
 import AppleIcon from './Assets/Apple.png'
 import GoogleIcon from './Assets/Google.png'
+import { signUpSchema } from './schema'
 import './index.css'
 
 function SignUp() {
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  })
+  const [errors, setErrors] = useState({})
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: '',
+      }))
+    }
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setErrors({})
+
+    try {
+      signUpSchema.parse(formData)
+      setIsLoading(true)
+
+      const response = await fetch(
+        'https://tasbon-api.onrender.com/api/v1/auth/register',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        },
+      )
+
+      const data = await response.json()
+
+      if (response.ok) {
+        console.log('Registration successful:', data)
+        alert('Registration successful!')
+      } else {
+        alert(data.message || 'Registration failed. Please try again.')
+      }
+    } catch (error) {
+      // Handle validation errors from Zod
+      const newErrors = {}
+      if (error.issues && Array.isArray(error.issues)) {
+        error.issues.forEach((issue) => {
+          const fieldName = issue.path[0]
+          newErrors[fieldName] = issue.message
+        })
+      } else {
+        console.error('Error:', error.message)
+      }
+      setErrors(newErrors)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
     <main className="font-sora gap-10 bg-secondary flex h-screen">
       <div className="w-[45vw] h-full">
         <img src={Hero} alt="woman drinking coffee" className="w-full h-full" />
       </div>
 
-      <section className="w-[45vw] pt-8 flex flex-col justify-center ml-10 items-start gap-4 ">
+      <section className="w-[45vw] pt-8 flex flex-col h-screen justify-center ml-10 items-start gap-4 ">
         <div className="flex flex-col text-start">
           <h1 className="text-4xl font-bold mb-2">
             <span className="block">Join The</span>
@@ -24,60 +94,119 @@ function SignUp() {
           </p>
         </div>
 
-        <form className=" flex flex-col pt-8 space-y-3">
+        <form className=" flex flex-col pt-8 space-y-3" onSubmit={handleSubmit}>
           <div className="flex flex-col space-y-4 w-lg">
-            <input
-              type="text"
-              placeholder="FullName"
-              className="p-3 bg-white outline-0 rounded-sm h-14"
-            />
-            <input
-              type="text"
-              placeholder="Email"
-              className="p-3 bg-white outline-0 rounded-sm h-14"
-            />
-            <label
-              htmlFor="passWord"
-              className="p-3 bg-white outline-0 rounded-sm h-14 flex"
-            >
+            <div>
               <input
                 type="text"
-                id="passWord"
-                placeholder="Password"
-                className="h-full w-full bg-white py-3 outline-0"
+                name="fullName"
+                value={formData.fullName}
+                onChange={handleChange}
+                placeholder="FullName"
+                disabled={isLoading}
+                className={`p-3 bg-white outline-0 rounded-sm h-14 w-full disabled:opacity-50 disabled:cursor-not-allowed ${
+                  errors.fullName ? 'border-2 border-red-500' : ''
+                }`}
               />
-              <span
-                className="material-symbols-outlined"
-                style={{ color: '#888988' }}
+              {errors.fullName && (
+                <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>
+              )}
+            </div>
+            <div>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Email"
+                disabled={isLoading}
+                className={`p-3 bg-white outline-0 rounded-sm h-14 w-full disabled:opacity-50 disabled:cursor-not-allowed ${
+                  errors.email ? 'border-2 border-red-500' : ''
+                }`}
+              />
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+              )}
+            </div>
+            <div>
+              <label
+                htmlFor="passWord"
+                className={`p-3 bg-white outline-0 rounded-sm h-14 flex disabled:opacity-50 disabled:cursor-not-allowed ${
+                  errors.password ? 'border-2 border-red-500' : ''
+                }`}
               >
-                visibility
-              </span>
-            </label>
+                <input
+                  type="password"
+                  name="password"
+                  id="passWord"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="Password"
+                  disabled={isLoading}
+                  className="h-full w-full bg-white py-3 outline-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                />
+                <span
+                  className="material-symbols-outlined"
+                  style={{ color: '#888988' }}
+                >
+                  visibility
+                </span>
+              </label>
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+              )}
+            </div>
 
-            <label
-              htmlFor="confirmPassWord"
-              className="p-3 bg-white outline-0 rounded-sm h-14 flex"
-            >
-              <input
-                type="text"
-                id="confirmPassWord"
-                placeholder="Confirm Password"
-                className="h-full w-full bg-white py-3 outline-0"
-              />
-              <span
-                className="material-symbols-outlined"
-                style={{ color: '#888988' }}
+            <div>
+              <label
+                htmlFor="confirmPassWord"
+                className={`p-3 bg-white outline-0 rounded-sm h-14 flex disabled:opacity-50 disabled:cursor-not-allowed ${
+                  errors.confirmPassword ? 'border-2 border-red-500' : ''
+                }`}
               >
-                visibility
-              </span>
-            </label>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  id="confirmPassWord"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  placeholder="Confirm Password"
+                  disabled={isLoading}
+                  className="h-full w-full bg-white py-3 outline-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                />
+                <span
+                  className="material-symbols-outlined"
+                  style={{ color: '#888988' }}
+                >
+                  visibility
+                </span>
+              </label>
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.confirmPassword}
+                </p>
+              )}
+            </div>
           </div>
 
           <button
             type="submit"
-            className="btn-signUp mt-10 cursor-pointer text-white w-full h-16 text-center bg-primary rounded-md py-3 text-base"
+            disabled={isLoading}
+            className="btn-signUp mt-10 cursor-pointer text-white w-full h-16 text-center bg-primary rounded-md py-3 text-base disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center"
           >
-            Create Account
+            {isLoading ? (
+              <span className="flex items-center gap-2">
+                <span
+                  className="material-symbols-outlined animate-spin"
+                  style={{ fontSize: '20px' }}
+                >
+                  progress_activity
+                </span>
+                Loading...
+              </span>
+            ) : (
+              'Create Account'
+            )}
           </button>
         </form>
 
