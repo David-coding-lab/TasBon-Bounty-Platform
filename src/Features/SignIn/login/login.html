@@ -1,86 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
 </head>
-<body class="bg-gray-50">
 
-  <div class="min-h-screen flex">
-    
-    <!-- Left Side - Hero Image -->
-    <div class="hidden lg:flex lg:w-1/2 relative">
-      <img src="../Assets/Hero-bg.png" alt="hero girl" class="absolute inset-0 w-full h-full object-cover">
-      <div class="absolute inset-0 bg-black/40"></div>
-    </div>
+<body class="bg-[#ECF9E1] m-0">
 
-    <!-- Right Side - Login Form -->
-    <div class="w-full lg:w-1/2 flex items-center justify-center p-8">
-      <div class="w-full max-w-md bg-white rounded-2xl shadow-lg p-8 border-gray-100">
-        
-        <h1 class="text-3xl font-bold text-gray-900">Welcome<br>Back To The Hunt</h1>
-        <p class="text-sm text-gray-500 mt-2">Pick Up Where You Left Off And Keep Earning With New Bounties</p>
+    <!-- Card -->
+    <div class="bg-[#ECF9E1] flex w-screen h-screen">
 
-        <!-- OAuth Buttons -->
-        <div class="mt-6 space-y-3">
-          <button class="w-full flex items-center justify-center gap-3 border-gray-300 rounded-lg py-2.5 hover:bg-gray-50">
-            <img src="https://www.google.com/favicon.ico" class="w-5 h-5">
-            Sign In With Google
-          </button>
-          
-          <button class="w-full flex items-center justify-center gap-3 border-gray-300 rounded-lg py-2.5 hover:bg-gray-50">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" class="w-5 h-5" alt="Apple">
+        <!-- Left image -->
+        <div class="w-1/2 h-full">
+            <img src="../Assets/Hero-bg.png" class="w-full h-full object-cover">
+        </div>
+        <!-- <div class="form-card"> -->
+        <!-- Right form -->
+        <div class="w-1/2 h-full flex items-center justify-center">
+
+            <div class="w-full max-w-md px-12 py-8">
+                <div class="header">
+                    <h2 class="font-text-4xl  md:text- [64px] font-bold font-sora">
+                        Welcome<br> Back To <span class="text-green-600">The Hunt</span>
+                    </h2>
+                </div>
+                <div class=" para">
+
+                    <p class="text-black">
+                        Pick Up Where You Left Off And Keep Earning With New Bounties
+                    </p>
+                </div>
+                <!-- Google Sign In Button -->
+                <a href="#" target="_blank" rel="noopener noreferrer" 
+   class="w-full flex items-center justify-center gap-3 bg-white border-gray-200 rounded-lg py-3 mb-3 hover:bg-gray-50 transition">
+  <img src="../Assets/Google.png" class="w-5 h-5" alt="Google">
+  Sign In With Google
+</a>
+
+                <!-- Apple Button -->
+                <a href="#" target="_blank" rel="noopener noreferrer"
+   class="w-full flex items-center justify-center gap-3 bg-white border-gray-200 rounded-lg py-3 mb-4 hover:bg-gray-50 transition">
+  <img src="../Assets/Apple.png" class="w-5 h-5" alt="Apple">
   Sign In With Apple
-</button>
+</a>
+                <div class="flex items-center my-4">
+                    <div class="flex-1 h-px bg-gray-300"></div>
+                    <span class="px-3 text-sm text-gray-400">Or Sign In With</span>
+                    <div class="flex-1 h-px bg-gray-300"></div>
+                </div>
+
+                <input type="email" placeholder="Email"
+                    class="w-full px-4 py-3 bg-white border-gray-200 rounded-lg mb-3">
+
+                <div class="relative mb-4">
+                    <input id="password" type="password" placeholder="Password"
+                        class="w-full px-4 py-3 bg-white border-gray-200 rounded-lg pr-10 focus:outline-none focus:ring-2 focus:ring-green-500">
+
+                    <!-- Eye icon button -->
+                    <button type="button" id="togglePassword"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                        <!-- Eye open SVG -->
+                        <svg id="eyeOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+
+                        <!-- Eye closed SVG - hidden by default -->
+                        <svg id="eyeClosed" class="w-5 h-5 hidden" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m
+
+    div class=" text-right text-sm text-green-600 mb-4">Forgot Password?
+                </div>
+
+                <a href="#" target="_blank" 
+   class="w-full bg-green-600 text-white py-3 rounded-lg block mt-4font-semibold text-center block hover:bg-green-700 transition">
+  Login
+</a>
+
+                <div class="text-center text-sm text-gray-500 mt-4">
+                    Not A Bounty Hunter?
+                    <a href="#" class="text-green-600 hover:underline font-medium">Sign Up</a>
+                </div>
+
+            </div>
+
         </div>
+        <!-- </div> -->
+        <!-- Password Toggle Script -->
+        <script>
+            const passwordInput = document.getElementById('password');
+            const toggleBtn = document.getElementById('togglePassword');
+            const eyeIcon = document.getElementById('eyeIcon');
+            const eyeOffIcon = document.getElementById('eyeOffIcon');
 
-        <div class="flex items-center my-6">
-          <div class="flex-1 h-px bg-gray-200"></div>
-          <span class="px-3 text-sm text-gray-500">Or Sign In With</span>
-          <div class="flex-1 h-px bg-gray-200"></div>
-        </div>
+            toggleBtn.addEventListener('click', () => {
+                const isPassword = passwordInput.type === 'password';
+                passwordInput.type = isPassword ? 'text' : 'password';
+                eyeIcon.classList.toggle('hidden');
+                eyeOffIcon.classList.toggle('hidden');
+            });
+        </script>
 
-        <!-- Email Form -->
-        <form class="space-y-4">
-          <input type="email" placeholder="Email" class="w-full px-4 py-2.5 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
-          
-          <div class="relative">
-  <input id="password" type="password" placeholder="Password" 
-    class="w-full px-4 py-2.5 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
-  
-  <button type="button" id="togglePassword" 
-    class="absolute right-3 top-3 text-gray-400 hover:text-gray-600">
-    👁
-  </button>
-</div>
-
-          <div class="text-right">
-            <a href="#" class="text-sm text-green-600 hover:underline">Forgot Password?</a>
-          </div>
-
-          <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700">
-            Login
-          </button>
-        </form>
-
-        <p class="text-center text-sm text-gray-600 mt-6">
-          Not A Bounty Hunter? <a href="#" class="text-green-600 font-semibold hover:underline">Sign Up</a>
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <script>
-  const passwordInput = document.getElementById('password');
-  const toggleBtn = document.getElementById('togglePassword');
-
-  toggleBtn.addEventListener('click', () => {
-    const isPassword = passwordInput.type === 'password';
-    passwordInput.type = isPassword ? 'text' : 'password';
-    toggleBtn.textContent = isPassword ? '🙈' : '👁'; // changes to monkey when visible
-  });
-</script>
 </body>
+
 </html>
