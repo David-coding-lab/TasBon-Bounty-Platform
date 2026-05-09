@@ -8,3 +8,8 @@
   --font-sora: 'Sora', sans-serif;
   --font-inter: 'Inter', sans-serif;
 }
+
+main {
+  margin: 0;
+  padding: 0;
+}

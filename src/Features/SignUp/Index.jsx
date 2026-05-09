@@ -1,139 +1,242 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Hero from './Assets/Hero-bg.png'
 import AppleIcon from './Assets/Apple.png'
 import GoogleIcon from './Assets/Google.png'
+import { signUpSchema } from './schema'
+import './index.css'
 
 function SignUp() {
-  return (
-    <main className="font-sora bg-secondary min-h-screen p-8 flex items-start space-x-24">
-      <img src={Hero} alt="" className="h-168" />
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  })
+  const [errors, setErrors] = useState({})
+  const [isLoading, setIsLoading] = useState(false)
 
-      <section className="w-full  flex flex-col gap-4 max-w-[650px]">
-        <div className=" flex flex-col space-y-2">
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: '',
+      }))
+    }
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setErrors({})
+
+    try {
+      signUpSchema.parse(formData)
+      setIsLoading(true)
+
+      const response = await fetch(
+        'https://tasbon-api.onrender.com/api/v1/auth/register',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        },
+      )
+
+      const data = await response.json()
+
+      if (response.ok) {
+        console.log('Registration successful:', data)
+        alert('Registration successful!')
+      } else {
+        alert(data.message || 'Registration failed. Please try again.')
+      }
+    } catch (error) {
+      // Handle validation errors from Zod
+      const newErrors = {}
+      if (error.issues && Array.isArray(error.issues)) {
+        error.issues.forEach((issue) => {
+          const fieldName = issue.path[0]
+          newErrors[fieldName] = issue.message
+        })
+      } else {
+        console.error('Error:', error.message)
+      }
+      setErrors(newErrors)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <main className="font-sora gap-10 bg-secondary flex h-screen">
+      <div className="w-[45vw] h-full">
+        <img src={Hero} alt="woman drinking coffee" className="w-full h-full" />
+      </div>
+
+      <section className="w-[45vw] pt-8 flex flex-col h-screen justify-center ml-10 items-start gap-4 ">
+        <div className="flex flex-col text-start">
           <h1 className="text-4xl font-bold mb-2">
             <span className="block">Join The</span>
             <span>
               <span className="text-primary">BOUNTY</span> HUNTERS
             </span>
           </h1>
-          <p className="text-base  ">
+          <p className="text-base">
             Discover Opportunities And Get Rewarded For Your Skills.
           </p>
         </div>
 
-        <form className=" flex flex-col space-y-3">
-          <div className="flex flex-col space-y-4">
-            <input
-              type="text"
-              placeholder="FullName"
-              className="p-3 bg-white"
-            />
-
-            <input type="email" className="p-6 bg-white" placeholder="Email" />
-
-            <label
-              htmlFor="passWord"
-              className="flex flex-row items-center px-3 bg-white"
-            >
+        <form className=" flex flex-col pt-8 space-y-3" onSubmit={handleSubmit}>
+          <div className="flex flex-col space-y-4 w-lg">
+            <div>
               <input
                 type="text"
-                id="passWord"
-                placeholder="Password"
-                className="h-full w-full bg-white py-3"
+                name="fullName"
+                value={formData.fullName}
+                onChange={handleChange}
+                placeholder="FullName"
+                disabled={isLoading}
+                className={`p-3 bg-white outline-0 rounded-sm h-14 w-full disabled:opacity-50 disabled:cursor-not-allowed ${
+                  errors.fullName ? 'border-2 border-red-500' : ''
+                }`}
               />
-              <span class="material-symbols-outlined">visibility</span>
-            </label>
-
-            <label
-              htmlFor="confirmPassWord"
-              className="flex flex-row items-center px-3 bg-white"
-            >
+              {errors.fullName && (
+                <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>
+              )}
+            </div>
+            <div>
               <input
-                type="text"
-                id="confirmPassWord"
-                placeholder="Confirm Password"
-                className="h-full w-full bg-white py-3"
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Email"
+                disabled={isLoading}
+                className={`p-3 bg-white outline-0 rounded-sm h-14 w-full disabled:opacity-50 disabled:cursor-not-allowed ${
+                  errors.email ? 'border-2 border-red-500' : ''
+                }`}
               />
-              <span class="material-symbols-outlined">visibility</span>
-            </label>
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+              )}
+            </div>
+            <div>
+              <label
+                htmlFor="passWord"
+                className={`p-3 bg-white outline-0 rounded-sm h-14 flex disabled:opacity-50 disabled:cursor-not-allowed ${
+                  errors.password ? 'border-2 border-red-500' : ''
+                }`}
+              >
+                <input
+                  type="password"
+                  name="password"
+                  id="passWord"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="Password"
+                  disabled={isLoading}
+                  className="h-full w-full bg-white py-3 outline-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                />
+                <span
+                  className="material-symbols-outlined"
+                  style={{ color: '#888988' }}
+                >
+                  visibility
+                </span>
+              </label>
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+              )}
+            </div>
+
+            <div>
+              <label
+                htmlFor="confirmPassWord"
+                className={`p-3 bg-white outline-0 rounded-sm h-14 flex disabled:opacity-50 disabled:cursor-not-allowed ${
+                  errors.confirmPassword ? 'border-2 border-red-500' : ''
+                }`}
+              >
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  id="confirmPassWord"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  placeholder="Confirm Password"
+                  disabled={isLoading}
+                  className="h-full w-full bg-white py-3 outline-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                />
+                <span
+                  className="material-symbols-outlined"
+                  style={{ color: '#888988' }}
+                >
+                  visibility
+                </span>
+              </label>
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.confirmPassword}
+                </p>
+              )}
+            </div>
           </div>
 
           <button
-            type="submiit"
-            className="mt-10 text-white w-full text-center bg-primary rounded-md py-3 text-base"
+            type="submit"
+            disabled={isLoading}
+            className="btn-signUp mt-10 cursor-pointer text-white w-full h-16 text-center bg-primary rounded-md py-3 text-base disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center"
           >
-            Create Account
+            {isLoading ? (
+              <span className="flex items-center gap-2">
+                <span
+                  className="material-symbols-outlined animate-spin"
+                  style={{ fontSize: '20px' }}
+                >
+                  progress_activity
+                </span>
+                Loading...
+              </span>
+            ) : (
+              'Create Account'
+            )}
           </button>
         </form>
 
-        <div className="flex flex-col space-y-4 justify-center">
-          <div class="flex flex-row space-x-6 items-center">
-            {/* <!-- Left line --> */}
-            <div class="w-full flex-2 h-px bg-gray-400"></div>
-
-            {/*   <!-- Center text --> */}
-            <span class="flex-2 mx-4 text-base text-gray-800">
-              Or Sign Up With
-            </span>
-
-            {/* <!-- Right line (optional) --> */}
-            <div class="flex-2 w-full h-px bg-gray-400"></div>
+        <div className="flex flex-col w-lg items-center space-y-4 mt-6 justify-center">
+          <div className="flex flex-row items-center w-[90%]">
+            <div className="flex-1 h-px bg-gray-400" />
+            <span className="mx-4 text-sm text-gray-800">Or Sign Up With</span>
+            <div className="flex-1 h-px bg-gray-400" />
           </div>
 
-          <div className="flex  items-center space-x-3">
-            <button className="border-2 border-[#888988] w-full   flex flex-row items-center space-x-2 justify-center rounded-md p-3">
+          <div className="flex items-center space-x-3 w-[90%]">
+            <button className="OAuth-btns flex-1 border border-[#888988] cursor-pointer flex items-center justify-center rounded-md p-3 gap-2">
               <img src={GoogleIcon} alt="" />
-              <span className="text-2xl text-[#888988]">Google</span>
+              <span className="text-md text-[#888988]">Google</span>
             </button>
-            <button className="border-2 border-[#888988] w-full   flex flex-row items-center space-x-2 justify-center rounded-md p-3">
+            <button className="OAuth-btns flex-1 border border-[#888988] cursor-pointer flex items-center justify-center rounded-md p-3 gap-2">
               <img src={AppleIcon} alt="" />
-              <span className="text-2xl text-[#888988]">Apple</span>
+              <span className="text-md text-[#888988]">Apple</span>
             </button>
           </div>
 
-          <p className="text-[#888988] text-center">
-            Already a Hunter{' '}
-            <a href="#" className="text-primary">
+          <p className="text-[#888988] text-center mb-10">
+            Already a Bounty Hunter?{' '}
+            <Link to="/signin" className="text-primary">
               Sign In
-            </a>
+            </Link>
           </p>
         </div>
       </section>
     </main>
-    // <div className="min-h-screen flex items-center justify-center">
-    //   <div className="w-full max-w-md rounded-2xl p-8 shadow-md border">
-    //     <h1 className="text-2xl font-bold mb-2">Create Account</h1>
-    //     <p className="text-sm text-gray-600 mb-6">Start your bounty journey.</p>
-
-    //     <form className="space-y-4">
-    //       <input
-    //         type="text"
-    //         placeholder="Full name"
-    //         className="w-full border rounded-lg px-3 py-2"
-    //       />
-    //       <input
-    //         type="email"
-    //         placeholder="Email"
-    //         className="w-full border rounded-lg px-3 py-2"
-    //       />
-    //       <input
-    //         type="password"
-    //         placeholder="Password"
-    //         className="w-full border rounded-lg px-3 py-2"
-    //       />
-    //       <button className="w-full bg-red-100 rounded-lg py-2 font-medium">
-    //         Sign Up
-    //       </button>
-    //     </form>
-
-    //     <p className="text-sm mt-4">
-    //       Already have an account?{' '}
-    //       <Link to="/signin" className="underline">
-    //         Sign in
-    //       </Link>
-    //     </p>
-    //   </div>
-    // </div>
   )
 }
 
