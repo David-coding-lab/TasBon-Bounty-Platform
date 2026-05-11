@@ -76,7 +76,7 @@ function SignUp() {
   }
 
   return (
-    <main className="font-sora gap-10 bg-secondary flex h-screen">
+    <main className="font-sora gap-10 bg-secondary flex h-screen  ">
       <div className="w-[45vw] h-full">
         <img src={Hero} alt="woman drinking coffee" className="w-full h-full" />
       </div>
