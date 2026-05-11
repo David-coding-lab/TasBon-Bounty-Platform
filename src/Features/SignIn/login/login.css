@@ -1,0 +1,25 @@
+/* body{
+    background-color: #ECF9E1;
+    margin: 0%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+} */
+/* .form-card{
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+    width:100%;
+    max-width: 400px;
+    box-shadow: 0 4px rgba(0,0,0,0.05);
+
+} */
+
+.header {
+  font-size: 40px;
+  font-family: 'Times New Roman', Times, serif, 'sora';
+  font-weight: bold;
+}
+.para {
+  font-family: 'sora', 'Times New Roman', Times, serif;
+  font-size: 11px;
+  color: #000;
+}
