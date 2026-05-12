@@ -4,18 +4,40 @@ import './login.css'
 import HeroBg from './Assets/Hero-bg.png'
 import GoogleIcon from './Assets/Google.png'
 import AppleIcon from './Assets/Apple.png'
+import ForgetPassword from './componenet/ForgetPassword'
+import VerifyPassword from './componenet/VerifyPassword'
 
 function SignIn() {
   const [showPassword, setShowPassword] = useState(false)
   const [passwordType, setPasswordType] = useState('password')
+  const [showForgetPwd, setShowForgetPwd] = useState(false)
+  const [showVerifyPwd, setShowVerifyPwd] = useState(false)
+  const [userEmail, setUserEmail] = useState('')
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
     setPasswordType(showPassword ? 'password' : 'text')
   }
 
+  const handleEmailValid = (email) => {
+    setUserEmail(email)
+    setShowForgetPwd(false)
+    setShowVerifyPwd(true)
+  }
+
   return (
     <div className="bg-[#ECF9E1] flex w-screen h-screen">
+      {showForgetPwd && (
+        <div className="w-screen h-screen bg-[#00000163] absolute top-0 left-0 z-10">
+          <ForgetPassword onEmailValid={handleEmailValid} />
+        </div>
+      )}
+      {showVerifyPwd && (
+        <div className="w-screen h-screen bg-[#00000163] absolute top-0 left-0 z-10">
+          <VerifyPassword userEmail={userEmail} />
+        </div>
+      )}
+
       {/* Left Image Section */}
       <div className="w-1/2 h-full">
         <img
@@ -138,9 +160,13 @@ function SignIn() {
 
           {/* Forgot Password Link */}
           <div className="text-right text-sm text-green-600 mb-4">
-            <a href="#" className="hover:underline">
+            <button
+              type="button"
+              className="hover:underline cursor-pointer"
+              onClick={() => setShowForgetPwd(true)}
+            >
               Forgot Password?
-            </a>
+            </button>
           </div>
 
           {/* Login Button */}
