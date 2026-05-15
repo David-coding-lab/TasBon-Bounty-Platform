@@ -26,7 +26,7 @@ function SignIn() {
   }
 
   return (
-    <div className="bg-[#ECF9E1] flex w-screen h-screen">
+    <div className="bg-white flex w-screen h-screen">
       {showForgetPwd && (
         <div className="w-screen h-screen bg-[#00000163] absolute top-0 left-0 z-10">
           <ForgetPassword onEmailValid={handleEmailValid} />

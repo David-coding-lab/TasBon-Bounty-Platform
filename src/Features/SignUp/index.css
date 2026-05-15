@@ -1,26 +1,11 @@
-.btn-signUp {
-  border: 1px solid transparent;
-  transition:
-    background-color 280ms cubic-bezier(0.4, 0, 0.2, 1),
-    border-color 280ms cubic-bezier(0.4, 0, 0.2, 1),
-    color 280ms cubic-bezier(0.4, 0, 0.2, 1),
-    transform 280ms cubic-bezier(0.4, 0, 0.2, 1);
+.header {
+  font-size: 40px;
+  font-family: 'Times New Roman', Times, serif, 'sora';
+  font-weight: bold;
 }
 
-.btn-signUp:hover {
-  background-color: #fff;
-  border-color: #34a563;
-  color: #34a563;
-  transform: translateY(-1px);
-}
-
-.OAuth-btns {
-  transition: all 280ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.OAuth-btns:hover {
-  background-color: #fff;
-  border-color: #34a563;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.para {
+  font-family: 'sora', 'Times New Roman', Times, serif;
+  font-size: 11px;
+  color: #000;
 }

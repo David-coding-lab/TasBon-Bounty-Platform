@@ -76,40 +76,76 @@ function SignUp() {
   }
 
   return (
-    <main className="font-sora gap-10 bg-secondary flex w-full">
-      <div className=" w-1/2 h-full hidden lg:flex">
+    <div className="bg-white flex w-screen h-screen">
+      {/* Left Image Section */}
+      <div className="w-1/2 h-full hidden lg:flex">
         <img
           src={Hero}
-          alt="woman drinking coffee"
+          alt="Hero Background"
           className="w-full h-full object-cover"
         />
       </div>
 
-      <section className="w-full lg:w-1/2 pt-8 flex flex-col h-screen justify-center lg:ml-10 items-start gap-4 lg:">
-        <div className="flex flex-col text-start">
-          <h1 className="text-4xl font-bold mb-2">
-            <span className="block">Join The</span>
-            <span>
-              <span className="text-primary">BOUNTY</span> HUNTERS
-            </span>
-          </h1>
-          <p className="text-base">
-            Discover Opportunities And Get Rewarded For Your Skills.
-          </p>
-        </div>
+      {/* Right Form Section */}
+      <div className="w-full lg:w-1/2 h-full flex items-center justify-center">
+        <div className="w-full max-w-md px-12 py-8">
+          {/* Header */}
+          <div className="header">
+            <h2 className="font-text-3xl md:text-[40px] font-bold font-sora">
+              <br />
+              Join The
+              <br /> <span className="text-green-600">BOUNTY</span> HUNTERS
+            </h2>
+          </div>
 
-        {/* The sign in form */}
-        <form className=" flex flex-col pt-8 space-y-3" onSubmit={handleSubmit}>
-          <div className="flex flex-col space-y-4 w-lg">
+          {/* Paragraph */}
+          <div className="para">
+            <p className="text-black mt-3 text-base">
+              Discover Opportunities And Get Rewarded For Your Skills.
+            </p>
+          </div>
+
+          {/* Google Sign Up Button */}
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 rounded-lg py-3 mb-2 mt-6 hover:bg-gray-50 transition"
+          >
+            <img src={GoogleIcon} className="w-5 h-5" alt="Google" />
+            Sign Up With Google
+          </a>
+
+          {/* Apple Sign Up Button */}
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 rounded-lg py-3 mb-4 hover:bg-gray-50 transition"
+          >
+            <img src={AppleIcon} className="w-5 h-5" alt="Apple" />
+            Sign Up With Apple
+          </a>
+
+          {/* Divider */}
+          <div className="flex items-center my-4">
+            <div className="flex-1 h-px bg-gray-300"></div>
+            <span className="px-3 text-sm text-gray-400">Or Sign Up With</span>
+            <div className="flex-1 h-px bg-gray-300"></div>
+          </div>
+
+          {/* The sign up form */}
+          <form className="flex flex-col space-y-3" onSubmit={handleSubmit}>
+            {/* Full Name Input */}
             <div>
               <input
                 type="text"
                 name="fullName"
                 value={formData.fullName}
                 onChange={handleChange}
-                placeholder="FullName"
+                placeholder="Full Name"
                 disabled={isLoading}
-                className={`p-3 bg-white outline-0 rounded-sm h-14 w-full disabled:opacity-50 disabled:cursor-not-allowed ${
+                className={`w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed ${
                   errors.fullName ? 'border-2 border-red-500' : ''
                 }`}
               />
@@ -117,6 +153,8 @@ function SignUp() {
                 <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>
               )}
             </div>
+
+            {/* Email Input */}
             <div>
               <input
                 type="email"
@@ -125,7 +163,7 @@ function SignUp() {
                 onChange={handleChange}
                 placeholder="Email"
                 disabled={isLoading}
-                className={`p-3 bg-white outline-0 rounded-sm h-14 w-full disabled:opacity-50 disabled:cursor-not-allowed ${
+                className={`w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed ${
                   errors.email ? 'border-2 border-red-500' : ''
                 }`}
               />
@@ -133,115 +171,80 @@ function SignUp() {
                 <p className="text-red-500 text-sm mt-1">{errors.email}</p>
               )}
             </div>
+
+            {/* Password Input */}
             <div>
-              <label
-                htmlFor="passWord"
-                className={`p-3 bg-white outline-0 rounded-sm h-14 flex disabled:opacity-50 disabled:cursor-not-allowed ${
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Password"
+                disabled={isLoading}
+                className={`w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed ${
                   errors.password ? 'border-2 border-red-500' : ''
                 }`}
-              >
-                <input
-                  type="password"
-                  name="password"
-                  id="passWord"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="Password"
-                  disabled={isLoading}
-                  className="h-full w-full bg-white py-3 outline-0 disabled:opacity-50 disabled:cursor-not-allowed"
-                />
-                <span
-                  className="material-symbols-outlined"
-                  style={{ color: '#888988' }}
-                >
-                  visibility
-                </span>
-              </label>
+              />
               {errors.password && (
                 <p className="text-red-500 text-sm mt-1">{errors.password}</p>
               )}
             </div>
 
+            {/* Confirm Password Input */}
             <div>
-              <label
-                htmlFor="confirmPassWord"
-                className={`p-3 bg-white outline-0 rounded-sm h-14 flex disabled:opacity-50 disabled:cursor-not-allowed ${
+              <input
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                placeholder="Confirm Password"
+                disabled={isLoading}
+                className={`w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed ${
                   errors.confirmPassword ? 'border-2 border-red-500' : ''
                 }`}
-              >
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  id="confirmPassWord"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  placeholder="Confirm Password"
-                  disabled={isLoading}
-                  className="h-full w-full bg-white py-3 outline-0 disabled:opacity-50 disabled:cursor-not-allowed"
-                />
-                <span
-                  className="material-symbols-outlined"
-                  style={{ color: '#888988' }}
-                >
-                  visibility
-                </span>
-              </label>
+              />
               {errors.confirmPassword && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.confirmPassword}
                 </p>
               )}
             </div>
-          </div>
 
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="btn-signUp mt-10 cursor-pointer text-white w-full h-16 text-center bg-primary rounded-md py-3 text-base disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center"
-          >
-            {isLoading ? (
-              <span className="flex items-center gap-2">
-                <span
-                  className="material-symbols-outlined animate-spin"
-                  style={{ fontSize: '20px' }}
-                >
-                  progress_activity
+            {/* Create Account Button */}
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-green-600 text-white py-3 rounded-lg mt-4 font-semibold text-center hover:bg-green-700 transition disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center"
+            >
+              {isLoading ? (
+                <span className="flex items-center gap-2">
+                  <span
+                    className="material-symbols-outlined animate-spin"
+                    style={{ fontSize: '20px' }}
+                  >
+                    progress_activity
+                  </span>
+                  Loading...
                 </span>
-                Loading...
-              </span>
-            ) : (
-              'Create Account'
-            )}
-          </button>
-        </form>
-
-        <div className="flex flex-col w-lg items-center space-y-4 mt-6 justify-center">
-          <div className="flex flex-row items-center w-[90%]">
-            <div className="flex-1 h-px bg-gray-400" />
-            <span className="mx-4 text-sm text-gray-800">Or Sign Up With</span>
-            <div className="flex-1 h-px bg-gray-400" />
-          </div>
-
-          <div className="flex items-center space-x-3 w-[90%]">
-            <button className="OAuth-btns flex-1 border border-[#888988] cursor-pointer flex items-center justify-center rounded-md p-3 gap-2">
-              <img src={GoogleIcon} alt="" />
-              <span className="text-md text-[#888988]">Google</span>
+              ) : (
+                'Create Account'
+              )}
             </button>
-            <button className="OAuth-btns flex-1 border border-[#888988] cursor-pointer flex items-center justify-center rounded-md p-3 gap-2">
-              <img src={AppleIcon} alt="" />
-              <span className="text-md text-[#888988]">Apple</span>
-            </button>
-          </div>
+          </form>
 
-          <p className="text-[#888988] text-center mb-10">
-            Already a Bounty Hunter?{' '}
-            <Link to="/signin" className="text-primary">
+          {/* Sign In Link */}
+          <div className="text-center text-sm text-gray-500 mt-4">
+            Already a Bounty Hunter?
+            <Link
+              to="/signin"
+              className="text-green-600 hover:underline font-medium ms-1"
+            >
               Sign In
             </Link>
-          </p>
+          </div>
         </div>
-      </section>
-    </main>
+      </div>
+    </div>
   )
 }
 
