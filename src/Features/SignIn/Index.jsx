@@ -39,7 +39,7 @@ function SignIn() {
       )}
 
       {/* Left Image Section */}
-      <div className="w-1/2 h-full">
+      <div className="w-1/2 h-full hidden lg:flex">
         <img
           src={HeroBg}
           alt="Hero Background"
@@ -48,11 +48,11 @@ function SignIn() {
       </div>
 
       {/* Right Form Section */}
-      <div className="w-1/2 h-full flex items-center justify-center">
+      <div className="w-full lg:w-1/2 h-full flex items-center justify-center">
         <div className="w-full max-w-md px-12 py-8">
           {/* Header */}
           <div className="header">
-            <h2 className="font-text-3xl md:text-[35px] font-bold font-sora">
+            <h2 className="font-text-3xl md:text-[40px] font-bold font-sora">
               <br />
               Welcome
               <br /> Back To <span className="text-green-600">The Hunt</span>
@@ -61,7 +61,7 @@ function SignIn() {
 
           {/* Paragraph */}
           <div className="para">
-            <p className="text-black mt-3 text-sm">
+            <p className="text-black mt-3 text-base">
               Pick Up Where You Left Off And Keep Earning With New Bounties
             </p>
           </div>
@@ -71,7 +71,7 @@ function SignIn() {
             href="#"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 rounded-lg py-2.5 mb-2 mt-6 hover:bg-gray-50 transition"
+            className="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 rounded-lg py-3 mb-2 mt-6 hover:bg-gray-50 transition"
           >
             <img src={GoogleIcon} className="w-5 h-5" alt="Google" />
             Sign In With Google
@@ -158,8 +158,16 @@ function SignIn() {
             </button>
           </div>
 
+          {/* Login Button */}
+          <a
+            href="#"
+            className="w-full bg-green-600 text-white py-3 rounded-lg block mt-4 font-semibold text-center hover:bg-green-700 transition"
+          >
+            Login
+          </a>
+
           {/* Forgot Password Link */}
-          <div className="text-right text-sm text-green-600 mb-4">
+          <div className="text-right text-sm text-green-600 mb-4 mt-1">
             <button
               type="button"
               className="hover:underline cursor-pointer"
@@ -168,14 +176,6 @@ function SignIn() {
               Forgot Password?
             </button>
           </div>
-
-          {/* Login Button */}
-          <a
-            href="#"
-            className="w-full bg-green-600 text-white py-3 rounded-lg block mt-4 font-semibold text-center hover:bg-green-700 transition"
-          >
-            Login
-          </a>
 
           {/* Sign Up Link */}
           <div className="text-center text-sm text-gray-500 mt-4">

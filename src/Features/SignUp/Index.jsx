@@ -76,12 +76,16 @@ function SignUp() {
   }
 
   return (
-    <main className="font-sora gap-10 bg-secondary flex h-screen  ">
-      <div className="w-[45vw] h-full">
-        <img src={Hero} alt="woman drinking coffee" className="w-full h-full" />
+    <main className="font-sora gap-10 bg-secondary flex w-full">
+      <div className=" w-1/2 h-full hidden lg:flex">
+        <img
+          src={Hero}
+          alt="woman drinking coffee"
+          className="w-full h-full object-cover"
+        />
       </div>
 
-      <section className="w-[45vw] pt-8 flex flex-col h-screen justify-center ml-10 items-start gap-4 ">
+      <section className="w-full lg:w-1/2 pt-8 flex flex-col h-screen justify-center lg:ml-10 items-start gap-4 lg:">
         <div className="flex flex-col text-start">
           <h1 className="text-4xl font-bold mb-2">
             <span className="block">Join The</span>
@@ -94,6 +98,7 @@ function SignUp() {
           </p>
         </div>
 
+        {/* The sign in form */}
         <form className=" flex flex-col pt-8 space-y-3" onSubmit={handleSubmit}>
           <div className="flex flex-col space-y-4 w-lg">
             <div>
