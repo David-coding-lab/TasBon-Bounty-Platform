@@ -2,8 +2,6 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import './login.css'
 import HeroBg from './Assets/Hero-bg.png'
-import GoogleIcon from './Assets/Google.png'
-import AppleIcon from './Assets/Apple.png'
 import ForgetPassword from './componenet/ForgetPassword'
 import VerifyPassword from './componenet/VerifyPassword'
 import { loginUser } from './Api'
@@ -20,10 +18,13 @@ function SignIn() {
   const [showVerifyPwd, setShowVerifyPwd] = useState(false)
   const [userEmail, setUserEmail] = useState('')
   const [loading, setLoading] = useState(false)
+  const [errors, setErrors] = useState({})
+  const [showPasswordField, setShowPasswordField] = useState(false)
 
   const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword)
-    setPasswordType(showPassword ? 'password' : 'text')
+    const next = !showPassword
+    setShowPassword(next)
+    setPasswordType(next ? 'text' : 'password')
   }
 
   const handleEmailValid = (email) => {
@@ -98,7 +99,7 @@ function SignIn() {
       </div>
 
       {/* Right Form Section */}
-      <div className="w-full lg:w-1/2 h-full flex items-center justify-center">
+      <div className="w-full lg:w-1/2 h-screen overflow-y-auto overflow-x-hidden flex items-center justify-center">
         <div className="w-full max-w-md px-12 py-8">
           {/* Header */}
           <div className="header">
@@ -121,17 +122,41 @@ function SignIn() {
             onClick={loginWithGoogle}
             className="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 rounded-lg py-3 mb-2 mt-6 hover:bg-gray-50 transition"
           >
-            <img src={GoogleIcon} className="w-5 h-5" alt="Google" />
+            <svg viewBox="0 0 48 48" aria-hidden="true" className="w-5 h-5">
+              <path
+                fill="#FFC107"
+                d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.4 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.1 6.1 29.4 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.2-.4-3.5z"
+              />
+              <path
+                fill="#FF3D00"
+                d="M6.3 14.7 12.9 19.5C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.1 6.1 29.4 4 24 4c-7.9 0-14.7 4.5-17.7 10.7z"
+              />
+              <path
+                fill="#4CAF50"
+                d="M24 44c5.3 0 10.1-2 13.7-5.2l-6.3-5.2C29.4 35.2 26.8 36 24 36c-5.4 0-9.7-3.1-11.7-7.5l-6.5 5C8.7 39.7 15.7 44 24 44z"
+              />
+              <path
+                fill="#1976D2"
+                d="M43.6 20.5H42V20H24v8h11.3c-1 2.7-2.9 4.9-5.3 6.4l.1-.1 6.3 5.2C36.9 36.4 44 31 44 24c0-1.3-.1-2.2-.4-3.5z"
+              />
+            </svg>
             Sign In With Google
           </button>
 
-          {/* Apple Sign In Button */}
+          {/* GitHub Sign In Button (replaces Apple) */}
           <button
             onClick={loginWithGithub}
             className="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 rounded-lg py-3 mb-4 hover:bg-gray-50 transition"
           >
-            <img src={AppleIcon} className="w-5 h-5" alt="Apple" />
-            Sign In With Apple
+            <svg
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+              className="w-5 h-5"
+            >
+              <path d="M12 2C6.5 2 2 6.6 2 12.3c0 4.6 2.9 8.5 6.9 9.9.5.1.7-.2.7-.5v-1.8c-2.8.6-3.4-1.4-3.4-1.4-.5-1.3-1.2-1.7-1.2-1.7-.9-.7.1-.7.1-.7 1 .1 1.6 1 1.6 1 .9 1.6 2.4 1.1 3 .8.1-.6.4-1.1.7-1.4-2.2-.3-4.5-1.1-4.5-5 0-1.1.4-1.9 1-2.6-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9 9 0 0 1 4.9 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.6 0 3.9-2.3 4.7-4.5 5 .4.4.8 1 .8 2v2.9c0 .3.2.6.7.5 4-1.4 6.9-5.3 6.9-9.9C22 6.6 17.5 2 12 2z" />
+            </svg>
+            Sign In With GitHub
           </button>
 
           {/* Divider */}
@@ -145,65 +170,70 @@ function SignIn() {
           <input
             type="email"
             placeholder="Email"
+            value={userEmail}
+            onChange={(e) => {
+              setUserEmail(e.target.value)
+              if (e.target.value.length >= 3) setShowPasswordField(true)
+            }}
             className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg mb-3"
           />
 
-          {/* Password Input with Toggle */}
-          <div className="relative mb-4">
-            <input
-              value={password}
-              type={passwordType}
-              placeholder="Password"
-              className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg pr-10 focus:outline-none focus:ring-2 focus:ring-green-500"
-            />
+          {/* Password Input with Toggle (staged reveal) */}
+          {showPasswordField && (
+            <div className="relative mb-4 signup-field-reveal">
+              <input
+                value={password}
+                type={passwordType}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg pr-10 focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
 
-            {/* Eye Icon Toggle Button */}
-            <button
-              type="button"
-              onClick={togglePasswordVisibility}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-            >
-              {/* Eye Open SVG */}
-              {!showPassword && (
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                  />
-                </svg>
-              )}
-
-              {/* Eye Closed SVG */}
-              {showPassword && (
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242m0-5.656a4 4 0 00-5.656 0l1.414-1.414"
-                  />
-                </svg>
-              )}
-            </button>
-          </div>
+              {/* Eye Icon Toggle Button */}
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                {!showPassword ? (
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242m0-5.656a4 4 0 00-5.656 0l1.414-1.414"
+                    />
+                  </svg>
+                )}
+              </button>
+            </div>
+          )}
 
           {/* Login Button */}
           <button
