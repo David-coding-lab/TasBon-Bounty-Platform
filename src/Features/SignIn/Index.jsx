@@ -117,22 +117,22 @@ function SignIn() {
           </div>
 
           {/* Google Sign In Button */}
-          <Button
+          <button
             onClick={loginWithGoogle}
             className="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 rounded-lg py-3 mb-2 mt-6 hover:bg-gray-50 transition"
           >
             <img src={GoogleIcon} className="w-5 h-5" alt="Google" />
             Sign In With Google
-          </Button>
+          </button>
 
           {/* Apple Sign In Button */}
-          <Button
+          <button
             onClick={loginWithGithub}
             className="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 rounded-lg py-3 mb-4 hover:bg-gray-50 transition"
           >
             <img src={AppleIcon} className="w-5 h-5" alt="Apple" />
             Sign In With Apple
-          </Button>
+          </button>
 
           {/* Divider */}
           <div className="flex items-center my-4">
@@ -206,7 +206,7 @@ function SignIn() {
           </div>
 
           {/* Login Button */}
-          <Button
+          <button
             onClick={handleLogin}
             disabled={loading}
             className="w-full bg-green-600 text-white py-3 rounded-lg block mt-4 font-semibold text-center hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
@@ -219,7 +219,7 @@ function SignIn() {
             ) : (
               'Login'
             )}
-          </Button>
+          </button>
 
           {/* Forgot Password Link */}
           <div className="text-right text-sm text-green-600 mb-4 mt-1">
