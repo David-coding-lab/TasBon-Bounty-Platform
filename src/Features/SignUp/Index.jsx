@@ -254,7 +254,7 @@ function SignUp() {
             </div>
 
             {showEmailField && (
-              <div>
+              <div className="signup-field-reveal">
                 <input
                   type="email"
                   name="email"
@@ -273,7 +273,7 @@ function SignUp() {
             )}
 
             {showPasswordField && (
-              <div>
+              <div className="signup-field-reveal">
                 <input
                   type="password"
                   name="password"
@@ -292,7 +292,7 @@ function SignUp() {
             )}
 
             {showConfirmPasswordField && (
-              <div>
+              <div className="signup-field-reveal">
                 <input
                   type="password"
                   name="confirmPassword"
