@@ -1,4 +1,3 @@
-import React from 'react'
 import { useState } from 'react'
 import CheckIcon from '../Assets/check_mark.png'
 import { Link } from 'react-router-dom'
