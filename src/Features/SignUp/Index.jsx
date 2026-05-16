@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Hero from './Assets/Hero-bg.png'
@@ -5,8 +6,10 @@ import AppleIcon from './Assets/Apple.png'
 import GoogleIcon from './Assets/Google.png'
 import { signUpSchema } from './schema'
 import './index.css'
+import { toast } from 'sonner'
 
 function SignUp() {
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -34,41 +37,39 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setErrors({})
+    setIsLoading(true)
 
     try {
       signUpSchema.parse(formData)
-      setIsLoading(true)
 
-      const response = await fetch(
-        'https://tasbon-api.onrender.com/api/v1/auth/register',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        },
-      )
+      const result = await registerUser({
+        userName: formData.userName,
+        email: formData.email,
+        fullName: formData.fullName,
+        password: formData.password,
+      })
 
-      const data = await response.json()
+      if (result.success) {
+        toast.success('Registration successful')
+        console.log('Registration successful:', result.data)
 
-      if (response.ok) {
-        console.log('Registration successful:', data)
-        alert('Registration successful!')
-      } else {
-        alert(data.message || 'Registration failed. Please try again.')
-      }
-    } catch (error) {
-      // Handle validation errors from Zod
-      const newErrors = {}
-      if (error.issues && Array.isArray(error.issues)) {
-        error.issues.forEach((issue) => {
-          const fieldName = issue.path[0]
-          newErrors[fieldName] = issue.message
+        navigate('/verify-email', {
+          state: { email: formData.email },
         })
       } else {
-        console.error('Error:', error.message)
+        toast.error(result.message)
       }
+    } catch (error) {
+      const newErrors = {}
+
+      if (error.issues) {
+        error.issues.forEach((issue) => {
+          newErrors[issue.path[0]] = issue.message
+        })
+      } else {
+        console.error(error.message)
+      }
+
       setErrors(newErrors)
     } finally {
       setIsLoading(false)
