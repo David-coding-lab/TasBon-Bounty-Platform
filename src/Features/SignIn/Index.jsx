@@ -10,6 +10,7 @@ import { loginUser } from './Api'
 import Cookies from 'js-cookie'
 import { toast } from 'sonner'
 import { loginSchema } from './schema'
+import { loginWithGithub, loginWithGoogle } from './Api/oauth'
 
 function SignIn() {
   const [showPassword, setShowPassword] = useState(false)
@@ -116,26 +117,22 @@ function SignIn() {
           </div>
 
           {/* Google Sign In Button */}
-          <a
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Button
+            onClick={loginWithGoogle}
             className="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 rounded-lg py-3 mb-2 mt-6 hover:bg-gray-50 transition"
           >
             <img src={GoogleIcon} className="w-5 h-5" alt="Google" />
             Sign In With Google
-          </a>
+          </Button>
 
           {/* Apple Sign In Button */}
-          <a
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Button
+            onClick={loginWithGithub}
             className="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 rounded-lg py-3 mb-4 hover:bg-gray-50 transition"
           >
             <img src={AppleIcon} className="w-5 h-5" alt="Apple" />
             Sign In With Apple
-          </a>
+          </Button>
 
           {/* Divider */}
           <div className="flex items-center my-4">

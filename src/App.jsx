@@ -2,6 +2,8 @@ import './App.css'
 import { Link, Navigate, Route, Routes } from 'react-router-dom'
 import SignIn from './Features/SignIn/Index'
 import SignUp from './Features/SignUp/Index'
+import GoogleCallback from './Features/oauth/google/callback'
+import GithubCallback from './Features/oauth/github/callback'
 
 function Home() {
   return (
@@ -35,6 +37,8 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
+      <Route path="/auth/google/callback" element={<GoogleCallback />} />
+      <Route path="/auth/github/callback" element={<GithubCallback />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )

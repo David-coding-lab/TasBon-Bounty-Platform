@@ -8,9 +8,8 @@ import { signUpSchema } from './schema'
 import './index.css'
 import { toast } from 'sonner'
 
-const navigate = useNavigate()
-
 function SignUp() {
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
