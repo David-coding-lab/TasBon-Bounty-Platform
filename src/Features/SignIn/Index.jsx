@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import './login.css'
 import HeroBg from './Assets/Hero-bg.png'
 import ForgetPassword from './componenet/ForgetPassword'
-import VerifyPassword from './componenet/VerifyPassword'
+import ErrorUi from './componenet/ErrorUi'
 import { loginUser } from './Api'
 import Cookies from 'js-cookie'
 import { toast } from 'sonner'
@@ -20,6 +20,8 @@ function SignIn() {
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState({})
   const [showPasswordField, setShowPasswordField] = useState(false)
+  const [showError, setShowError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
   const togglePasswordVisibility = () => {
     const next = !showPassword
@@ -31,6 +33,11 @@ function SignIn() {
     setUserEmail(email)
     setShowForgetPwd(false)
     setShowVerifyPwd(true)
+  }
+
+  const handleRetry = () => {
+    setShowError(false)
+    handleLogin({ preventDefault: () => {} })
   }
 
   const handleLogin = async (e) => {
@@ -58,6 +65,8 @@ function SignIn() {
         toast.success('User Logged In Successfully')
       } else {
         toast.error(result?.message || 'Login unsuccessful')
+        setErrorMessage(result?.message || 'Login unsuccessful')
+        setShowError(true)
       }
     } catch (error) {
       const newErrors = {}
@@ -68,6 +77,8 @@ function SignIn() {
         })
       } else {
         console.error(error.message)
+        setErrorMessage(error.message || 'Login unsuccessful')
+        setShowError(true)
       }
 
       setErrors(newErrors)
@@ -78,17 +89,22 @@ function SignIn() {
 
   return (
     <div className="bg-white flex w-screen h-screen">
-      {showForgetPwd && (
-        <div className="w-screen h-screen bg-[#00000163] absolute top-0 left-0 z-10">
-          <ForgetPassword onEmailValid={handleEmailValid} />
-        </div>
-      )}
-      {showVerifyPwd && (
-        <div className="w-screen h-screen bg-[#00000163] absolute top-0 left-0 z-10">
-          <VerifyPassword userEmail={userEmail} />
-        </div>
+      {showError && (
+        <ErrorUi
+          message={errorMessage}
+          onClose={() => setShowError(false)}
+          onRetry={handleRetry}
+        />
       )}
 
+      {showForgetPwd && (
+        <div className="w-screen h-screen bg-[#00000163] absolute top-0 left-0 z-10">
+          <ForgetPassword
+            onEmailValid={handleEmailValid}
+            onClose={() => setShowForgetPwd(false)}
+          />
+        </div>
+      )}
       {/* Left Image Section */}
       <div className="w-1/2 h-full hidden lg:flex">
         <img
@@ -103,10 +119,10 @@ function SignIn() {
         <div className="w-full max-w-md px-12 py-8">
           {/* Header */}
           <div className="header">
-            <h2 className="font-text-3xl md:text-[40px] font-bold font-sora">
+            <h2 className="font-text-3xl text-3xl md:text-4xl sm:text-4xl font-bold font-sora">
               <br />
-              Welcome
-              <br /> Back To <span className="text-green-600">The Hunt</span>
+              Welcome Back
+              <br /> To <span className="text-green-600">The Hunt</span>
             </h2>
           </div>
 
@@ -120,7 +136,7 @@ function SignIn() {
           {/* Google Sign In Button */}
           <button
             onClick={loginWithGoogle}
-            className="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 rounded-lg py-3 mb-2 mt-6 hover:bg-gray-50 transition"
+            className="w-full flex cursor-pointer items-center justify-center gap-3 bg-white border border-gray-200 rounded-lg py-3 mb-2 mt-6 hover:bg-gray-50 transition"
           >
             <svg viewBox="0 0 48 48" aria-hidden="true" className="w-5 h-5">
               <path
@@ -146,7 +162,7 @@ function SignIn() {
           {/* GitHub Sign In Button (replaces Apple) */}
           <button
             onClick={loginWithGithub}
-            className="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 rounded-lg py-3 mb-4 hover:bg-gray-50 transition"
+            className="w-full flex cursor-pointer items-center justify-center gap-3 bg-white border border-gray-200 rounded-lg py-3 mb-4 hover:bg-gray-50 transition"
           >
             <svg
               viewBox="0 0 24 24"
@@ -239,7 +255,7 @@ function SignIn() {
           <button
             onClick={handleLogin}
             disabled={loading}
-            className="w-full bg-green-600 text-white py-3 rounded-lg block mt-4 font-semibold text-center hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full cursor-pointer bg-green-600 text-white py-3 rounded-lg block mt-4 font-semibold text-center hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
               <span className="flex items-center justify-center gap-2">
@@ -252,7 +268,7 @@ function SignIn() {
           </button>
 
           {/* Forgot Password Link */}
-          <div className="text-right text-sm text-green-600 mb-4 mt-1">
+          <div className="text-right text-sm pt-3 pb-7 text-green-600 mb-4 mt-1">
             <button
               type="button"
               className="hover:underline cursor-pointer"

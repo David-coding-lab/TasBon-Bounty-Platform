@@ -1,12 +1,18 @@
-import { useState } from 'react'
-import CheckIcon from '../Assets/check_mark.png'
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import forgetPwdIcon from '../Assets/forget-Pwd.png'
 import { forgetPasswordSchema } from '../schema'
 
-const ForgetPassword = ({ onEmailValid }) => {
+const ForgetPassword = ({ onEmailValid, onClose }) => {
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => setIsVisible(true))
+
+    return () => cancelAnimationFrame(frame)
+  }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -33,52 +39,79 @@ const ForgetPassword = ({ onEmailValid }) => {
   }
 
   return (
-    <div className="w-screen h-screen flex flex-col items-center justify-center border">
-      <div className="bg-[#EFF8F2] w-120 rounded-md flex flex-col items-center justify-center space-y-12 shadow-2xl p-6">
-        <div className=" flex flex-col space-y-6 items-center">
-          <img src={CheckIcon} alt="CheckIcon" className="w-32 h-32" />
-          <div>
-            <h1 className="text-2xl font-bold mb-4 text-center">
-              Forgot Password?
-            </h1>
-            <p className="text-lg text-[#888F9B] text-center">
-              Enter email to reset password
-            </p>
-          </div>
-        </div>
-        <form
-          className="flex flex-col space-y-6 items-center w-full"
-          onSubmit={handleSubmit}
+    <div
+      className="fixed inset-0 z-50 w-screen h-screen flex items-center justify-center bg-[#000000ad]"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="forget-password-title"
+      onClick={onClose}
+    >
+      <div
+        className={`w-full max-w-lg max-h-[50vh] rounded-2xl bg-[#fbf5f3] px-6 py-6 text-center shadow-2xl mx-5 sm:px-12 sm:py-8 box-border transform transition-all duration-300 ease-out ${
+          isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
+        }`}
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close"
+          className="ml-auto md:ml-[100%] md:-mt-4 -mt-1 block cursor-pointer text-3xl leading-none text-[#222] transition hover:text-black"
         >
-          <div className="w-full flex flex-col items-center">
+          ×
+        </button>
+
+        <div className="mx-auto mb-2 flex w-fit items-center justify-center">
+          <img
+            src={forgetPwdIcon}
+            alt="Forgot password"
+            className="w-20 h-20 sm:w-25 sm:h-25 lg:w-30 lg:h-30 object-contain md:w-28 md:h-28"
+          />
+        </div>
+
+        <h2
+          id="forget-password-title"
+          className="text-xl font-semibold text-black sm:text-2xl md:text-2xl"
+        >
+          Forget password
+        </h2>
+
+        <p className="mx-auto mt-1 max-w-2xl text-lg text-[#5d5d5d] sm:text-lg">
+          Enter the email that you used to register
+        </p>
+
+        <form className="mt-8 w-full" onSubmit={handleSubmit}>
+          <div className="relative mx-auto w-full max-w-md">
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className=" border border-primary p-3 focus:outline-primary w-90 rounded-4xl"
               placeholder="Enter your email"
+              className="w-full rounded-full bg-[#e7e5e5] py-4 pl-6 pr-20 md:text-lg text-black placeholder:text-[#9c9595] focus:outline-none focus:ring-2 focus:ring-[#38a866]"
             />
-            {error && <p className="text-red-600 text-sm mt-2">{error}</p>}
-          </div>
-          <div>
+
             <button
               type="submit"
               disabled={isLoading}
-              className="bg-primary rounded-4xl p-3 cursor-pointer text-secondary w-90 hover:bg-green-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="absolute right-0 top-1/2 flex h-full w-16 -translate-y-1/2 items-center justify-center rounded-full bg-[#38a866] text-white shadow-lg transition hover:bg-[#2f945a] disabled:cursor-not-allowed disabled:opacity-50"
+              aria-label="Send email"
             >
               {isLoading ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-secondary border-t-transparent rounded-full animate-spin"></div>
-                  Sending...
-                </>
+                <span className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
               ) : (
-                'Send Email'
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  className="h-5 w-5 -rotate-12"
+                  fill="currentColor"
+                >
+                  <path d="M2 21 23 12 2 3l4.5 7L17 12l-10.5 2L2 21z" />
+                </svg>
               )}
             </button>
-            <Link to="/" className="text-red-600  block text-center mt-4">
-              Back to login
-            </Link>
           </div>
+
+          {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
         </form>
       </div>
     </div>
