@@ -6,13 +6,19 @@ import GoogleIcon from './Assets/Google.png'
 import AppleIcon from './Assets/Apple.png'
 import ForgetPassword from './componenet/ForgetPassword'
 import VerifyPassword from './componenet/VerifyPassword'
+import { loginUser } from './Api'
+import Cookies from 'js-cookie'
+import { toast } from 'sonner'
+import { loginSchema } from './schema'
 
 function SignIn() {
   const [showPassword, setShowPassword] = useState(false)
   const [passwordType, setPasswordType] = useState('password')
+  const [password, setPassword] = useState('')
   const [showForgetPwd, setShowForgetPwd] = useState(false)
   const [showVerifyPwd, setShowVerifyPwd] = useState(false)
   const [userEmail, setUserEmail] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
@@ -23,6 +29,49 @@ function SignIn() {
     setUserEmail(email)
     setShowForgetPwd(false)
     setShowVerifyPwd(true)
+  }
+
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    setErrors({})
+    setLoading(true)
+
+    try {
+      loginSchema.parse({
+        userEmail,
+        password,
+      })
+
+      const result = await loginUser(userEmail, password)
+
+      if (result.success) {
+        console.log('Logged in:', result.data)
+
+        Cookies.set('session', result.data.accessToken, {
+          expires: 7,
+          secure: true,
+          sameSite: 'Strict',
+        })
+
+        toast.success('User Logged In Successfully')
+      } else {
+        toast.error(result?.message || 'Login unsuccessful')
+      }
+    } catch (error) {
+      const newErrors = {}
+
+      if (error.issues) {
+        error.issues.forEach((issue) => {
+          newErrors[issue.path[0]] = issue.message
+        })
+      } else {
+        console.error(error.message)
+      }
+
+      setErrors(newErrors)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -105,6 +154,7 @@ function SignIn() {
           {/* Password Input with Toggle */}
           <div className="relative mb-4">
             <input
+              value={password}
               type={passwordType}
               placeholder="Password"
               className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg pr-10 focus:outline-none focus:ring-2 focus:ring-green-500"
@@ -159,12 +209,20 @@ function SignIn() {
           </div>
 
           {/* Login Button */}
-          <a
-            href="#"
-            className="w-full bg-green-600 text-white py-3 rounded-lg block mt-4 font-semibold text-center hover:bg-green-700 transition"
+          <Button
+            onClick={handleLogin}
+            disabled={loading}
+            className="w-full bg-green-600 text-white py-3 rounded-lg block mt-4 font-semibold text-center hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Login
-          </a>
+            {loading ? (
+              <span className="flex items-center justify-center gap-2">
+                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                Logging in...
+              </span>
+            ) : (
+              'Login'
+            )}
+          </Button>
 
           {/* Forgot Password Link */}
           <div className="text-right text-sm text-green-600 mb-4 mt-1">
