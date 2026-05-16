@@ -9,3 +9,20 @@
   font-size: 11px;
   color: #000;
 }
+
+@keyframes float-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.signup-field-reveal {
+  animation: float-up 320ms ease-out both;
+  will-change: transform, opacity;
+}
