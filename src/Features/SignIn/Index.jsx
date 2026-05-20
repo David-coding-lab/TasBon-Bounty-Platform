@@ -54,8 +54,6 @@ function SignIn() {
       const result = await loginUser(userEmail, password)
 
       if (result.success) {
-        console.log('Logged in:', result.data)
-
         Cookies.set('session', result.data.accessToken, {
           expires: 7,
           secure: true,
@@ -76,7 +74,6 @@ function SignIn() {
           newErrors[issue.path[0]] = issue.message
         })
       } else {
-        console.error(error.message)
         setErrorMessage(error.message || 'Login unsuccessful')
         setShowError(true)
       }
@@ -88,7 +85,7 @@ function SignIn() {
   }
 
   return (
-    <div className="bg-white flex w-screen h-screen">
+    <div className="bg-white flex w-full min-h-screen overflow-x-hidden">
       {showError && (
         <ErrorUi
           message={errorMessage}
@@ -98,15 +95,16 @@ function SignIn() {
       )}
 
       {showForgetPwd && (
-        <div className="w-screen h-screen bg-[#00000163] absolute top-0 left-0 z-10">
+        <div className="fixed inset-0 bg-[#00000163] z-50 flex items-center justify-center px-4">
           <ForgetPassword
             onEmailValid={handleEmailValid}
             onClose={() => setShowForgetPwd(false)}
           />
         </div>
       )}
+
       {/* Left Image Section */}
-      <div className="w-1/2 h-full hidden lg:flex">
+      <div className="hidden lg:flex lg:w-1/2 min-h-screen">
         <img
           src={HeroBg}
           alt="Hero Background"
@@ -115,25 +113,24 @@ function SignIn() {
       </div>
 
       {/* Right Form Section */}
-      <div className="w-full lg:w-1/2 h-screen overflow-y-auto overflow-x-hidden flex items-center justify-center">
-        <div className="w-full max-w-md px-12 py-8">
+      <div className="w-full lg:w-1/2 min-h-screen flex items-center justify-center overflow-y-auto">
+        <div className="w-full max-w-lg px-6 sm:px-8 md:px-12 py-8">
           {/* Header */}
           <div className="header">
-            <h2 className="font-text-3xl text-3xl md:text-4xl sm:text-4xl font-bold font-sora">
-              <br />
-              Welcome Back
-              <br /> To <span className="text-green-600">The Hunt</span>
+            <h2 className="text-3xl sm:text-4xl md:text-4xl font-bold font-sora leading-tight">
+              Welcome Back <br />
+              To <span className="text-green-600">The Hunt</span>
             </h2>
           </div>
 
           {/* Paragraph */}
           <div className="para">
-            <p className="text-black mt-3 text-base">
+            <p className="text-black mt-3 text-sm sm:text-base">
               Pick Up Where You Left Off And Keep Earning With New Bounties
             </p>
           </div>
 
-          {/* Google Sign In Button */}
+          {/* Google Button */}
           <button
             onClick={loginWithGoogle}
             className="w-full flex cursor-pointer items-center justify-center gap-3 bg-white border border-gray-200 rounded-lg py-3 mb-2 mt-6 hover:bg-gray-50 transition"
@@ -159,17 +156,12 @@ function SignIn() {
             Sign In With Google
           </button>
 
-          {/* GitHub Sign In Button (replaces Apple) */}
+          {/* Github Button */}
           <button
             onClick={loginWithGithub}
             className="w-full flex cursor-pointer items-center justify-center gap-3 bg-white border border-gray-200 rounded-lg py-3 mb-4 hover:bg-gray-50 transition"
           >
-            <svg
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              aria-hidden="true"
-              className="w-5 h-5"
-            >
+            <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
               <path d="M12 2C6.5 2 2 6.6 2 12.3c0 4.6 2.9 8.5 6.9 9.9.5.1.7-.2.7-.5v-1.8c-2.8.6-3.4-1.4-3.4-1.4-.5-1.3-1.2-1.7-1.2-1.7-.9-.7.1-.7.1-.7 1 .1 1.6 1 1.6 1 .9 1.6 2.4 1.1 3 .8.1-.6.4-1.1.7-1.4-2.2-.3-4.5-1.1-4.5-5 0-1.1.4-1.9 1-2.6-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9 9 0 0 1 4.9 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.6 0 3.9-2.3 4.7-4.5 5 .4.4.8 1 .8 2v2.9c0 .3.2.6.7.5 4-1.4 6.9-5.3 6.9-9.9C22 6.6 17.5 2 12 2z" />
             </svg>
             Sign In With GitHub
@@ -182,7 +174,7 @@ function SignIn() {
             <div className="flex-1 h-px bg-gray-300"></div>
           </div>
 
-          {/* Email Input */}
+          {/* Email */}
           <input
             type="email"
             placeholder="Email"
@@ -194,7 +186,7 @@ function SignIn() {
             className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg mb-3"
           />
 
-          {/* Password Input with Toggle (staged reveal) */}
+          {/* Password */}
           {showPasswordField && (
             <div className="relative mb-4 signup-field-reveal">
               <input
@@ -205,85 +197,42 @@ function SignIn() {
                 className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg pr-10 focus:outline-none focus:ring-2 focus:ring-green-500"
               />
 
-              {/* Eye Icon Toggle Button */}
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-1/2 -translate-y-1/2"
               >
-                {!showPassword ? (
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242m0-5.656a4 4 0 00-5.656 0l1.414-1.414"
-                    />
-                  </svg>
-                )}
+                👁
               </button>
             </div>
           )}
 
-          {/* Login Button */}
+          {/* Login */}
           <button
             onClick={handleLogin}
             disabled={loading}
-            className="w-full cursor-pointer bg-green-600 text-white py-3 rounded-lg block mt-4 font-semibold text-center hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full cursor-pointer bg-green-600 text-white py-3 rounded-lg mt-4 font-semibold hover:bg-green-700 transition disabled:opacity-50"
           >
-            {loading ? (
-              <span className="flex items-center justify-center gap-2">
-                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                Logging in...
-              </span>
-            ) : (
-              'Login'
-            )}
+            {loading ? 'Logging in...' : 'Login'}
           </button>
 
-          {/* Forgot Password Link */}
-          <div className="text-right text-sm pt-3 pb-7 text-green-600 mb-4 mt-1">
+          {/* Forgot */}
+          <div className="text-right text-sm pt-3 pb-7 text-green-600">
             <button
               type="button"
-              className="hover:underline cursor-pointer"
+              className="hover:underline"
               onClick={() => setShowForgetPwd(true)}
             >
               Forgot Password?
             </button>
           </div>
 
-          {/* Sign Up Link */}
-          <div className="text-center text-sm text-gray-500 mt-4">
+          {/* Signup */}
+          <div className="text-center text-sm text-gray-500">
             Not A Bounty Hunter?
             <Link
               to="/signup"
-              className="text-green-600 hover:underline font-medium ms-1"
+              className="text-green-600 hover:underline font-medium ml-1"
             >
               Sign Up
             </Link>
