@@ -5,29 +5,32 @@ import SignUp from './Features/SignUp/Index'
 import GoogleCallback from './Features/oauth/google/callback'
 import GithubCallback from './Features/oauth/github/callback'
 import VerifyEmail from './Features/verify-email'
+import Navbar from './Components/NavBar'
+import Hero from './Components/Hero'
+import StatsBar from './Components/StatsBar'
+import PlatformShowcase from './Components/PlatformShowcase'
+import SimplifySection from './Components/SimplifySection'
+import BountiesSection from './Components/BountiesSection'
+import PartnersSection from './Components/PatnersSection'
+import CTASection from './Components/Ctasection'
+import Footer from './Components/Footer'
+import BlogSection from './Components/BlogSection'
 
 function Home() {
   return (
-    <div className="App">
-      <div className="text-3xl text-center font-bold mt-10">
-        This is Tasbon Bounty Platform, a platform for bounty hunters to find
-        and claim bounties.
-      </div>
-
-      <div className="flex justify-center items-center gap-5 mt-5">
-        <Link
-          to="/signup"
-          className="p-5 rounded-2xl cursor-pointer w-32 bg-red-100 text-center"
-        >
-          Sign Up
-        </Link>
-        <Link
-          to="/signin"
-          className="p-5 rounded-2xl cursor-pointer w-32 bg-red-100 text-center"
-        >
-          Login
-        </Link>
-      </div>
+    <div className="min-h-screen bg-white font-sans antialiased">
+      <Navbar />
+      <main>
+        <Hero />
+        <StatsBar />
+        <PlatformShowcase />
+        <SimplifySection />
+        <BountiesSection />
+        <BlogSection />
+        <PartnersSection />
+        <CTASection />
+      </main>
+      <Footer />
     </div>
   )
 }
