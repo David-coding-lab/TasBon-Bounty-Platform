@@ -1,5 +1,21 @@
 import BountyCard from '../Assets/reward.png'
-import { GoCheckbox } from 'react-icons/go'
+
+const CheckIcon = ({ className = 'w-5 h-5 text-emerald-600' }) => (
+  <svg
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M5 13l4 4L19 7"
+    />
+  </svg>
+)
 
 const features = [
   {
@@ -41,7 +57,7 @@ export default function SimplifySection() {
               {features.map((f) => (
                 <div key={f.title} className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center text-lg flex-shrink-0">
-                    <GoCheckbox />
+                    <CheckIcon className="w-5 h-5 text-emerald-600" />
                   </div>
                   <div>
                     <div className="font-semibold text-gray-900 mb-1">

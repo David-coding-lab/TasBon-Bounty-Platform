@@ -5,25 +5,25 @@ const posts = [
     title: 'Participation Techniques: Making the Right Protocol Decisions',
     date: 'Feb 2025',
     readTime: '5 min read',
-    image: img,
+    image: Img,
   },
   {
     title: 'Participation Techniques: Making the Right Protocol Decisions',
     date: 'Feb 2025',
     readTime: '4 min read',
-    image: img,
+    image: Img,
   },
   {
     title: 'Participation Techniques: Making the Right Protocol Decisions',
     date: 'Feb 2025',
     readTime: '6 min read',
-    image: img,
+    image: Img,
   },
   {
     title: 'Participation Techniques: Making the Right Protocol Decisions',
     date: 'Feb 2025',
     readTime: '3 min read',
-    image: img,
+    image: Img,
   },
 ]
 
