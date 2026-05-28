@@ -1,4 +1,4 @@
-import Illustration from '../Assets/illustration.png'
+import Illustration from '../Assets/Illustration.png'
 
 export default function Hero() {
   return (
