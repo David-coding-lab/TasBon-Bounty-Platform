@@ -63,7 +63,7 @@ export default function BlogSection() {
                     className="w-full h-full object-cover"
                   />
 
-                  <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 right-0 h-16 bg-linear-to-t from-black/50 to-transparent"></div>
                 </div>
                 <div className="p-4">
                   <div className="flex items-center gap-2 mb-2">
