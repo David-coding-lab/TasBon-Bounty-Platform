@@ -18,7 +18,7 @@ import BlogSection from './Components/BlogSection'
 
 function Home() {
   return (
-    <div className="min-h-screen bg-white font-sans antialiased">
+    <div className="min-h-screen bg-[#F0FAF4] font-sans antialiased">
       <Navbar />
       <main>
         <Hero />

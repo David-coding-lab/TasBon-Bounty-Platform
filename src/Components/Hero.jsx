@@ -2,7 +2,7 @@ import Illustration from '../Assets/Illustration.png'
 
 export default function Hero() {
   return (
-    <section className="bg-white py-16 md:py-24 overflow-hidden">
+    <section className="bg-[#F0FAF4] py-16 md:py-24 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-center gap-12">
           {/* Left Content */}
@@ -24,10 +24,10 @@ export default function Hero() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
-              <button className="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-6 py-3 rounded-xl transition-colors text-sm">
+              <button className="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-8 py-3 rounded-3xl transition-colors text-sm">
                 Join the Hunt
               </button>
-              <button className="border border-gray-200 hover:border-gray-300 text-gray-700 font-semibold px-6 py-3 rounded-xl transition-colors text-sm">
+              <button className="border border-gray-200 hover:border-gray-300 text-gray-700 font-semibold px-6 py-3 rounded-3xl transition-colors text-sm">
                 See Hackathons
               </button>
             </div>

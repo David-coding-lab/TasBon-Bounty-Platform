@@ -2,7 +2,7 @@ import Dashboard from '../Assets/dashboard.png'
 
 export default function PlatformShowcase() {
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-[#F0FAF4]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-12">
@@ -19,7 +19,7 @@ export default function PlatformShowcase() {
         </div>
 
         {/* Dashboard Image */}
-        <div className="rounded-2xl border border-gray-200 shadow-xl overflow-hidden bg-white">
+        <div className="rounded-2xl overflow-hidden">
           <img
             src={Dashboard}
             alt="TASBUN Dashboard"
