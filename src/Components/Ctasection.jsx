@@ -5,10 +5,10 @@ export default function CTASection() {
         <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
           Ready to join the HUNT?
         </h2>
-        <p className="text-gray-400 text-base mb-8">
-          Join 50,000+ builders and community leaders who run on TASBUN.
+        <p className="text-white text-md mb-8">
+          Join 50,000+ builders and community leaders <br /> who run on TASBUN.
         </p>
-        <button className="bg-[#F6C430] hover:bg-emerald-400 text-black font-bold px-8 py-4 rounded-xl transition-colors text-base inline-flex items-center gap-2">
+        <button className="bg-[#F6C430] hover:bg-orange-400 cursor-pointer text-black font-bold px-8 py-4 rounded-xl transition-colors text-base inline-flex items-center gap-2">
           Explore Hackathons
           <svg
             className="w-4 h-4"

@@ -33,7 +33,7 @@ export default function BlogSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row gap-12 items-center">
           {/* Left text */}
-          <div className="lg:w-72 flex-shrink-0">
+          <div className="lg:w-125 shrink-0">
             <span className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-5">
               Articles &amp; Blogs
             </span>
@@ -43,8 +43,8 @@ export default function BlogSection() {
             <p className="text-gray-500 text-base mb-2">
               <strong>Learn • Build • Earn</strong>
             </p>
-            <button className="mt-4 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-5 py-3 rounded-xl transition-colors text-sm">
-              View bounty
+            <button className="mt-4 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-10 cursor-pointer py-3 rounded-xl transition-colors text-sm">
+              View more
             </button>
           </div>
 

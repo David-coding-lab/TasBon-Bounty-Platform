@@ -37,13 +37,13 @@ export default function Footer() {
               Stay up to date with the latest happenings in the ecosystem.
             </p>
           </div>
-          <div className="flex w-full md:w-auto gap-2">
+          <div className="flex w-full md:w-auto gap-2 border rounded-tr-lg rounded-br-lg border-tl-30 border-[#34A563] ">
             <input
               type="email"
               placeholder="Enter your email"
-              className="flex-1 md:w-64 px-4 py-2.5 rounded-sm text-sm outline-none border border-[#34A563] focus:ring-2 focus:ring-white"
+              className="flex-1 md:w-64 px-4 py-2.5 rounded-sm text-sm outline-none"
             />
-            <button className="bg-gray-900 hover:bg-gray-800 text-white font-semibold px-5 py-2.5 rounded-xl text-sm transition-colors whitespace-nowrap">
+            <button className="bg-primary hover:bg-[#139449] cursor-pointer text-white font-semibold px-8 py-2.5 rounded-lg text-sm transition-colors whitespace-nowrap">
               Subscribe
             </button>
           </div>
@@ -62,7 +62,7 @@ export default function Footer() {
                 className="h-10 w-auto object-contain"
               />
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
+            <p className="text-black text-sm leading-relaxed max-w-xs">
               Discover high-paying crypto bounties, participate in hackathons
               and grants from companies in one place and apply to them using a
               single profile.
@@ -72,7 +72,7 @@ export default function Footer() {
             <div className="flex items-center gap-4 mt-6">
               <a
                 href="#"
-                className="text-gray-400 hover:text-gray-700 transition-colors"
+                className="text-primary hover:text-gray-700 transition-colors"
               >
                 <svg
                   className="w-5 h-5"
@@ -84,7 +84,7 @@ export default function Footer() {
               </a>
               <a
                 href="#"
-                className="text-gray-400 hover:text-gray-700 transition-colors"
+                className="text-primary hover:text-gray-700 transition-colors"
               >
                 <svg
                   className="w-5 h-5"
@@ -96,7 +96,7 @@ export default function Footer() {
               </a>
               <a
                 href="#"
-                className="text-gray-400 hover:text-gray-700 transition-colors"
+                className="text-primary hover:text-gray-700 transition-colors"
               >
                 <svg
                   className="w-5 h-5"
@@ -120,7 +120,7 @@ export default function Footer() {
                   <li key={link.name}>
                     <a
                       href={link.url}
-                      className="text-gray-400 hover:text-gray-700 text-sm transition-colors"
+                      className="text-black hover:text-gray-700 text-sm transition-colors"
                     >
                       {link.name}
                     </a>
@@ -135,7 +135,7 @@ export default function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-gray-100 py-5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="text-gray-400 text-xs">
+          <span className="text-black text-xs">
             © 2026 TASBUN. All rights reserved.
           </span>
         </div>

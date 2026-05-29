@@ -8,14 +8,14 @@ export default function Hero() {
           {/* Left Content */}
           <div className="flex-1 text-center md:text-left">
             <span className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
-              <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
+              <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>
               Earn by Building
             </span>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight mb-4">
               Join the Hunt Built
               <br />
-              for <span className="text-emerald-500">Modern Creators</span>
+              for <span className="text-primary">Modern Creators</span>
             </h1>
 
             <p className="text-gray-500 text-base md:text-lg max-w-md mb-8 mx-auto md:mx-0">
@@ -24,10 +24,10 @@ export default function Hero() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
-              <button className="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-8 py-3 rounded-3xl transition-colors text-sm">
+              <button className="bg-primary cursor-pointer hover:bg-emerald-600 text-white font-semibold px-8 py-3 rounded-3xl transition-colors text-sm">
                 Join the Hunt
               </button>
-              <button className="border border-gray-200 hover:border-gray-300 text-gray-700 font-semibold px-6 py-3 rounded-3xl transition-colors text-sm">
+              <button className="border border-gray-200 cursor-pointer hover:border-gray-300 text-gray-700 font-semibold px-6 py-3 rounded-3xl transition-colors text-sm">
                 See Hackathons
               </button>
             </div>
