@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import Dashboard from '../Assets/dashboard.png'
+import DashboardVideo from '../Assets/videos/dashBoard.mp4'
 
 export default function PlatformShowcase() {
   return (
@@ -33,11 +33,16 @@ export default function PlatformShowcase() {
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
         >
-          <img
-            src={Dashboard}
-            alt="TASBUN Dashboard"
-            className="w-full h-auto object-cover"
-          />
+          <div className="flex justify-center">
+            <video
+              src={DashboardVideo}
+              className="w-[110%] min-w-[110%] rounded-2xl shadow-lg h-auto object-cover"
+              autoPlay
+              loop
+              muted
+              playsInline
+            />
+          </div>
         </motion.div>
       </div>
     </section>
