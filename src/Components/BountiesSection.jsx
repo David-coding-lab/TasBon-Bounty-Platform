@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import ProfileOne from '../Assets/profile-one.png'
 import ProfileThree from '../Assets/profile-two.png'
 import ProfileTwo from '../Assets/logo.png'
@@ -46,7 +47,13 @@ export default function BountiesSection() {
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-12">
+        <motion.div
+          className="text-center mb-12"
+          initial={{ y: 60, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+        >
           <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3">
             Find Challenges • Build solutions • Earn rewards
           </h2>
@@ -54,14 +61,33 @@ export default function BountiesSection() {
             High-impact bounties from protocols, and companies looking for
             hunter and builders like you.
           </p>
-        </div>
+        </motion.div>
 
         {/* Cards grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={{
+            visible: {
+              transition: { staggerChildren: 0.15, delayChildren: 0.2 },
+            },
+          }}
+        >
           {bounties.map((b, i) => (
-            <div
+            <motion.div
               key={i}
               className="bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden"
+              variants={{
+                hidden: { opacity: 0, y: 50 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.5, ease: 'easeOut' },
+                },
+              }}
+              whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
             >
               {/* Bounty Image */}
               <div className="w-full h-32 overflow-hidden">
@@ -110,9 +136,9 @@ export default function BountiesSection() {
                   View Bounty →
                 </button>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* CTA */}
         <div className="text-center">

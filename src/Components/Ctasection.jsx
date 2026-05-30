@@ -1,14 +1,36 @@
+import { motion } from 'framer-motion'
+
 export default function CTASection() {
   return (
     <section className="py-20 bg-[#154E2C]">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
+        <motion.h2
+          className="text-3xl md:text-4xl font-extrabold text-white mb-4"
+          initial={{ y: 40, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+        >
           Ready to join the HUNT?
-        </h2>
-        <p className="text-white text-md mb-8">
+        </motion.h2>
+        <motion.p
+          className="text-white text-md mb-8"
+          initial={{ y: 40, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: 'easeOut', delay: 0.15 }}
+        >
           Join 50,000+ builders and community leaders <br /> who run on TASBUN.
-        </p>
-        <button className="bg-[#F6C430] hover:bg-orange-400 cursor-pointer text-black font-bold px-8 py-4 rounded-xl transition-colors text-base inline-flex items-center gap-2">
+        </motion.p>
+        <motion.button
+          className="bg-[#F6C430] hover:bg-orange-400 cursor-pointer text-black font-bold px-8 py-4 rounded-xl transition-colors text-base inline-flex items-center gap-2"
+          initial={{ y: 40, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: 'easeOut', delay: 0.3 }}
+          whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+          whileTap={{ scale: 0.95 }}
+        >
           Explore Hackathons
           <svg
             className="w-4 h-4"
@@ -23,7 +45,7 @@ export default function CTASection() {
               d="M13 7l5 5m0 0l-5 5m5-5H6"
             />
           </svg>
-        </button>
+        </motion.button>
       </div>
     </section>
   )

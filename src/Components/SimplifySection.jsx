@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import BountyCard from '../Assets/reward.png'
 
 const CheckIcon = ({ className = 'w-8 h-8 text-emerald-600' }) => (
@@ -47,7 +48,13 @@ export default function SimplifySection() {
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
+        <motion.div
+          className="text-center mb-12"
+          initial={{ y: 60, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+        >
           <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
             Simplify your Bounty Experience
           </h2>
@@ -56,22 +63,55 @@ export default function SimplifySection() {
             for your project, TASBUN makes the experience simple, transparent,
             and rewarding.
           </p>
-        </div>
+        </motion.div>
 
         <div className="flex flex-col lg:flex-row gap-12 items-start">
           {/* Left: Feature list */}
           <div className="flex-1">
-            <h3 className="text-xl font-sora font-extrabold text-gray-900 mb-3">
+            <motion.h3
+              className="text-xl font-sora font-extrabold text-gray-900 mb-3"
+              initial={{ y: 60, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
+            >
               Earn or Offer Bounties <br /> Effortlessly
-            </h3>
-            <p className="text-gray-500 mb-10 max-w-lg text-base">
+            </motion.h3>
+            <motion.p
+              className="text-gray-500 mb-10 max-w-lg text-base"
+              initial={{ y: 60, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
+            >
               Discover bounties that match your skills and get rewarded when you
               complete them. Hosting a task? Set your bounty, define
               requirements, and let the community solve it.
-            </p>
-            <div className="flex flex-col gap-6">
+            </motion.p>
+            <motion.div
+              className="flex flex-col gap-6"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={{
+                visible: {
+                  transition: { staggerChildren: 0.2, delayChildren: 0.3 },
+                },
+              }}
+            >
               {features.map((f) => (
-                <div key={f.title} className="flex items-start gap-4">
+                <motion.div
+                  key={f.title}
+                  className="flex items-start gap-4"
+                  variants={{
+                    hidden: { opacity: 0, x: -40 },
+                    visible: {
+                      opacity: 1,
+                      x: 0,
+                      transition: { duration: 0.5, ease: 'easeOut' },
+                    },
+                  }}
+                >
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0">
                     <CheckIcon className="w-8 h-8 text-emerald-600" />
                   </div>
@@ -83,19 +123,25 @@ export default function SimplifySection() {
                       {f.desc}
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
 
           {/* Right: Bounty Card Image */}
-          <div className="flex-1 flex justify-center">
+          <motion.div
+            className="flex-1 flex justify-center"
+            initial={{ y: 60, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
+          >
             <img
               src={BountyCard}
               alt="Bounty Card"
               className="w-full max-w-lg object-contain"
             />
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
