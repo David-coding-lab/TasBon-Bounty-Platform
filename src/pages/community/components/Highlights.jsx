@@ -183,23 +183,34 @@ export default function Highlights() {
           ))}
         </div>
 
-        {/* Partners Bar */}
+        {/* Partners Bar with Endless Marquee Ticker */}
         <div className="mt-24 border-t border-gray-100 pt-16 text-center">
           <h3 className="text-[#1f7242] text-base font-bold font-sans tracking-wider uppercase mb-8">
             Trusted by ecosystem partners
           </h3>
-          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 lg:gap-16">
-            {partners.map((partner, idx) => (
-              <div
-                key={idx}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl hover:bg-gray-50 transition-colors cursor-default"
-              >
-                {partner.icon}
-                <span className="text-base font-bold text-gray-700 font-sans tracking-tight">
-                  {partner.name}
-                </span>
-              </div>
-            ))}
+
+          {/* Fading Marquee Container */}
+          <div className="relative w-full overflow-hidden py-4 select-none">
+            {/* Left fade gradient */}
+            <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+
+            {/* Right fade gradient */}
+            <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+
+            {/* Scrolling track */}
+            <div className="animate-marquee gap-8 md:gap-12 lg:gap-16 items-center flex">
+              {[...partners, ...partners].map((partner, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center gap-3 px-6 py-2.5 rounded-xl hover:bg-gray-50 transition-colors cursor-default shrink-0"
+                >
+                  {partner.icon}
+                  <span className="text-base font-bold text-gray-700 font-sans tracking-tight whitespace-nowrap">
+                    {partner.name}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
