@@ -15,7 +15,7 @@ export default function CommunityPage() {
       {/* 1. Navigation Header */}
       <Header />
 
-      <main className="flex-grow">
+      <main className="grow">
         {/* 2. Hero Section */}
         <Hero />
 
