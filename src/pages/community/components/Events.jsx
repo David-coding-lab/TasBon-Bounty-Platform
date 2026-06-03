@@ -1,4 +1,5 @@
 import React from 'react'
+import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 
 export default function Events() {
@@ -48,8 +49,14 @@ export default function Events() {
     <section className="py-20 bg-[#f1f6f3]">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-12 gap-12 items-center">
-          {/* Left Column - Heading & Call to Action */}
-          <div className="lg:col-span-4 text-left">
+          {/* Left Column — slide in from left on scroll */}
+          <motion.div
+            className="lg:col-span-4 text-left"
+            initial={{ x: -60, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+          >
             <span className="text-[#1f7242] text-sm font-bold tracking-wider uppercase block mb-3 font-sans">
               UPCOMING EVENTS
             </span>
@@ -61,18 +68,49 @@ export default function Events() {
             <p className="text-base sm:text-lg text-gray-500 font-sans leading-relaxed mb-8">
               Don't miss out on exciting events and opportunities.
             </p>
-            <button className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#1f7242] hover:bg-[#15512e] text-white text-base font-semibold transition-all hover:scale-105 active:scale-95 shadow-sm shadow-primary/20 cursor-pointer">
+            <motion.button
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#1f7242] hover:bg-[#15512e] text-white text-base font-semibold transition-all shadow-sm shadow-primary/20 cursor-pointer"
+              whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+              whileTap={{ scale: 0.95 }}
+            >
               <span>View bounty</span>
               <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
 
-          {/* Right Column - Event list */}
-          <div className="lg:col-span-8 flex flex-col gap-6 w-full">
+          {/* Right Column — cascading drop cards */}
+          <motion.div
+            className="lg:col-span-8 flex flex-col gap-6 w-full"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={{
+              visible: {
+                transition: { staggerChildren: 0.12, delayChildren: 0.1 },
+              },
+            }}
+          >
             {events.map((event, idx) => (
-              <div
+              <motion.div
                 key={idx}
                 className="group w-full bg-white p-5 md:p-6 rounded-2xl border border-gray-100 flex flex-col sm:flex-row items-center sm:justify-between gap-6 shadow-sm hover:shadow-md hover:border-[#1f7242]/20 transition-all duration-300"
+                variants={{
+                  hidden: {
+                    opacity: 0,
+                    y: idx === 0 ? -40 : -(40 + idx * 120),
+                  },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: {
+                      type: 'spring',
+                      stiffness: 300,
+                      damping: 14,
+                      mass: 0.6,
+                    },
+                  },
+                }}
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
               >
                 {/* Left side: Date Block & Description */}
                 <div className="flex flex-row items-center gap-5 text-left w-full sm:w-auto">
@@ -120,13 +158,17 @@ export default function Events() {
                   </div>
 
                   {/* Register Button */}
-                  <button className="px-6 py-2 rounded-full border border-[#1f7242] text-[#1f7242] hover:bg-[#1f7242] hover:text-white text-sm font-semibold transition-all hover:scale-105 active:scale-95 cursor-pointer">
+                  <motion.button
+                    className="px-6 py-2 rounded-full border border-[#1f7242] text-[#1f7242] hover:bg-[#1f7242] hover:text-white text-sm font-semibold transition-all cursor-pointer"
+                    whileHover={{ scale: 1.08, transition: { duration: 0.2 } }}
+                    whileTap={{ scale: 0.95 }}
+                  >
                     Register
-                  </button>
+                  </motion.button>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

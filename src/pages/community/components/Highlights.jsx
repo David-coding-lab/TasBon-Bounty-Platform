@@ -1,4 +1,5 @@
 import React from 'react'
+import { motion } from 'framer-motion'
 
 export default function Highlights() {
   const testimonials = [
@@ -133,9 +134,15 @@ export default function Highlights() {
 
   return (
     <section className="py-20 bg-white overflow-hidden">
+      {/* Section Header — inside container, slide up on scroll */}
       <div className="max-w-7xl mx-auto px-6">
-        {/* Section Header */}
-        <div className="text-center mb-16">
+        <motion.div
+          className="text-center mb-16"
+          initial={{ y: 60, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+        >
           <span className="text-[#1f7242] text-sm font-bold tracking-wider uppercase block mb-3 font-sans">
             COMMUNITY HIGHLIGHTS
           </span>
@@ -145,25 +152,37 @@ export default function Highlights() {
           <p className="text-base sm:text-lg text-gray-500 font-sans leading-relaxed">
             Builders, Creators and hunters making an impact.
           </p>
-        </div>
+        </motion.div>
+      </div>
 
-        {/* Horizontal Testimonials Row */}
-        <div className="flex gap-6 overflow-x-auto pb-8 pt-4 px-2 -mx-6 md:-mx-0 md:px-0 scrollbar-none snap-x snap-mandatory scroll-smooth">
-          {testimonials.map((t, idx) => (
-            <div
+      {/* Infinite Scrolling Testimonials — full width, gradients touch screen edges */}
+      <div className="relative w-full py-4 select-none">
+        {/* Left fade — touches left screen edge */}
+        <div className="absolute left-0 top-0 bottom-0 w-1/4 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+        {/* Right fade — touches right screen edge */}
+        <div className="absolute right-0 top-0 bottom-0 w-1/4 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+
+        <div className="animate-marquee flex gap-6 items-stretch">
+          {[...testimonials, ...testimonials, ...testimonials].map((t, idx) => (
+            <motion.div
               key={idx}
-              className="snap-center shrink-0 w-[290px] sm:w-[350px] bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-[#1f7242]/20 transition-all duration-300 flex flex-col justify-between"
+              className="shrink-0 w-72.5 sm:w-87.5 bg-white p-8 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between"
+              whileHover={{
+                scale: 1.05,
+                boxShadow: '0 16px 40px rgba(31, 114, 66, 0.15)',
+                borderColor: 'rgba(31, 114, 66, 0.3)',
+                transition: { duration: 0.25 },
+              }}
             >
               <div>
                 <span className="text-[#1f7242] text-5xl font-mono leading-none select-none text-left block -mb-4">
-                  “
+                  "
                 </span>
                 <p className="text-base text-gray-700 font-sans text-left leading-relaxed mb-8">
                   {t.quote}
                 </p>
               </div>
 
-              {/* User Identity info */}
               <div className="flex items-center gap-3 border-t border-gray-50 pt-4 text-left">
                 <img
                   src={t.avatar}
@@ -179,39 +198,37 @@ export default function Highlights() {
                   </span>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
+      </div>
 
-        {/* Partners Bar with Endless Marquee Ticker */}
+      {/* Partners Bar */}
+      <div className="max-w-7xl mx-auto px-6">
         <div className="mt-24 border-t border-gray-100 pt-16 text-center">
           <h3 className="text-[#1f7242] text-base font-bold font-sans tracking-wider uppercase mb-8">
             Trusted by ecosystem partners
           </h3>
+        </div>
+      </div>
 
-          {/* Fading Marquee Container */}
-          <div className="relative w-full overflow-hidden py-4 select-none">
-            {/* Left fade gradient */}
-            <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+      {/* Partners Marquee — full width, gradients touch screen edges */}
+      <div className="relative w-full py-4 select-none">
+        <div className="absolute left-0 top-0 bottom-0 w-1/4 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-1/4 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
-            {/* Right fade gradient */}
-            <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
-
-            {/* Scrolling track */}
-            <div className="animate-marquee gap-8 md:gap-12 lg:gap-16 items-center flex">
-              {[...partners, ...partners].map((partner, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center gap-3 px-6 py-2.5 rounded-xl hover:bg-gray-50 transition-colors cursor-default shrink-0"
-                >
-                  {partner.icon}
-                  <span className="text-base font-bold text-gray-700 font-sans tracking-tight whitespace-nowrap">
-                    {partner.name}
-                  </span>
-                </div>
-              ))}
+        <div className="animate-marquee gap-8 md:gap-12 lg:gap-16 items-center flex">
+          {[...partners, ...partners].map((partner, idx) => (
+            <div
+              key={idx}
+              className="flex items-center gap-3 px-6 py-2.5 rounded-xl hover:bg-gray-50 transition-colors cursor-default shrink-0"
+            >
+              {partner.icon}
+              <span className="text-base font-bold text-gray-700 font-sans tracking-tight whitespace-nowrap">
+                {partner.name}
+              </span>
             </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>

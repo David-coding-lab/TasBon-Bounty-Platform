@@ -1,4 +1,5 @@
 import React from 'react'
+import { motion } from 'framer-motion'
 import teamAmioImg from '../assets/team_amio.png'
 import teamTobiImg from '../assets/team_tobi.png'
 
@@ -31,7 +32,7 @@ export default function Team() {
     {
       name: 'Amio Anthony',
       role: 'Founder & CEO, TASBUN',
-      image: teamTobiImg, // Matches the Figma mockup photo exactly
+      image: teamTobiImg,
       linkedin: 'https://linkedin.com',
       twitter: 'https://x.com',
       website: '#',
@@ -41,22 +42,47 @@ export default function Team() {
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-6">
-        {/* Section Header */}
-        <div className="text-center mb-16">
+        {/* Section Header — slide up on scroll */}
+        <motion.div
+          className="text-center mb-16"
+          initial={{ y: 60, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+        >
           <span className="text-[#1f7242] text-sm font-bold tracking-wider uppercase block mb-3 font-sans">
             THE TEAM BEHIND TASBUN
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-black font-sans tracking-tight">
             The people building the future with you
           </h2>
-        </div>
+        </motion.div>
 
-        {/* Team Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 justify-center">
+        {/* Team Grid — scroll-triggered staggered cards */}
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 justify-center"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={{
+            visible: {
+              transition: { staggerChildren: 0.15, delayChildren: 0.2 },
+            },
+          }}
+        >
           {team.map((member, idx) => (
-            <div
+            <motion.div
               key={idx}
-              className="group bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
+              className="group bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm flex flex-col cursor-pointer"
+              variants={{
+                hidden: { opacity: 0, y: 50 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.5, ease: 'easeOut' },
+                },
+              }}
+              whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
             >
               {/* Photo Area */}
               <div className="relative aspect-[4/3] bg-gray-50 overflow-hidden">
@@ -80,7 +106,6 @@ export default function Team() {
 
                 {/* Social Icons */}
                 <div className="flex gap-3 justify-center">
-                  {/* LinkedIn */}
                   <a
                     href={member.linkedin}
                     target="_blank"
@@ -95,7 +120,6 @@ export default function Team() {
                       <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                     </svg>
                   </a>
-                  {/* X / Twitter */}
                   <a
                     href={member.twitter}
                     target="_blank"
@@ -110,7 +134,6 @@ export default function Team() {
                       <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                     </svg>
                   </a>
-                  {/* Link Website */}
                   <a
                     href={member.website}
                     className="w-9 h-9 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center text-[#1f7242] hover:bg-[#1f7242] hover:text-white transition-all shadow-sm hover:scale-105 active:scale-95"
@@ -132,9 +155,9 @@ export default function Team() {
                   </a>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )
