@@ -4,7 +4,7 @@ import founderImg from '../assets/founder.png'
 
 export default function Founder() {
   return (
-    <section className="py-20 bg-[#f5f9f7]">
+    <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-6 text-left">
         {/* Section Header — slide in from left on scroll */}
         <motion.div
@@ -14,11 +14,11 @@ export default function Founder() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
-          <span className="text-[#1f7242] text-sm font-bold tracking-wider uppercase block mb-3 font-sans">
-            FOUNDER
+          <span className="text-[#34A563] text-sm font-bold tracking-wider uppercase block mb-3 font-sans">
+            Director of Ops
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-black font-sans tracking-tight">
-            Meet the founder
+            Meet the DOO at Tashub
           </h2>
         </motion.div>
 
@@ -32,10 +32,10 @@ export default function Founder() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 }}
           >
-            <div className="w-full md:w-70 shrink-0">
+            <div className="w-full h-full md:w-70 shrink-0">
               <img
                 src={founderImg}
-                alt="Amio Anthony - Founder & CEO of TASBUN"
+                alt="Amio Anthony - Director of Operations at Tashub"
                 className="w-full h-full object-cover rounded-2xl border border-gray-100 shadow-sm"
               />
             </div>
@@ -45,14 +45,13 @@ export default function Founder() {
                 <h3 className="text-2xl sm:text-3xl font-bold text-black font-sans mb-1">
                   Amio Anthony
                 </h3>
-                <span className="text-[#1f7242] text-base font-bold font-sans block mb-6">
-                  Founder & CEO, TASBUN
+                <span className="text-[#34A563] text-base font-bold font-sans block mb-6">
+                  Director of Operations
                 </span>
                 <p className="text-base sm:text-lg text-gray-600 font-sans leading-relaxed">
-                  Amio is a builder, community advocate and web3 enthusiast
-                  passionate about empowering global talent. TASBUN was born
-                  from the vision to make opportunities accessible and rewarding
-                  for every builder, everywhere.
+                  An educator, community builder, and software developer
+                  committed to inspiring growth, bringing people together,and
+                  building impactful technology that makes a difference.
                 </p>
               </div>
 
@@ -61,7 +60,7 @@ export default function Founder() {
                   href="https://linkedin.com"
                   target="_blank"
                   rel="noreferrer"
-                  className="w-10 h-10 rounded-lg bg-white border border-gray-100 flex items-center justify-center text-[#1f7242] hover:bg-[#1f7242] hover:text-white transition-all shadow-sm hover:scale-105 active:scale-95"
+                  className="w-10 h-10 rounded-lg bg-white border border-gray-100 flex items-center justify-center text-[#34A563] hover:bg-[#34A563] hover:text-white transition-all shadow-sm hover:scale-105 active:scale-95"
                   aria-label="LinkedIn Profile"
                 >
                   <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -72,7 +71,7 @@ export default function Founder() {
                   href="https://x.com"
                   target="_blank"
                   rel="noreferrer"
-                  className="w-10 h-10 rounded-lg bg-white border border-gray-100 flex items-center justify-center text-[#1f7242] hover:bg-[#1f7242] hover:text-white transition-all shadow-sm hover:scale-105 active:scale-95"
+                  className="w-10 h-10 rounded-lg bg-white border border-gray-100 flex items-center justify-center text-[#34A563] hover:bg-[#34A563] hover:text-white transition-all shadow-sm hover:scale-105 active:scale-95"
                   aria-label="X Profile"
                 >
                   <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -81,7 +80,7 @@ export default function Founder() {
                 </a>
                 <a
                   href="#"
-                  className="w-10 h-10 rounded-lg bg-white border border-gray-100 flex items-center justify-center text-[#1f7242] hover:bg-[#1f7242] hover:text-white transition-all shadow-sm hover:scale-105 active:scale-95"
+                  className="w-10 h-10 rounded-lg bg-white border border-gray-100 flex items-center justify-center text-[#34A563] hover:bg-[#34A563] hover:text-white transition-all shadow-sm hover:scale-105 active:scale-95"
                   aria-label="Website"
                 >
                   <svg
@@ -111,7 +110,7 @@ export default function Founder() {
             transition={{ duration: 0.6, ease: 'easeOut', delay: 0.25 }}
           >
             <div className="w-full bg-white p-8 md:p-10 rounded-2xl border border-gray-100 shadow-lg shadow-gray-200/50 flex flex-col justify-start relative hover:shadow-xl transition-all">
-              <span className="text-[#1f7242] text-6xl font-mono leading-none select-none text-left block -mb-2">
+              <span className="text-[#34A563] text-6xl font-mono leading-none select-none text-left block -mb-2">
                 "
               </span>
               <p className="text-base sm:text-lg text-gray-700 font-sans italic leading-relaxed text-left">

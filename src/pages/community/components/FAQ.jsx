@@ -50,7 +50,7 @@ export default function FAQ() {
       <div className="max-w-7xl mx-auto px-6">
         {/* Section Header */}
         <div className="text-left mb-16">
-          <span className="text-[#1f7242] text-sm font-bold tracking-wider uppercase block mb-3 font-sans">
+          <span className="text-[#34A563] text-sm font-bold tracking-wider uppercase block mb-3 font-sans">
             FAQ
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-black font-sans tracking-tight">
@@ -67,7 +67,7 @@ export default function FAQ() {
                 key={idx}
                 className={`bg-white rounded-2xl border transition-all duration-300 overflow-hidden text-left shadow-sm ${
                   isOpen
-                    ? 'border-[#1f7242] ring-1 ring-[#1f7242]/10 shadow-md'
+                    ? 'border-[#34A563] ring-1 ring-[#34A563]/10 shadow-md'
                     : 'border-gray-100 hover:border-gray-200 hover:shadow-md'
                 }`}
               >
@@ -75,13 +75,13 @@ export default function FAQ() {
                   onClick={() => handleToggle(idx)}
                   className="w-full px-6 py-5 flex items-center justify-between gap-4 font-sans text-base font-bold text-black cursor-pointer select-none bg-white border-0"
                 >
-                  <span className="hover:text-[#1f7242] transition-colors">
+                  <span className="hover:text-[#34A563] transition-colors">
                     {faq.question}
                   </span>
                   <div
-                    className={`w-8 h-8 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center shrink-0 text-[#1f7242] transition-transform duration-300 ${
+                    className={`w-8 h-8 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center shrink-0 text-[#34A563] transition-transform duration-300 ${
                       isOpen
-                        ? 'rotate-180 bg-[#1f7242]/5 border-[#1f7242]/20'
+                        ? 'rotate-180 bg-[#34A563]/5 border-[#34A563]/20'
                         : ''
                     }`}
                   >

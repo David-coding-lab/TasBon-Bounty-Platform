@@ -50,7 +50,7 @@ export default function Team() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
-          <span className="text-[#1f7242] text-sm font-bold tracking-wider uppercase block mb-3 font-sans">
+          <span className="text-[#34A563] text-sm font-bold tracking-wider uppercase block mb-3 font-sans">
             THE TEAM BEHIND TASBUN
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-black font-sans tracking-tight">
@@ -96,10 +96,10 @@ export default function Team() {
               {/* Bio details */}
               <div className="p-6 flex flex-col items-center justify-between grow">
                 <div className="text-center mb-6">
-                  <h3 className="text-lg font-bold text-black font-sans mb-1 group-hover:text-[#1f7242] transition-colors">
+                  <h3 className="text-lg font-bold text-black font-sans mb-1 group-hover:text-[#34A563] transition-colors">
                     {member.name}
                   </h3>
-                  <span className="text-[#1f7242] text-sm font-medium font-sans">
+                  <span className="text-[#34A563] text-sm font-medium font-sans">
                     {member.role}
                   </span>
                 </div>
@@ -110,7 +110,7 @@ export default function Team() {
                     href={member.linkedin}
                     target="_blank"
                     rel="noreferrer"
-                    className="w-9 h-9 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center text-[#1f7242] hover:bg-[#1f7242] hover:text-white transition-all shadow-sm hover:scale-105 active:scale-95"
+                    className="w-9 h-9 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center text-[#34A563] hover:bg-[#34A563] hover:text-white transition-all shadow-sm hover:scale-105 active:scale-95"
                     aria-label={`${member.name} LinkedIn`}
                   >
                     <svg
@@ -124,7 +124,7 @@ export default function Team() {
                     href={member.twitter}
                     target="_blank"
                     rel="noreferrer"
-                    className="w-9 h-9 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center text-[#1f7242] hover:bg-[#1f7242] hover:text-white transition-all shadow-sm hover:scale-105 active:scale-95"
+                    className="w-9 h-9 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center text-[#34A563] hover:bg-[#34A563] hover:text-white transition-all shadow-sm hover:scale-105 active:scale-95"
                     aria-label={`${member.name} X`}
                   >
                     <svg
@@ -136,7 +136,7 @@ export default function Team() {
                   </a>
                   <a
                     href={member.website}
-                    className="w-9 h-9 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center text-[#1f7242] hover:bg-[#1f7242] hover:text-white transition-all shadow-sm hover:scale-105 active:scale-95"
+                    className="w-9 h-9 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center text-[#34A563] hover:bg-[#34A563] hover:text-white transition-all shadow-sm hover:scale-105 active:scale-95"
                     aria-label={`${member.name} Website`}
                   >
                     <svg

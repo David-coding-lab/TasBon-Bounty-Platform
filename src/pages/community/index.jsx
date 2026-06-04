@@ -1,5 +1,4 @@
 import React from 'react'
-import Header from './components/Header'
 import Hero from './components/Hero'
 import Founder from './components/Founder'
 import Team from './components/Team'
@@ -7,13 +6,14 @@ import Events from './components/Events'
 import Highlights from './components/Highlights'
 import FAQ from './components/FAQ'
 import Movement from './components/Movement'
-import Footer from './components/Footer'
+import Navbar from '../../Components/NavBar'
+import Footer from '../../Components/Footer'
 
 export default function CommunityPage() {
   return (
-    <div className="min-h-screen bg-white text-black font-sans flex flex-col">
+    <div className="min-h-screen bg-[#F0FAF4] text-black font-sans flex flex-col">
       {/* 1. Navigation Header */}
-      <Header />
+      <Navbar />
 
       <main className="grow">
         {/* 2. Hero Section */}

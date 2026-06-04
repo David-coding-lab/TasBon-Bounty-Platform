@@ -57,7 +57,7 @@ export default function Events() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
           >
-            <span className="text-[#1f7242] text-sm font-bold tracking-wider uppercase block mb-3 font-sans">
+            <span className="text-[#34A563] text-sm font-bold tracking-wider uppercase block mb-3 font-sans">
               UPCOMING EVENTS
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold text-black font-sans tracking-tight mb-4">
@@ -69,7 +69,7 @@ export default function Events() {
               Don't miss out on exciting events and opportunities.
             </p>
             <motion.button
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#1f7242] hover:bg-[#15512e] text-white text-base font-semibold transition-all shadow-sm shadow-primary/20 cursor-pointer"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#34A563] hover:bg-[#15512e] text-white text-base font-semibold transition-all shadow-sm shadow-primary/20 cursor-pointer"
               whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
               whileTap={{ scale: 0.95 }}
             >
@@ -93,7 +93,7 @@ export default function Events() {
             {events.map((event, idx) => (
               <motion.div
                 key={idx}
-                className="group w-full bg-white p-5 md:p-6 rounded-2xl border border-gray-100 flex flex-col sm:flex-row items-center sm:justify-between gap-6 shadow-sm hover:shadow-md hover:border-[#1f7242]/20 transition-all duration-300"
+                className="group w-full bg-white p-5 md:p-6 rounded-2xl border border-gray-100 flex flex-col sm:flex-row items-center sm:justify-between gap-6 shadow-sm hover:shadow-md hover:border-[#34A563]/20 transition-all duration-300"
                 variants={{
                   hidden: {
                     opacity: 0,
@@ -126,10 +126,10 @@ export default function Events() {
 
                   {/* Info details */}
                   <div className="flex flex-col items-start">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded bg-[#1f7242]/5 text-[#1f7242] text-[10px] font-bold tracking-wide uppercase mb-2">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded bg-[#34A563]/5 text-[#34A563] text-[10px] font-bold tracking-wide uppercase mb-2">
                       {event.label}
                     </span>
-                    <h3 className="text-base sm:text-lg font-bold text-black font-sans leading-snug group-hover:text-[#1f7242] transition-colors">
+                    <h3 className="text-base sm:text-lg font-bold text-black font-sans leading-snug group-hover:text-[#34A563] transition-colors">
                       {event.title}
                     </h3>
                     <span className="text-xs sm:text-sm text-gray-400 font-mono mt-1">
@@ -159,7 +159,7 @@ export default function Events() {
 
                   {/* Register Button */}
                   <motion.button
-                    className="px-6 py-2 rounded-full border border-[#1f7242] text-[#1f7242] hover:bg-[#1f7242] hover:text-white text-sm font-semibold transition-all cursor-pointer"
+                    className="px-6 py-2 rounded-full border border-[#34A563] text-[#34A563] hover:bg-[#34A563] hover:text-white text-sm font-semibold transition-all cursor-pointer"
                     whileHover={{ scale: 1.08, transition: { duration: 0.2 } }}
                     whileTap={{ scale: 0.95 }}
                   >

@@ -24,14 +24,14 @@ export default function Hero() {
   ]
 
   return (
-    <section className="relative overflow-hidden py-16 lg:py-24 bg-white">
+    <section className="relative overflow-hidden py-16 lg:py-24 bg-[#F0FAF4]">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* Left Text Column */}
           <div className="lg:col-span-6 flex flex-col items-start text-left max-w-2xl">
             {/* Pill Badge */}
             <motion.span
-              className="inline-flex items-center px-6 py-2 rounded-full border border-[#1f7242]/20 bg-[#1f7242]/5 text-[#1f7242] text-sm font-semibold tracking-wide uppercase mb-8"
+              className="inline-flex items-center px-6 py-2 rounded-full border border-[#34A563]/20 bg-[#bg-[#F0FAF4]] text-[#34A563] text-sm font-semibold tracking-wide uppercase mb-8"
               initial={{ scale: 0.5 }}
               animate={{ scale: 1 }}
               transition={{ type: 'spring', stiffness: 260, damping: 18 }}
@@ -46,7 +46,7 @@ export default function Hero() {
                   key={i}
                   className={`inline-block mr-[0.3em] ${
                     word === 'builders,' || word === 'problem'
-                      ? 'text-[#1f7242]'
+                      ? 'text-[#34A563]'
                       : ''
                   }`}
                   initial={{ opacity: 0, x: -20 }}
@@ -121,7 +121,7 @@ export default function Hero() {
                   },
                 }}
               >
-                <span className="text-4xl md:text-5xl font-bold font-mono text-[#1f7242] tracking-tight mb-2">
+                <span className="text-4xl md:text-5xl font-bold font-mono text-[#34A563] tracking-tight mb-2">
                   {stat.value}
                 </span>
                 <span className="text-sm md:text-base font-semibold text-gray-800 font-sans">
