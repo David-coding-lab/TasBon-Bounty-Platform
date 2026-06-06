@@ -15,6 +15,7 @@ import PartnersSection from './Components/PatnersSection'
 import CTASection from './Components/Ctasection'
 import Footer from './Components/Footer'
 import BlogSection from './Components/BlogSection'
+import Dashboard from './Features/Dashboard/components/navigation/sidebar'
 import CommunityPage from './pages/community/index'
 
 function Home() {
@@ -40,6 +41,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/community" element={<CommunityPage />} />
       <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
