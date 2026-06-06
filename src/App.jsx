@@ -16,6 +16,7 @@ import CTASection from './Components/Ctasection'
 import Footer from './Components/Footer'
 import BlogSection from './Components/BlogSection'
 import Dashboard from './Features/Dashboard/components/navigation/sidebar'
+import ComingSoon from './Features/Dashboard/coming-soon'
 
 function Home() {
   return (
@@ -39,6 +40,7 @@ function Home() {
 function App() {
   return (
     <Routes>
+      <Route path="/coming-soon" element={<ComingSoon />} />
       <Route path="/" element={<Home />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/signin" element={<SignIn />} />
