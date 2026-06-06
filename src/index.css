@@ -13,3 +13,37 @@ main {
   margin: 0;
   padding: 0;
 }
+
+/* Endless Scrolling Marquee for Ecosystem Partners */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+/* Chrome, Edge, Safari */
+.custom-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Firefox */
+.custom-scrollbar {
+  scrollbar-width: none;
+}
+
+/* IE/Edge */
+.custom-scrollbar {
+  -ms-overflow-style: none;
+}
