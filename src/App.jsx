@@ -40,6 +40,7 @@ function Home() {
 function App() {
   return (
     <Routes>
+      <Route path="/coming-soon" element={<ComingSoon />} />
       <Route path="/" element={<Home />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/community" element={<CommunityPage />} />
