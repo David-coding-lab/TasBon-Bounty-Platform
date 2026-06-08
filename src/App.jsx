@@ -1,9 +1,8 @@
 import './App.css'
-import { Link, Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import { PrivyProvider } from '@privy-io/react-auth'
 import SignIn from './Features/SignIn/Index'
 import SignUp from './Features/SignUp/Index'
-import GoogleCallback from './Features/oauth/google/callback'
-import GithubCallback from './Features/oauth/github/callback'
 import VerifyEmail from './Features/verify-email'
 import Navbar from './Components/NavBar'
 import Hero from './Components/Hero'
@@ -39,19 +38,27 @@ function Home() {
 
 function App() {
   return (
-    <Routes>
-      <Route path="/coming-soon" element={<ComingSoon />} />
-      <Route path="/" element={<Home />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/community" element={<CommunityPage />} />
-      <Route path="/signin" element={<SignIn />} />
-      <Route path="/signup" element={<SignUp />} />
-      <Route path="/reset-password/:token" element={<SignUp />} />
-      <Route path="/verify-email" element={<VerifyEmail />} />
-      <Route path="/auth/google/callback" element={<GoogleCallback />} />
-      <Route path="/auth/github/callback" element={<GithubCallback />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+    <PrivyProvider
+      appId={import.meta.env.VITE_PRIVY_APP_ID}
+      config={{
+        loginMethods: ['email', 'wallet', 'google', 'github'],
+        appearance: {
+          theme: 'light',
+          accentColor: '#16a34a', // green-600 — matches TASBUN brand
+        },
+      }}
+    >
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/community" element={<CommunityPage />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/reset-password/:token" element={<SignUp />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </PrivyProvider>
   )
 }
 

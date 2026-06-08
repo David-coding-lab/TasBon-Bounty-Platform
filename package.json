@@ -14,6 +14,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@privy-io/react-auth": "^3.29.2",
     "@tailwindcss/vite": "^4.2.4",
     "framer-motion": "^12.40.0",
     "js-cookie": "^3.0.7",
