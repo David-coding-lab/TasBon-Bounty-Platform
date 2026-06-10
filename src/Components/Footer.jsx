@@ -61,6 +61,7 @@ export default function Footer() {
                 alt="TASBUN Logo"
                 className="h-10 w-auto object-contain"
               />
+              <h2 className="text-xl font-bold text-primary ml-2">TASBON</h2>
             </div>
             <p className="text-black text-sm leading-relaxed max-w-xs">
               Discover high-paying crypto bounties, participate in hackathons

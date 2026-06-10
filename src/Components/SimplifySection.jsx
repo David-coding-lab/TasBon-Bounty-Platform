@@ -65,9 +65,9 @@ export default function SimplifySection() {
           </p>
         </motion.div>
 
-        <div className="flex flex-col lg:flex-row gap-12 items-start">
+        <div className="flex flex-col lg:flex-row gap-12 items-center">
           {/* Left: Feature list */}
-          <div className="flex-1">
+          <div className="flex-1 m-auto">
             <motion.h3
               className="text-xl font-sora font-extrabold text-gray-900 mb-3"
               initial={{ y: 60, opacity: 0 }}

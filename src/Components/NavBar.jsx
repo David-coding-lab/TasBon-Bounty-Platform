@@ -16,16 +16,17 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
             <img
               src={Logo}
               alt="TASBUN Logo"
               className="h-10 w-auto object-contain"
             />
+            <h1 className="font-bold text-primary text-2xl ">TASBON</h1>
           </div>
 
           {/* Desktop Nav Links */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
             {navLinks.map((item) => (
               <a
                 key={item.name}
@@ -105,14 +106,17 @@ export default function Navbar() {
                   {item.name}
                 </a>
               ))}
-              <div className="flex gap-3 pt-3 px-2">
-                <a href="/signin" className="text-md text-gray-600 font-medium">
+              <div className="flex items-center gap-3 pt-3 px-2">
+                <a
+                  href="/signin"
+                  className="text-md text-gray-600 font-medium  "
+                >
                   Login
                 </a>
 
                 <a
                   href="/signup"
-                  className="bg-emerald-500 hover:bg-emerald-600 text-white text-md font-semibold px-4 py-2 transition-colors"
+                  className="bg-emerald-500 hover:bg-emerald-600 text-white text-md font-semibold px-4 py-2 transition-colors rounded-2xl"
                 >
                   Register
                 </a>
