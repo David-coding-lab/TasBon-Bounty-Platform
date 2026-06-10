@@ -30,10 +30,10 @@ export default function Footer() {
       <div className="bg-[#EFF8F2] py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
-            <h3 className="text-black font-bold text-lg mb-1">
+            <h3 className="text-black font-bold font-inter text-lg mb-1">
               Subscribe to our newsletter
             </h3>
-            <p className="text-black text-sm">
+            <p className="text-black font-sora text-sm">
               Stay up to date with the latest happenings in the ecosystem.
             </p>
           </div>
@@ -41,9 +41,9 @@ export default function Footer() {
             <input
               type="email"
               placeholder="Enter your email"
-              className="flex-1 md:w-64 px-4 py-2.5 rounded-sm text-sm outline-none"
+              className="flex-1 md:w-64 px-4 py-2.5 font-sora rounded-sm text-sm outline-none"
             />
-            <button className="bg-primary hover:bg-[#139449] cursor-pointer text-white font-semibold px-8 py-2.5 rounded-lg text-sm transition-colors whitespace-nowrap">
+            <button className="bg-primary font-sora hover:bg-[#139449] cursor-pointer text-white font-semibold px-8 py-2.5 rounded-lg text-sm transition-colors whitespace-nowrap">
               Subscribe
             </button>
           </div>
@@ -63,7 +63,7 @@ export default function Footer() {
               />
               <h2 className="text-xl font-bold text-primary ml-2">TASBON</h2>
             </div>
-            <p className="text-black text-sm leading-relaxed max-w-xs">
+            <p className="text-black font-sora text-sm leading-relaxed max-w-xs">
               Discover high-paying crypto bounties, participate in hackathons
               and grants from companies in one place and apply to them using a
               single profile.
@@ -113,7 +113,7 @@ export default function Footer() {
           {/* Links */}
           {Object.entries(footerLinks).map(([heading, links]) => (
             <div key={heading}>
-              <h4 className="font-semibold text-gray-900 text-sm mb-4">
+              <h4 className="font-bold font-sora text-gray-900 text-sm mb-4">
                 {heading}
               </h4>
               <ul className="space-y-3">
@@ -121,7 +121,7 @@ export default function Footer() {
                   <li key={link.name}>
                     <a
                       href={link.url}
-                      className="text-black hover:text-gray-700 text-sm transition-colors"
+                      className="text-black font-sora hover:text-gray-700 text-sm transition-colors"
                     >
                       {link.name}
                     </a>

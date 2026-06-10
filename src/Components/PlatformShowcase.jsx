@@ -25,7 +25,7 @@ export default function PlatformShowcase() {
           </p>
         </motion.div>
 
-        {/* Dashboard Image */}
+        {/* Dashboard video */}
         <motion.div
           className="rounded-2xl overflow-hidden"
           initial={{ y: 60, opacity: 0 }}
