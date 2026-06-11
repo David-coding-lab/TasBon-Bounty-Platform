@@ -36,10 +36,30 @@ function Home() {
   )
 }
 
+const PRIVY_APP_ID = import.meta.env.VITE_PRIVY_APP_ID
+
 function App() {
+  if (!PRIVY_APP_ID) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#F0FAF4] p-6">
+        <div className="max-w-xl rounded-3xl border border-gray-200 bg-white p-8 shadow-lg text-center">
+          <h1 className="text-2xl font-semibold text-gray-900 mb-4">
+            Configuration missing
+          </h1>
+          <p className="text-base text-gray-600">
+            The environment variable{' '}
+            <code className="font-mono">VITE_PRIVY_APP_ID</code> is not set.
+            Please add it to your <code className="font-mono">.env</code> file
+            and restart the app.
+          </p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <PrivyProvider
-      appId={import.meta.env.VITE_PRIVY_APP_ID}
+      appId={PRIVY_APP_ID}
       config={{
         loginMethods: ['email', 'wallet', 'google', 'github'],
         appearance: {
