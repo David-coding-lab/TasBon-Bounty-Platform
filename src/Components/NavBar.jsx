@@ -126,8 +126,10 @@ export default function Navbar() {
                   >
                     Register
                   </Link>
+                </div>
               </div>
             </div>
+          </div>
         )}
       </div>
     </nav>
