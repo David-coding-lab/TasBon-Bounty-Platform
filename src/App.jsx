@@ -15,7 +15,7 @@ import CTASection from './Components/Ctasection'
 import Footer from './Components/Footer'
 import BlogSection from './Components/BlogSection'
 import CommunityPage from './pages/community/index'
-import Dashboard from './Features/Dashboard/Pages/Dashboard'
+import Dashboard from './Features/Dashboard/Pages/Home'
 
 function Home() {
   return (
