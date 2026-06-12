@@ -25,6 +25,7 @@ export default function Navbar() {
                 className="h-10 w-auto object-contain"
               />
             </Link>
+            <h1 className="ml-2 text-2xl font-bold text-primary">TASBON</h1>
           </div>
 
           {/* Desktop Nav Links */}
@@ -109,8 +110,8 @@ export default function Navbar() {
                   {item.name}
                 </Link>
               ))}
-              <div className="flex items-center gap-3 pt-3 px-2">
-                <div className="flex gap-3 pt-3 px-2">
+              <div className="flex items-center gap-3 px-2">
+                <div className="flex gap-2 pt-3 px-2 items-center">
                   <Link
                     to="/signin"
                     className="text-md text-gray-600 font-medium"
@@ -121,7 +122,7 @@ export default function Navbar() {
 
                   <Link
                     to="/signup"
-                    className="bg-emerald-500 hover:bg-emerald-600 text-white text-md font-semibold px-4 py-2 transition-colors"
+                    className="bg-emerald-500 hover:bg-emerald-600 text-white text-md font-semibold px-4 py-2 rounded-2xl transition-colors"
                     onClick={() => setMenuOpen(false)}
                   >
                     Register
