@@ -1,7 +1,7 @@
-export default function Dashboard() {
-  return (
-    <div>
-      <h1>Desktop</h1>
-    </div>
-  )
+import React from 'react'
+
+const index = () => {
+  return <div>index</div>
 }
+
+export default index
