@@ -3,8 +3,83 @@ import { motion } from 'framer-motion'
 import teamAmioImg from '../assets/team_amio.png'
 import teamTobiImg from '../assets/team_tobi.png'
 
+const TeamMemberCard = ({ member }) => (
+  <motion.div
+    key={member.name}
+    className="group bg-white rounded-full border border-gray-100 shadow-sm cursor-pointer flex items-center gap-4 pl-4 py-4 pr-8"
+    variants={{
+      hidden: { opacity: 0, y: 50 },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.5, ease: 'easeOut' },
+      },
+    }}
+    whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
+  >
+    <img
+      src={member.image}
+      alt={`${member.name} - ${member.role}`}
+      className="w-20 h-20 rounded-full object-cover shrink-0"
+    />
+
+    <div className="flex flex-col items-start min-w-0">
+      <h3 className="text-base font-bold text-black font-sans leading-tight group-hover:text-[#34A563] transition-colors">
+        {member.name}
+      </h3>
+      <span className="text-[#34A563] text-sm font-medium font-sans mb-2">
+        {member.role}
+      </span>
+
+      <div className="flex gap-2">
+        <a
+          href={member.linkedin}
+          target="_blank"
+          rel="noreferrer"
+          className="w-7 h-7 rounded-md bg-gray-50 border border-gray-100 flex items-center justify-center text-[#34A563] hover:bg-[#34A563] hover:text-white transition-all"
+          aria-label={`${member.name} LinkedIn`}
+        >
+          <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24">
+            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+          </svg>
+        </a>
+        <a
+          href={member.twitter}
+          target="_blank"
+          rel="noreferrer"
+          className="w-7 h-7 rounded-md bg-gray-50 border border-gray-100 flex items-center justify-center text-[#34A563] hover:bg-[#34A563] hover:text-white transition-all"
+          aria-label={`${member.name} X`}
+        >
+          <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+          </svg>
+        </a>
+        <a
+          href={member.website}
+          className="w-7 h-7 rounded-md bg-gray-50 border border-gray-100 flex items-center justify-center text-[#34A563] hover:bg-[#34A563] hover:text-white transition-all"
+          aria-label={`${member.name} Website`}
+        >
+          <svg
+            className="w-3 h-3"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+            />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </motion.div>
+)
+
 export default function Team() {
-  const team = [
+  const topRow = [
     {
       name: 'Amio Anthony',
       role: 'Founder & CEO, TASBUN',
@@ -14,7 +89,7 @@ export default function Team() {
       website: '#',
     },
     {
-      name: 'Ayoola Tobi',
+      name: 'Oluwatobi Ayoola Jolaosha',
       role: 'Lead Dev Team',
       image: teamTobiImg,
       linkedin: 'https://linkedin.com',
@@ -22,16 +97,8 @@ export default function Team() {
       website: '#',
     },
     {
-      name: 'Ayoola Tobi',
+      name: 'Godswill Favour',
       role: 'Lead Dev Team',
-      image: teamTobiImg,
-      linkedin: 'https://linkedin.com',
-      twitter: 'https://x.com',
-      website: '#',
-    },
-    {
-      name: 'Amio Anthony',
-      role: 'Founder & CEO, TASBUN',
       image: teamTobiImg,
       linkedin: 'https://linkedin.com',
       twitter: 'https://x.com',
@@ -39,10 +106,36 @@ export default function Team() {
     },
   ]
 
+  const bottomRow = [
+    {
+      name: 'Okoro Henry',
+      role: 'Lead Dev Team',
+      image: teamTobiImg,
+      linkedin: 'https://linkedin.com',
+      twitter: 'https://x.com',
+      website: '#',
+    },
+    {
+      name: 'Okechukwu Solomon Chiemezie',
+      role: 'Founder & CEO, TASBUN',
+      image: teamTobiImg,
+      linkedin: 'https://linkedin.com',
+      twitter: 'https://x.com',
+      website: '#',
+    },
+    {
+      name: 'Chikebe Chukwudiebube Timothy',
+      role: 'Founder & CEO, TASBUN',
+      image: teamAmioImg,
+      linkedin: 'https://linkedin.com',
+      twitter: 'https://x.com',
+      website: '#',
+    },
+  ]
+
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
-        {/* Section Header — slide up on scroll */}
         <motion.div
           className="text-center mb-16"
           initial={{ y: 60, opacity: 0 }}
@@ -57,107 +150,25 @@ export default function Team() {
             The people building the future with you
           </h2>
         </motion.div>
+      </div>
 
-        {/* Team Grid — scroll-triggered staggered cards */}
-        <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 justify-center"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={{
-            visible: {
-              transition: { staggerChildren: 0.15, delayChildren: 0.2 },
-            },
-          }}
-        >
-          {team.map((member, idx) => (
-            <motion.div
-              key={idx}
-              className="group bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm flex flex-col cursor-pointer"
-              variants={{
-                hidden: { opacity: 0, y: 50 },
-                visible: {
-                  opacity: 1,
-                  y: 0,
-                  transition: { duration: 0.5, ease: 'easeOut' },
-                },
-              }}
-              whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
-            >
-              {/* Photo Area */}
-              <div className="relative aspect-[4/3] bg-gray-50 overflow-hidden">
-                <img
-                  src={member.image}
-                  alt={`${member.name} - ${member.role}`}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                />
-              </div>
+      <div className="relative w-full space-y-10">
+        <div className="absolute left-0 top-0 bottom-0 w-20 sm:w-32 lg:w-64 xl:w-80 bg-linear-to-r h-full from-white via-white/50 to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-20 sm:w-32 lg:w-64 xl:w-80 bg-linear-to-l h-full from-white via-white/50 to-transparent z-10 pointer-events-none" />
 
-              {/* Bio details */}
-              <div className="p-6 flex flex-col items-center justify-between grow">
-                <div className="text-center mb-6">
-                  <h3 className="text-lg font-bold text-black font-sans mb-1 group-hover:text-[#34A563] transition-colors">
-                    {member.name}
-                  </h3>
-                  <span className="text-[#34A563] text-sm font-medium font-sans">
-                    {member.role}
-                  </span>
-                </div>
-
-                {/* Social Icons */}
-                <div className="flex gap-3 justify-center">
-                  <a
-                    href={member.linkedin}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="w-9 h-9 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center text-[#34A563] hover:bg-[#34A563] hover:text-white transition-all shadow-sm hover:scale-105 active:scale-95"
-                    aria-label={`${member.name} LinkedIn`}
-                  >
-                    <svg
-                      className="w-3.5 h-3.5 fill-current"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-                    </svg>
-                  </a>
-                  <a
-                    href={member.twitter}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="w-9 h-9 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center text-[#34A563] hover:bg-[#34A563] hover:text-white transition-all shadow-sm hover:scale-105 active:scale-95"
-                    aria-label={`${member.name} X`}
-                  >
-                    <svg
-                      className="w-3.5 h-3.5 fill-current"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                    </svg>
-                  </a>
-                  <a
-                    href={member.website}
-                    className="w-9 h-9 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center text-[#34A563] hover:bg-[#34A563] hover:text-white transition-all shadow-sm hover:scale-105 active:scale-95"
-                    aria-label={`${member.name} Website`}
-                  >
-                    <svg
-                      className="w-3.5 h-3.5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-                      />
-                    </svg>
-                  </a>
-                </div>
-              </div>
-            </motion.div>
+        <div className="animate-marquee gap-6">
+          {[...topRow, ...topRow, ...topRow, ...topRow].map((member, idx) => (
+            <TeamMemberCard key={idx} member={member} />
           ))}
-        </motion.div>
+        </div>
+
+        <div className="animate-marquee-reverse gap-6">
+          {[...bottomRow, ...bottomRow, ...bottomRow, ...bottomRow].map(
+            (member, idx) => (
+              <TeamMemberCard key={idx} member={member} />
+            ),
+          )}
+        </div>
       </div>
     </section>
   )

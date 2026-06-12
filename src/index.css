@@ -33,6 +33,25 @@ main {
 .animate-marquee:hover {
   animation-play-state: paused;
 }
+
+@keyframes marquee-reverse {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.animate-marquee-reverse {
+  display: flex;
+  width: max-content;
+  animation: marquee-reverse 30s linear infinite;
+}
+
+.animate-marquee-reverse:hover {
+  animation-play-state: paused;
+}
 /* Chrome, Edge, Safari */
 .custom-scrollbar::-webkit-scrollbar {
   display: none;

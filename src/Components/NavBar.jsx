@@ -25,7 +25,9 @@ export default function Navbar() {
                 className="h-10 w-auto object-contain"
               />
             </Link>
-            <h1 className="ml-2 text-2xl font-bold text-primary">TASBON</h1>
+            <Link to="/" className="ml-2 text-xl  font-bold text-primary">
+              TASBUN
+            </Link>
           </div>
 
           {/* Desktop Nav Links */}

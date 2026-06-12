@@ -1,5 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
+import PartnersSection from '../../../Components/PatnersSection'
 
 export default function Highlights() {
   const testimonials = [
@@ -158,9 +159,9 @@ export default function Highlights() {
       {/* Infinite Scrolling Testimonials — full width, gradients touch screen edges */}
       <div className="relative w-full py-4 select-none">
         {/* Left fade — touches left screen edge */}
-        <div className="absolute left-0 top-0 bottom-0 w-1/4 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-1/4 bg-linear-to-r from-white to-transparent z-10 pointer-events-none" />
         {/* Right fade — touches right screen edge */}
-        <div className="absolute right-0 top-0 bottom-0 w-1/4 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-1/4 bg-linear-to-l from-white to-transparent z-10 pointer-events-none" />
 
         <div className="animate-marquee flex gap-6 items-stretch">
           {[...testimonials, ...testimonials, ...testimonials].map((t, idx) => (
@@ -204,33 +205,7 @@ export default function Highlights() {
       </div>
 
       {/* Partners Bar */}
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="mt-24 border-t border-gray-100 pt-16 text-center">
-          <h3 className="text-[#1f7242] text-base font-bold font-sans tracking-wider uppercase mb-8">
-            Trusted by ecosystem partners
-          </h3>
-        </div>
-      </div>
-
-      {/* Partners Marquee — full width, gradients touch screen edges */}
-      <div className="relative w-full py-4 select-none">
-        <div className="absolute left-0 top-0 bottom-0 w-1/4 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-1/4 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
-
-        <div className="animate-marquee gap-8 md:gap-12 lg:gap-16 items-center flex">
-          {[...partners, ...partners].map((partner, idx) => (
-            <div
-              key={idx}
-              className="flex items-center gap-3 px-6 py-2.5 rounded-xl hover:bg-gray-50 transition-colors cursor-default shrink-0"
-            >
-              {partner.icon}
-              <span className="text-base font-bold text-gray-700 font-sans tracking-tight whitespace-nowrap">
-                {partner.name}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
+      <PartnersSection partners={partners} />
     </section>
   )
 }

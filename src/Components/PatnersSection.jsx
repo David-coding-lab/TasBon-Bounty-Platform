@@ -5,8 +5,8 @@ import Greenpill from '../Assets/greenpill.png'
 import Switch from '../Assets/switch.png'
 
 const partners = [
-  { name: 'Switch', image: Switch },
-  { name: 'Localism', image: Localism },
+  { name: 'Switch Electric', image: Switch },
+  { name: 'Localism Fund', image: Localism },
   { name: 'GreenPill', image: Greenpill },
   { name: 'M3tering', image: M3tering },
 ]
@@ -40,7 +40,7 @@ export default function PartnersSection() {
               key={partner.name}
               src={partner.image}
               alt={partner.name}
-              className="h-10 md:h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300"
+              className="h-10 md:h-12 w-auto object-contain transition-all duration-300"
               variants={{
                 hidden: { opacity: 0, x: -20 },
                 visible: {

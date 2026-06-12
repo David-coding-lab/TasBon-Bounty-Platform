@@ -1,4 +1,3 @@
-import React from 'react'
 import { motion } from 'framer-motion'
 import founderImg from '../assets/founder.png'
 
