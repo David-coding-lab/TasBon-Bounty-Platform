@@ -100,7 +100,8 @@ function SignIn() {
       toast.success('Logged in successfully')
       navigate('/dashboard')
     } catch (err) {
-      toast.error(err.message || 'Privy login failed')
+      setErrorMessage(err.message || 'Privy login failed')
+      setShowError(true)
     } finally {
       setOauthLoading(null)
     }
@@ -129,7 +130,11 @@ function SignIn() {
 
       {/* Left Image */}
       <div className="hidden lg:flex lg:w-1/2 min-h-screen">
-        <img src={HeroBg} alt="Hero Background" className="w-full h-full object-cover" />
+        <img
+          src={HeroBg}
+          alt="Hero Background"
+          className="w-full h-full object-cover"
+        />
       </div>
 
       {/* Right Form */}
@@ -212,7 +217,11 @@ function SignIn() {
 
           {/* Forgot password */}
           <div className="text-right text-sm pt-3 pb-7 text-green-600">
-            <button type="button" className="hover:underline" onClick={() => setShowForgetPwd(true)}>
+            <button
+              type="button"
+              className="hover:underline"
+              onClick={() => setShowForgetPwd(true)}
+            >
               Forgot Password?
             </button>
           </div>
@@ -220,7 +229,10 @@ function SignIn() {
           {/* Signup link */}
           <div className="text-center text-sm text-gray-500">
             Not A Bounty Hunter?
-            <Link to="/signup" className="text-green-600 hover:underline font-medium ml-1">
+            <Link
+              to="/signup"
+              className="text-green-600 hover:underline font-medium ml-1"
+            >
               Sign Up
             </Link>
           </div>

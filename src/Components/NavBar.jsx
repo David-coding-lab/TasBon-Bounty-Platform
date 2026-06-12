@@ -28,7 +28,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Nav Links */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
             {navLinks.map((item) => (
               <Link
                 key={item.name}
@@ -109,22 +109,24 @@ export default function Navbar() {
                   {item.name}
                 </Link>
               ))}
-              <div className="flex gap-3 pt-3 px-2">
-                <Link
-                  to="/signin"
-                  className="text-md text-gray-600 font-medium"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Login
-                </Link>
+              <div className="flex items-center gap-3 pt-3 px-2">
+                <div className="flex gap-3 pt-3 px-2">
+                  <Link
+                    to="/signin"
+                    className="text-md text-gray-600 font-medium"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Login
+                  </Link>
 
-                <Link
-                  to="/signup"
-                  className="bg-emerald-500 hover:bg-emerald-600 text-white text-md font-semibold px-4 py-2 transition-colors"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Register
-                </Link>
+                  <Link
+                    to="/signup"
+                    className="bg-emerald-500 hover:bg-emerald-600 text-white text-md font-semibold px-4 py-2 transition-colors"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Register
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
