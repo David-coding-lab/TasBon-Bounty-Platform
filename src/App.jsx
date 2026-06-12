@@ -41,7 +41,7 @@ function App() {
     <PrivyProvider
       appId={import.meta.env.VITE_PRIVY_APP_ID}
       config={{
-        loginMethods: ['email', 'wallet', 'google', 'github'],
+        loginMethods: ['email'],
         appearance: {
           theme: 'light',
           accentColor: '#16a34a', // green-600 — matches TASBUN brand
