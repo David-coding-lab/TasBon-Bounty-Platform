@@ -3,16 +3,9 @@ import Cookies from 'js-cookie'
 
 /**
  * Exchange a Privy access token for a Tasbon session.
- * provider: 'privy' | 'google' | 'github'
  */
-export async function loginWithPrivy(privyToken, provider = 'privy') {
-  const endpoints = {
-    privy: '/api/v1/auth/privy',
-    google: '/api/v1/auth/privy/google',
-    github: '/api/v1/auth/privy/github',
-  }
-
-  const endpoint = endpoints[provider] ?? endpoints.privy
+export async function loginWithPrivy(privyToken) {
+  const endpoint = '/api/v1/auth/privy'
 
   const response = await fetch(`${config.VITE_API_URL}${endpoint}`, {
     method: 'POST',

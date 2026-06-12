@@ -14,8 +14,8 @@ import PartnersSection from './Components/PatnersSection'
 import CTASection from './Components/Ctasection'
 import Footer from './Components/Footer'
 import BlogSection from './Components/BlogSection'
-import Dashboard from './Features/Dashboard/components/navigation/sidebar'
 import CommunityPage from './pages/community/index'
+import Dashboard from './Features/Dashboard/Pages/Home'
 
 function Home() {
   return (
@@ -61,7 +61,7 @@ function App() {
     <PrivyProvider
       appId={PRIVY_APP_ID}
       config={{
-        loginMethods: ['email', 'wallet', 'google', 'github'],
+        loginMethods: ['email'],
         appearance: {
           theme: 'light',
           accentColor: '#16a34a', // green-600 — matches TASBUN brand
