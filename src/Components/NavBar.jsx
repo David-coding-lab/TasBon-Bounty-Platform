@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import Logo from '../Assets/logo.png'
 
 const navLinks = [
@@ -11,6 +11,7 @@ const navLinks = [
 ]
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const { pathname } = useLocation()
 
   return (
     <nav className="bg-transparent backdrop-blur-md pt-2 sticky top-0 z-50">
@@ -36,7 +37,11 @@ export default function Navbar() {
               <Link
                 key={item.name}
                 to={item.url}
-                className="text-gray-600 hover:text-gray-900 text-md font-medium transition-colors"
+                className={`text-md font-medium transition-colors ${
+                  pathname === item.url
+                    ? 'text-emerald-600 font-semibold'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
               >
                 {item.name}
               </Link>
@@ -106,7 +111,11 @@ export default function Navbar() {
                 <Link
                   key={item.name}
                   to={item.url}
-                  className="px-2 py-2 text-gray-600 hover:text-gray-900 text-md font-medium rounded-md hover:bg-gray-50 transition-colors"
+                  className={`px-2 py-2 text-md font-medium rounded-md transition-colors ${
+                    pathname === item.url
+                      ? 'text-emerald-600 font-semibold bg-emerald-50'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                  }`}
                   onClick={() => setMenuOpen(false)}
                 >
                   {item.name}

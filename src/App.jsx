@@ -17,6 +17,7 @@ import BlogSection from './Components/BlogSection'
 import CommunityPage from './pages/community/index'
 import Dashboard from './Features/Dashboard/Pages/Home'
 import Layout from './Features/Dashboard/Layout'
+import Bounties from './pages/Bounties'
 
 function Home() {
   return (
