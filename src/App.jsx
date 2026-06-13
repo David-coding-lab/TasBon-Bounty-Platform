@@ -72,6 +72,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/community" element={<CommunityPage />} />
+        <Route path="/bounties" element={<Bounties />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reset-password/:token" element={<SignUp />} />
