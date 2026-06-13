@@ -1,5 +1,11 @@
 import React from 'react'
-import { ArrowRight } from 'lucide-react'
+import {
+  ArrowRight,
+  DollarSign,
+  FileText,
+  Target,
+  MessageCircle,
+} from 'lucide-react'
 import profileImage from '../../Assets/Profile (Alex Rivera).svg'
 import NexusProtocolIcon from '../../Assets/Image (Nexus Protocol).svg'
 import LayerOneIcon from '../../Assets/Image (LayerOne).svg'
@@ -43,6 +49,38 @@ const topProtocols = [
     bounties: 10,
     paid: '$30k+',
     icon: ChainGuardIcon,
+  },
+]
+
+/* Recent activity notifications data */
+const notifications = [
+  {
+    id: 1,
+    icon: DollarSign,
+    color: 'text-[#009966]',
+    message: 'You earned $180 USDC from completing a bounty',
+    time: '3h ago',
+  },
+  {
+    id: 2,
+    icon: FileText,
+    color: 'text-[#E17100]',
+    message: 'Your application for Web3 Social Grant was shortlisted',
+    time: '2d ago',
+  },
+  {
+    id: 3,
+    icon: Target,
+    color: 'text-[#155DFC]',
+    message: 'New bounty match for your skills',
+    time: '2d ago',
+  },
+  {
+    id: 4,
+    icon: MessageCircle,
+    color: 'text-[#9810FA]',
+    message: 'Alex from LayerOne replied to your submission',
+    time: '3d ago',
   },
 ]
 
@@ -97,12 +135,16 @@ const Information = () => {
         </div>
 
         {/* Protocol list */}
-        <ol className="flex flex-col space-y-3">
+        <ul className="flex flex-col space-y-3">
           {topProtocols.map((protocol) => (
             <li
               key={protocol.rank}
               className="flex flex-row space-x-2 items-center"
             >
+              {/* Rank number */}
+              <span className="text-sm text-[#4A5565] w-4">
+                {protocol.rank}.
+              </span>
               <img
                 src={protocol.icon}
                 alt={protocol.name}
@@ -118,10 +160,50 @@ const Information = () => {
               </div>
             </li>
           ))}
-        </ol>
+        </ul>
       </div>
 
-      {/* Third child — to be defined */}
+      {/* Third child — Recent Activity */}
+      <div className="flex flex-col border border-[#E5E7EB] rounded-2xl space-y-3 p-3">
+        {/* Heading */}
+        <span className="text-lg text-[#0A0A0A] font-semibold">
+          Recent Activity
+        </span>
+
+        {/* Notification list */}
+        <ul className="flex flex-col space-y-3">
+          {notifications.map((notification) => {
+            const Icon = notification.icon
+            return (
+              <li
+                key={notification.id}
+                className="flex flex-row gap-2 justify-between items-start"
+              >
+                {/* Icon and message */}
+                <div className="flex flex-row gap-2 items-start">
+                  <Icon
+                    size={18}
+                    className={`${notification.color} shrink-0 mt-0.5`}
+                  />
+                  <span className="text-sm text-[#0A0A0A]">
+                    {notification.message}
+                  </span>
+                </div>
+                {/* Time */}
+                <span className="text-xs text-[#4A5565] shrink-0">
+                  {notification.time}
+                </span>
+              </li>
+            )
+          })}
+        </ul>
+
+        {/* View all link — centered */}
+        <div className="flex flex-row items-center justify-center gap-1 cursor-pointer">
+          <span className="text-sm text-[#009966]">View all</span>
+          <ArrowRight size={14} className="text-[#009966]" />
+        </div>
+      </div>
     </div>
   )
 }
