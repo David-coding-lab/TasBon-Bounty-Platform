@@ -23,7 +23,7 @@ export default function CTASection() {
           Join 50,000+ builders and community leaders <br /> who run on TASBUN.
         </motion.p>
         <motion.button
-          className="bg-[#F6C430] hover:bg-orange-400 cursor-pointer text-black font-bold px-8 py-4 rounded-xl transition-colors text-base inline-flex items-center gap-2"
+          className="bg-[#F6C430] hover:bg-[#d3a92a] cursor-pointer text-black font-bold px-8 py-4 rounded-xl transition-colors text-base inline-flex items-center gap-2"
           initial={{ y: 40, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true }}
@@ -31,7 +31,7 @@ export default function CTASection() {
           whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
           whileTap={{ scale: 0.95 }}
         >
-          Explore Hackathons
+          Sign up now
           <svg
             className="w-4 h-4"
             fill="none"
