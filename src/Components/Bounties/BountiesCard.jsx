@@ -22,8 +22,8 @@ const BountiesCard = ({
         {/* Bounty category name */}
         <p className="text-xs text-[#007A55]">{categoryName}</p>
 
-        {/* Bounty title */}
-        <p className="text-lg font-semibold text-[#0A0A0A]">{title}</p>
+        {/* Bounty title — single line with truncation */}
+        <p className="text-lg font-semibold text-[#0A0A0A] truncate">{title}</p>
 
         {/* Issuer info: icon and name */}
         <div className="flex flex-row space-x-2 items-center">
@@ -47,7 +47,7 @@ const BountiesCard = ({
         {/* Apply button */}
         <button className="bg-[#009966] w-full py-3 flex flex-row items-center justify-center gap-2 rounded-lg cursor-pointer">
           <span className="text-[#FFFFFF] text-base font-medium">
-            Apply Now
+            View bounty
           </span>
           <ArrowRight className="w-4 h-4 text-[#FFFFFF]" />
         </button>
