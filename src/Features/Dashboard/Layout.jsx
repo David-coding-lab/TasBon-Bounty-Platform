@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import SideBar from './components/navigation/SideBar'
 import NavBar from './components/navigation/NavBar'
+import Information from './components/Information/information'
 
 /**
  * Dashboard Layout - Main layout wrapper for all dashboard pages.
@@ -39,8 +40,8 @@ const Layout = () => {
           </main>
 
           {/* Right Sidebar - sits under the navbar, on the right side */}
-          <aside className="w-70 shrink-0 bg-white border-l border-gray-200 flex items-center justify-center overflow-y-auto">
-            Right Sidebar
+          <aside className="w-70 shrink-0 bg-white border-l border-gray-200 overflow-y-auto p-4">
+            <Information />
           </aside>
         </div>
       </div>
