@@ -5,14 +5,12 @@ import Footer from '../../Components/Footer'
 import BountiesCard from '../../Components/Bounties/BountiesCard'
 import Glow from './assets/glow.png'
 
-import MobileAppImg from '../../Features/Dashboard/Pages/Home/assets/Image (Mobile App Redesign for Finance Platform).svg'
-import ReactComponentImg from '../../Features/Dashboard/Pages/Home/assets/Image (Build React Component Library with TypeScript).svg'
-import BrandIdentityImg from '../../Features/Dashboard/Pages/Home/assets/Image (Create Brand Identity for Tech Startup).svg'
-import NexusProtocolIcon from '../../Features/Dashboard/Pages/Home/assets/Image (Nexus Protocol).svg'
-import LayerOneIcon from '../../Features/Dashboard/Pages/Home/assets/Image (LayerOne).svg'
-import DAOCollectiveIcon from '../../Features/Dashboard/Pages/Home/assets/Image (DAO Collective).svg'
-import FAQ from '../community/components/FAQ'
-import PartnersSection from '../../Components/PatnersSection'
+import MobileAppImg from './assets/mobile-app.svg'
+import ReactComponentImg from './assets/react-component.svg'
+import BrandIdentityImg from './assets/brand-identity.svg'
+import NexusProtocolIcon from './assets/nexus-protocol.svg'
+import LayerOneIcon from './assets/layer-one.svg'
+import DAOCollectiveIcon from './assets/dao-collective.svg'
 
 const filters = ['All', 'Design', 'Development', 'Content', 'Others']
 
