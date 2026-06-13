@@ -47,7 +47,7 @@ const NavItem = ({ icon: Icon, label, path, badge, isActive }) => {
   return (
     <Link
       to={path}
-      className={`group rounded-md p-3 flex flex-row items-center space-x-3 cursor-pointer transition-colors
+      className={`group rounded-md px-3 py-2 flex flex-row items-center space-x-3 cursor-pointer transition-colors
         ${isActive ? 'bg-[#ECFDF5]' : 'hover:bg-[#ECFDF5]'}`}
     >
       {/* Nav icon - changes to #007A55 on hover/active */}
