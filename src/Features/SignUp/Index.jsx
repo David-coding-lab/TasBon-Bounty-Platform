@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Hero from './Assets/Hero-bg.png'
 import { signUpSchema } from './schema'
@@ -24,10 +24,11 @@ function PrivyIcon() {
 
 function SignUp() {
   const navigate = useNavigate()
-  const { getAccessToken } = usePrivy()
+  const { getAccessToken, ready, authenticated, login: openPrivyModal } = usePrivy()
 
   const [showError, setShowError] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
+  const [waitingForPrivyAuth, setWaitingForPrivyAuth] = useState(false)
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -44,6 +45,33 @@ function SignUp() {
   const [showConfirmPasswordField, setShowConfirmPasswordField] = useState(false)
   const [showPasswordVisible, setShowPasswordVisible] = useState(false)
   const [showConfirmPasswordVisible, setShowConfirmPasswordVisible] = useState(false)
+  const mountedRef = useRef(true)
+
+  useEffect(() => {
+    return () => { mountedRef.current = false }
+  }, [])
+
+  useEffect(() => {
+    if (!waitingForPrivyAuth || !ready || !authenticated) return
+
+    const doPrivySignUp = async () => {
+      setWaitingForPrivyAuth(false)
+      try {
+        const privyToken = await getAccessToken()
+        await loginWithPrivy(privyToken)
+        if (!mountedRef.current) return
+        toast.success('Account created successfully')
+        navigate('/dashboard')
+      } catch (err) {
+        if (!mountedRef.current) return
+        toast.error(err.message || 'Privy sign-up failed')
+      } finally {
+        if (mountedRef.current) setOauthLoading(null)
+      }
+    }
+
+    doPrivySignUp()
+  }, [waitingForPrivyAuth, ready, authenticated, getAccessToken, navigate])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -96,20 +124,14 @@ function SignUp() {
   }
 
   // ── Privy wallet / email / passkey sign-up ─────────────────────────────
-  const { login: openPrivyModal } = usePrivy()
-
   const handlePrivySignUp = async () => {
     setOauthLoading('privy')
     try {
       await openPrivyModal({ loginMethods: ['email'] })
-      const privyToken = await getAccessToken()
-      await loginWithPrivy(privyToken)
-      toast.success('Account created successfully')
-      navigate('/dashboard')
+      setWaitingForPrivyAuth(true)
     } catch (err) {
-      toast.error(err.message || 'Privy sign-up failed')
-    } finally {
       setOauthLoading(null)
+      toast.error(err.message || 'Privy sign-up failed')
     }
   }
 

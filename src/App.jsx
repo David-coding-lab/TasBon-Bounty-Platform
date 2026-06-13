@@ -16,6 +16,7 @@ import Footer from './Components/Footer'
 import BlogSection from './Components/BlogSection'
 import CommunityPage from './pages/community/index'
 import Dashboard from './Features/Dashboard/Pages/Home'
+import Layout from './Features/Dashboard/Layout'
 
 function Home() {
   return (
@@ -70,7 +71,9 @@ function App() {
     >
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Layout />}>
+          <Route index element={<Dashboard />} />
+        </Route>
         <Route path="/community" element={<CommunityPage />} />
         <Route path="/bounties" element={<Bounties />} />
         <Route path="/signin" element={<SignIn />} />
