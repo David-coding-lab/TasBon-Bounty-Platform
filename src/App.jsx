@@ -18,6 +18,7 @@ import CommunityPage from './pages/community/index'
 import Dashboard from './Features/Dashboard/Pages/Home'
 import Layout from './Features/Dashboard/Layout'
 import Bounties from './pages/Bounties'
+import Blogs from './pages/Blogs'
 
 function Home() {
   return (
@@ -77,6 +78,7 @@ function App() {
         </Route>
         <Route path="/community" element={<CommunityPage />} />
         <Route path="/bounties" element={<Bounties />} />
+        <Route path="/blogs" element={<Blogs />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reset-password/:token" element={<SignUp />} />
