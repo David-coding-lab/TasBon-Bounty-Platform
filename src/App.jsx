@@ -19,20 +19,23 @@ import Dashboard from './Features/Dashboard/Pages/Home'
 import Layout from './Features/Dashboard/Layout'
 import Bounties from './pages/Bounties'
 import Blogs from './pages/Blogs'
+import Hackathons from './pages/Hackathons/Index'
+import { useState } from 'react'
 
 function Home() {
+  const [isLoggedIn, setIsLoggedIn] = useState(true)
   return (
     <div className="min-h-screen bg-[#F0FAF4] font-sans antialiased">
       <Navbar />
       <main>
-        <Hero />
+        <Hero isLoggedIn={isLoggedIn} />
         <StatsBar />
         <PlatformShowcase />
         <SimplifySection />
         <BountiesSection />
         <BlogSection />
         <PartnersSection />
-        <CTASection />
+        <CTASection isLoggedIn={isLoggedIn} />
       </main>
       <Footer />
     </div>
@@ -79,6 +82,7 @@ function App() {
         <Route path="/community" element={<CommunityPage />} />
         <Route path="/bounties" element={<Bounties />} />
         <Route path="/blogs" element={<Blogs />} />
+        <Route path="/hackathons" element={<Hackathons />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reset-password/:token" element={<SignUp />} />

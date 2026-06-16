@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import Navbar from '../../Components/NavBar'
 import CTASection from '../../Components/Ctasection'
 import Footer from '../../Components/Footer'
@@ -13,6 +14,40 @@ import LayerOneIcon from './assets/layer-one.svg'
 import DAOCollectiveIcon from './assets/dao-collective.svg'
 
 const filters = ['All', 'Design', 'Development', 'Content', 'Others']
+
+const sortOptions = [
+  { label: 'Newest', value: 'newest' },
+  { label: 'Highest Price', value: 'price-desc' },
+  { label: 'Lowest Price', value: 'price-asc' },
+  { label: 'Beginner Friendly', value: 'beginner' },
+  { label: 'Advanced', value: 'advanced' },
+]
+
+function parsePrice(priceStr) {
+  return parseInt(priceStr.replace(/[^0-9]/g, ''), 10) || 0
+}
+
+const levelOrder = { Beginner: 0, Intermediate: 1, Advanced: 2 }
+
+function sortBounties(bounties, sortValue) {
+  const sorted = [...bounties]
+  switch (sortValue) {
+    case 'price-desc':
+      return sorted.sort((a, b) => parsePrice(b.price) - parsePrice(a.price))
+    case 'price-asc':
+      return sorted.sort((a, b) => parsePrice(a.price) - parsePrice(b.price))
+    case 'beginner':
+      return sorted.sort(
+        (a, b) => (levelOrder[a.level] ?? 1) - (levelOrder[b.level] ?? 1),
+      )
+    case 'advanced':
+      return sorted.sort(
+        (a, b) => (levelOrder[b.level] ?? 1) - (levelOrder[a.level] ?? 1),
+      )
+    default:
+      return sorted
+  }
+}
 
 const mockBounties = [
   {
@@ -198,7 +233,46 @@ const mockBounties = [
 ]
 
 export default function Bounties() {
+  const [searchParams] = useSearchParams()
   const [activeFilter, setActiveFilter] = useState('All')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [activeSort, setActiveSort] = useState('newest')
+  const [sortOpen, setSortOpen] = useState(false)
+  const sortRef = useRef(null)
+
+  useEffect(() => {
+    const category = searchParams.get('category')
+    if (category && filters.includes(category)) {
+      setActiveFilter(category)
+      console.log('Category from URL:', category)
+    }
+  }, [searchParams])
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (sortRef.current && !sortRef.current.contains(e.target)) {
+        setSortOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  const filteredBounties = sortBounties(
+    mockBounties.filter((bounty) => {
+      const matchesCategory =
+        activeFilter === 'All' || bounty.categoryName === activeFilter
+      const matchesSearch =
+        !searchQuery ||
+        bounty.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        bounty.issuerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        bounty.categoryName.toLowerCase().includes(searchQuery.toLowerCase())
+      return matchesCategory && matchesSearch
+    }),
+    activeSort,
+  )
+
+  const activeSortLabel = sortOptions.find((o) => o.value === activeSort)?.label
 
   return (
     <div className="min-h-screen bg-[#Fff] font-sans antialiased">
@@ -232,8 +306,10 @@ export default function Bounties() {
               </svg>
               <input
                 type="text"
-                placeholder="Search..."
-                className="w-full bg-white border-2 border-gray-200 rounded-full py-5 pl-16 pr-6 text-base text-black/50 placeholder:text-black/50 focus:outline-none focus:border-green-500 transition-colors"
+                placeholder="Search bounties..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-white border-2 border-gray-200 rounded-full py-5 pl-16 pr-6 text-base text-black placeholder:text-black/50 focus:outline-none focus:border-green-500 transition-colors"
               />
             </div>
           </div>
@@ -251,26 +327,51 @@ export default function Bounties() {
                 {filter}
               </button>
             ))}
-            <button className="z-1 ml-auto flex items-center gap-2 px-5 py-2 rounded-2xl text-sm font-medium border border-black/30 bg-white text-black cursor-pointer hover:bg-gray-50 transition-colors">
-              Sort by: Newest
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                viewBox="0 0 24 24"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+            <div className="relative z-10 ml-auto" ref={sortRef}>
+              <button
+                onClick={() => setSortOpen(!sortOpen)}
+                className="flex items-center gap-2 px-5 py-2 rounded-2xl text-sm font-medium border border-black/30 bg-white text-black cursor-pointer hover:bg-gray-50 transition-colors"
               >
-                <path d="M6 9l6 6 6-6" />
-              </svg>
-            </button>
+                Sort by: {activeSortLabel}
+                <svg
+                  className={`w-4 h-4 transition-transform ${sortOpen ? 'rotate-180' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  viewBox="0 0 24 24"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </button>
+              {sortOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden">
+                  {sortOptions.map((option) => (
+                    <button
+                      key={option.value}
+                      onClick={() => {
+                        setActiveSort(option.value)
+                        setSortOpen(false)
+                      }}
+                      className={`w-full text-left px-4 py-2.5 text-sm cursor-pointer transition-colors ${
+                        activeSort === option.value
+                          ? 'bg-[#E6F6E2] text-[#0E4E2F] font-semibold'
+                          : 'text-black/80 hover:bg-gray-50'
+                      }`}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
         <div className="max-w-6xl mx-auto mb-10 px-4 sm:px-6 mt-12">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {mockBounties.map((bounty, index) => (
+            {filteredBounties.map((bounty, index) => (
               <BountiesCard
                 key={index}
                 headerImg={bounty.headerImg}
@@ -283,6 +384,16 @@ export default function Bounties() {
               />
             ))}
           </div>
+          {filteredBounties.length === 0 && (
+            <div className="text-center py-16">
+              <p className="text-gray-500 text-lg font-sora">
+                No bounties found
+              </p>
+              <p className="text-gray-400 text-sm mt-2">
+                Try adjusting your search or filters
+              </p>
+            </div>
+          )}
           <div className="flex justify-center mt-10">
             <button className="px-8 py-3 rounded-xl text-sm font-medium border border-[#009966] text-[#009966] bg-white hover:bg-[#f0faf4] transition-colors cursor-pointer">
               Load More

@@ -1,24 +1,24 @@
 import Logo from '../Assets/logo.png'
+import { Link } from 'react-router-dom'
 
 const footerLinks = {
   Opportunities: [
     { name: 'Bounties', url: '/bounties' },
     { name: 'Hackathons', url: '/hackathons' },
-    { name: 'Jobs', url: '/jobs' },
     { name: 'Grants', url: '/grants' },
   ],
 
   Categories: [
-    { name: 'Contests', url: '/contests' },
-    { name: 'Design', url: '/design' },
-    { name: 'Development', url: '/development' },
-    { name: 'Others', url: '/others' },
+    { name: 'Contests', url: '/bounties?category=Content' },
+    { name: 'Design', url: '/bounties?category=Design' },
+    { name: 'Development', url: '/bounties?category=Development' },
+    { name: 'Others', url: '/bounties?category=Others' },
   ],
 
   About: [
-    { name: 'FAQ', url: '/faq' },
+    { name: 'FAQ', url: '/community#faq' },
     { name: 'Terms', url: '/terms' },
-    { name: 'Changelog', url: '/changelog' },
+    { name: 'Privacy Policy', url: '/privacy-policy' },
     { name: 'Contact Us', url: '/contact' },
   ],
 }
@@ -119,12 +119,12 @@ export default function Footer() {
               <ul className="space-y-3">
                 {links.map((link) => (
                   <li key={link.name}>
-                    <a
-                      href={link.url}
+                    <Link
+                      to={link.url}
                       className="text-black font-sora hover:text-gray-700 text-sm transition-colors"
                     >
                       {link.name}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>

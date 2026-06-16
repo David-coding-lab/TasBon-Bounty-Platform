@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion'
 import { TypeAnimation } from 'react-type-animation'
 import Illustration from '../Assets/Illustration.png'
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
-export default function Hero() {
+export default function Hero({ isLoggedIn }) {
   return (
     <section className="bg-[#F0FAF4] py-16 md:py-24 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -84,26 +84,30 @@ export default function Hero() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
-              <motion.button
-                className="bg-primary cursor-pointer hover:bg-emerald-600 text-white font-semibold px-8 py-3 rounded-3xl transition-colors text-sm"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1, duration: 0.5 }}
-                whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Link to="/sign-up">Join the Hunt</Link>
-              </motion.button>
-              <motion.button
-                className="border border-gray-200 cursor-pointer hover:border-gray-300 text-gray-700 font-semibold px-6 py-3 rounded-3xl transition-colors text-sm"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.25, duration: 0.5 }}
-                whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Link to="/bounties">See Bounties</Link>
-              </motion.button>
+              <Link to={isLoggedIn ? '/dashboard' : '/signup'}>
+                <motion.button
+                  className="bg-primary cursor-pointer hover:bg-emerald-600 text-white font-semibold px-8 py-3 rounded-3xl transition-colors text-sm"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1, duration: 0.5 }}
+                  whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {isLoggedIn ? 'Go to Dashboard' : 'Join the Hunt'}
+                </motion.button>
+              </Link>
+              <Link to="/bounties">
+                <motion.button
+                  className="border border-gray-200 cursor-pointer hover:border-gray-300 text-gray-700 font-semibold px-6 py-3 rounded-3xl transition-colors text-sm"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.25, duration: 0.5 }}
+                  whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  See Bounties
+                </motion.button>
+              </Link>
             </div>
           </div>
 

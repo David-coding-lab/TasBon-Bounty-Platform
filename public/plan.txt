@@ -1,0 +1,5 @@
+error boundry
+protected route 
+auth gate
+loading in landing to load logged in user
+404 page
