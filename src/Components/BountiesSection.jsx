@@ -16,6 +16,7 @@ const bounties = [
     tag: 'DeFi',
     verified: true,
     image: ProfileOne,
+    status: 'Open',
   },
 
   {
@@ -27,6 +28,7 @@ const bounties = [
     tag: 'Analytics',
     verified: true,
     image: ProfileTwo,
+    status: 'Open',
   },
 
   {
@@ -38,6 +40,7 @@ const bounties = [
     tag: 'Frontend',
     verified: false,
     image: ProfileThree,
+    status: 'Open',
   },
 
   {
@@ -49,6 +52,7 @@ const bounties = [
     tag: 'Web3',
     verified: true,
     image: ProfileFour,
+    status: 'Open',
   },
 ]
 
@@ -99,6 +103,7 @@ export default function BountiesSection() {
               }}
               whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
             >
+              <Link to="/bounties">
               {/*Card Header */}
               <div className="flex p-2 mb-3">
                 <div className="gap-3 flex">
@@ -130,7 +135,7 @@ export default function BountiesSection() {
 
                 <div className="self-center ml-auto px-3 py-1 bg-[#E6F6E2] rounded-2xl">
                   <p className="font-sora text-[10px] font-semibold m-0 p-0 text-[#24884D]">
-                    Open
+                    {b.status}
                   </p>
                 </div>
               </div>
@@ -192,6 +197,7 @@ export default function BountiesSection() {
                   </button>
                 </div>
               </div>
+              </Link>
             </motion.div>
           ))}
         </motion.div>
@@ -199,7 +205,9 @@ export default function BountiesSection() {
         {/* CTA */}
         <div className="text-center">
           <button className="text-emerald-600 font-semibold text-sm hover:underline cursor-pointer">
+            <Link to="/bounties">
             Explore all bounties →
+            </Link>
           </button>
         </div>
       </div>

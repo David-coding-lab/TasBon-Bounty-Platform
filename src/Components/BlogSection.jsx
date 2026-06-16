@@ -74,7 +74,9 @@ export default function BlogSection() {
               whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
               whileTap={{ scale: 0.95 }}
             >
+              <Link to="/blog">
               View more
+              </Link>
             </motion.button>
           </div>
 
@@ -126,7 +128,9 @@ export default function BlogSection() {
                     {post.title}
                   </h3>
                   <span className="text-xs text-emerald-600 font-semibold hover:underline">
+                    <Link to="/blog">
                     Read More →
+                    </Link>
                   </span>
                 </div>
               </motion.div>

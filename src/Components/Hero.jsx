@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { TypeAnimation } from 'react-type-animation'
 import Illustration from '../Assets/Illustration.png'
+import { Link } from 'react-router-dom';
 
 export default function Hero() {
   return (
@@ -91,7 +92,7 @@ export default function Hero() {
                 whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
                 whileTap={{ scale: 0.95 }}
               >
-                Join the Hunt
+                <Link to="/sign-up">Join the Hunt</Link>
               </motion.button>
               <motion.button
                 className="border border-gray-200 cursor-pointer hover:border-gray-300 text-gray-700 font-semibold px-6 py-3 rounded-3xl transition-colors text-sm"
@@ -101,7 +102,7 @@ export default function Hero() {
                 whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
                 whileTap={{ scale: 0.95 }}
               >
-                See Hackathons
+                <Link to="/bounties">See Bounties</Link>
               </motion.button>
             </div>
           </div>
