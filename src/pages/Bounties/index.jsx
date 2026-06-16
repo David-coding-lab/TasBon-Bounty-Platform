@@ -236,12 +236,17 @@ export default function Bounties() {
   const [searchParams] = useSearchParams()
   const [activeFilter, setActiveFilter] = useState('All')
   const [searchQuery, setSearchQuery] = useState('')
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [])
+
   const [activeSort, setActiveSort] = useState('newest')
   const [sortOpen, setSortOpen] = useState(false)
   const sortRef = useRef(null)
 
   useEffect(() => {
     const category = searchParams.get('category')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
     if (category && filters.includes(category)) {
       setActiveFilter(category)
       console.log('Category from URL:', category)
@@ -282,7 +287,7 @@ export default function Bounties() {
           <img
             src={Glow}
             alt=""
-            className="absolute right-1/2 translate-x-250 top-75 -translate-y-1/2 w-[750px] pointer-events-none select-none"
+            className="absolute right-1/2 translate-x-250 top-75 -translate-y-1/2 w-187.5 pointer-events-none select-none"
           />
           <div className="flex flex-col items-start pl-40 pt-5">
             <h1 className="text-[80px] leading-none font-sora font-bold text-center mt-20 text-[#0E4E2F]">
@@ -327,7 +332,7 @@ export default function Bounties() {
                 {filter}
               </button>
             ))}
-            <div className="relative z-10 ml-auto" ref={sortRef}>
+            <div className="relative z-50 ml-auto" ref={sortRef}>
               <button
                 onClick={() => setSortOpen(!sortOpen)}
                 className="flex items-center gap-2 px-5 py-2 rounded-2xl text-sm font-medium border border-black/30 bg-white text-black cursor-pointer hover:bg-gray-50 transition-colors"
@@ -346,7 +351,7 @@ export default function Bounties() {
                 </svg>
               </button>
               {sortOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden">
+                <div className="absolute right-0 bottom-full mb-2 w-48 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden">
                   {sortOptions.map((option) => (
                     <button
                       key={option.value}

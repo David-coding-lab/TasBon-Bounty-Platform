@@ -21,6 +21,7 @@ import Bounties from './pages/Bounties'
 import Blogs from './pages/Blogs'
 import Hackathons from './pages/Hackathons/Index'
 import { useState } from 'react'
+import Grants from './pages/Grants'
 
 function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(true)
@@ -83,6 +84,7 @@ function App() {
         <Route path="/bounties" element={<Bounties />} />
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/hackathons" element={<Hackathons />} />
+        <Route path="/grants" element={<Grants />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reset-password/:token" element={<SignUp />} />

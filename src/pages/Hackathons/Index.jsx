@@ -8,6 +8,7 @@ export default function Hackathons() {
       <ComingSoon
         title="Hackathons are coming soon!"
         description="We're working hard to bring you an amazing hackathon experience. Stay tuned for updates!"
+        key="hackathons-coming-soon"
       />
     </div>
   )
