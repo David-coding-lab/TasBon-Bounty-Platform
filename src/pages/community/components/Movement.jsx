@@ -1,6 +1,7 @@
 import React from 'react'
 import { Zap, Users, ArrowRight } from 'lucide-react'
 import movementGraphicImg from '../assets/movement_graphic.png'
+import { Link } from 'react-router-dom'
 
 export default function Movement() {
   return (
@@ -22,7 +23,7 @@ export default function Movement() {
             {/* Info Cards Grid */}
             <div className="grid sm:grid-cols-2 gap-6 w-full mb-10">
               {/* Card 1 */}
-              <div className="p-6 rounded-2xl bg-white/[0.03] border border-white/5 hover:border-[#34A563]/20 transition-all duration-300">
+              <div className="p-6 rounded-2xl bg-white/3 border border-white/5 hover:border-[#34A563]/20 transition-all duration-300">
                 <div className="w-10 h-10 rounded-xl bg-[#34A563]/10 border border-[#34A563]/20 flex items-center justify-center text-[#34A563] mb-5">
                   <Zap className="w-5 h-5 fill-[#34A563]/10" />
                 </div>
@@ -36,7 +37,7 @@ export default function Movement() {
               </div>
 
               {/* Card 2 */}
-              <div className="p-6 rounded-2xl bg-white/[0.03] border border-white/5 hover:border-[#34A563]/20 transition-all duration-300">
+              <div className="p-6 rounded-2xl bg-white/3 border border-white/5 hover:border-[#34A563]/20 transition-all duration-300">
                 <div className="w-10 h-10 rounded-xl bg-[#34A563]/10 border border-[#34A563]/20 flex items-center justify-center text-[#34A563] mb-5">
                   <Users className="w-5 h-5" />
                 </div>
@@ -52,14 +53,16 @@ export default function Movement() {
 
             {/* CTA Button - Black text on green background */}
             <button className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#34A563] hover:bg-[#15512e] text-black text-base font-semibold transition-all hover:scale-105 active:scale-95 shadow-sm shadow-primary/20 cursor-pointer border-0">
-              <span>Explore Hackathons</span>
+              <Link to="/signup">
+                <span>Sign up now</span>
+              </Link>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
 
           {/* Right Column: Abstract Graphic */}
           <div className="lg:col-span-5 flex justify-center items-center">
-            <div className="w-full max-w-[420px] lg:max-w-none hover:scale-105 transition-transform duration-500 ease-out">
+            <div className="w-full max-w-105 lg:max-w-none hover:scale-105 transition-transform duration-500 ease-out">
               <img
                 src={movementGraphicImg}
                 alt="TASBUN three-people abstract community graphic"

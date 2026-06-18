@@ -8,7 +8,7 @@ export default function FAQ() {
     {
       question: 'What is TASBUN?',
       answer:
-        'TASBUN is a global collaborative platform built specifically for web3 builders, creators, and problem solvers. It provides a unified portal for participating in hackathons, working on active bounties, and securing grants from ecosystem companies.',
+        'TASBUN is a global collaborative platform built specifically for builders creators, and problem solvers. It provides a unified portal for participating in hackathons, working on active bounties, and securing grants from ecosystem companies.',
     },
     {
       question: 'How do I participate in hackathons?',
@@ -28,7 +28,7 @@ export default function FAQ() {
     {
       question: 'Is it free to join the community?',
       answer:
-        'Yes! TASBUN is fully open and free for creators and developers. You can join the developer guild, start contributing immediately, and build a verified reputational CV.',
+        'Yes! TASBUN is fully open and free for creators and developers. You can join the developer guild, start contributing immediately, and build a verified reputational Portfolio.',
     },
     {
       question: 'How do I build my builder profile?',

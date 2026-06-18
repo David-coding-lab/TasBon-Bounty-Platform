@@ -1,7 +1,17 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import teamAmioImg from '../assets/team_amio.png'
-import teamTobiImg from '../assets/team_tobi.png'
+import teamTobiImg from '../assets/contributors/eter.jpg'
+import teamHenryImg from '../assets/contributors/henry.jpg'
+import teamFavourImg from '../assets/contributors/favour.jpg'
+import teamPhayyImg from '../assets/contributors/fayy.jpg'
+import teamCelestineImg from '../assets/contributors/celestine.jpg'
+import teamSoloImg from '../assets/contributors/solo.jpg'
+import teamEdenImg from '../assets/contributors/eden.jpg'
+import teamAdaImg from '../assets/contributors/ada.jpg'
+import teamSteveImg from '../assets/contributors/steve.png'
+import teamDaveImg from '../assets/contributors/dave.png'
+import teamTimothyImg from '../assets/contributors/timo.jpg'
 
 const TeamMemberCard = ({ member }) => (
   <motion.div
@@ -85,51 +95,101 @@ export default function Team() {
       role: 'Founder & CEO, TASBUN',
       image: teamAmioImg,
       linkedin: 'https://linkedin.com',
-      twitter: 'https://x.com',
-      website: '#',
+      twitter: 'https://x.com/amioantho/',
+      website: 'https://github.com/amio13',
     },
     {
-      name: 'Oluwatobi Ayoola Jolaosha',
-      role: 'Lead Dev Team',
+      name: 'Oluwatobi Ayoola Jolaosho',
+      role: 'Project Manager',
       image: teamTobiImg,
-      linkedin: 'https://linkedin.com',
-      twitter: 'https://x.com',
-      website: '#',
+      linkedin: 'https://linkedin.com/in/oluwatobi-jolaosho-a3b78319a/',
+      twitter: 'https://x.com/fury25423',
+      website: 'https://github.com/codeironside',
     },
     {
-      name: 'Godswill Favour',
-      role: 'Lead Dev Team',
-      image: teamTobiImg,
-      linkedin: 'https://linkedin.com',
-      twitter: 'https://x.com',
-      website: '#',
+      name: 'Eze Chukwuemeka David',
+      role: 'Frontend Lead',
+      image: teamDaveImg,
+      linkedin: 'https://www.linkedin.com/in/eze-chukwuemeka-6b365a29b/',
+      twitter: 'https://x.com/Emekadave01',
+      website: 'https://github.com/David-coding-lab',
+    },
+    {
+      name: 'Chinedu Celestine Okoro',
+      role: 'Backend Lead',
+      image: teamCelestineImg,
+      linkedin: '',
+      twitter: 'https://x.com/c3o_git',
+      website: 'https://github.com/c3o-git',
+    },
+
+    {
+      name: 'Okoro Henry',
+      role: 'Frontend Engineer',
+      image: teamHenryImg,
+      linkedin: 'https://www.linkedin.com/in/henry-ifeanyi-3a21a7417/',
+      twitter: 'https://x.com/Histoblogq',
+      website: 'https://github.com/henry-pixel-dev',
+    },
+    {
+      name: 'Okechukwu Solomon Chiemezie',
+      role: 'Adaptive Web Developer',
+      image: teamSoloImg,
+      linkedin: 'https://linkedin.com/in/okechukwu-solomon-7a5ba925a/',
+      twitter: 'https://x.com/solomon1249093',
+      website: 'https://github.com/okesolo',
+    },
+    {
+      name: 'Chikebe Chukwudiebube Timothy',
+      role: 'Backend Engineer',
+      image: teamTimothyImg,
+      linkedin: 'https://linkedin.com/Chikebetimothy',
+      twitter: 'https://x.com/replytim001',
+      website: 'https://github.com/timothyfranx',
+    },
+    {
+      name: 'Ada Nwankwo',
+      role: 'Frontend & AI Engineer',
+      image: teamAdaImg,
+      linkedin: 'https://gitHub.com/adaalex123',
+      twitter: 'https://x.com/ada_theanalyst',
+      website:
+        'https://www.instagram.com/becomingwithada?igsh=YnZsNnV3cHNkeWV6&utm_source=qr',
     },
   ]
 
   const bottomRow = [
     {
-      name: 'Okoro Henry',
-      role: 'Lead Dev Team',
-      image: teamTobiImg,
-      linkedin: 'https://linkedin.com',
-      twitter: 'https://x.com',
-      website: '#',
+      name: 'Godswill Favour',
+      role: 'Design Team Lead',
+      image: teamFavourImg,
+      linkedin: 'https://linkedin.com/in/nzubefavour/',
+      twitter: 'https://x.com/godswillfavou13',
+      website: 'https://github.com/Godswillphavor',
     },
     {
-      name: 'Okechukwu Solomon Chiemezie',
-      role: 'Founder & CEO, TASBUN',
-      image: teamTobiImg,
-      linkedin: 'https://linkedin.com',
-      twitter: 'https://x.com',
-      website: '#',
+      name: 'Blessed Omoriyekemwen Eden',
+      role: 'UI/UX Designer',
+      image: teamEdenImg,
+      linkedin: 'https://linkedin.com/in/eden-frank-518a74408',
+      twitter: 'https://x.com/EdenB64539',
+      website: 'https://tikTok.com/@edencreates4',
     },
     {
-      name: 'Chikebe Chukwudiebube Timothy',
-      role: 'Founder & CEO, TASBUN',
-      image: teamAmioImg,
-      linkedin: 'https://linkedin.com',
-      twitter: 'https://x.com',
-      website: '#',
+      name: 'Igwe Favour',
+      role: 'UI/UX Designer',
+      image: teamPhayyImg,
+      linkedin: 'https://linkedin.com/in/igwe-favour-938a4a367/',
+      twitter: 'https://x.com/Phayyydesigns',
+      website: 'https://instagram.com/phayyy_ux?igsh=NHo2ZzNibDN0ejN5',
+    },
+    {
+      name: 'Omoriyekemwen Steven',
+      role: 'UI/UX Designer',
+      image: teamSteveImg,
+      linkedin: '',
+      twitter: 'https://x.com/stemage_',
+      website: '',
     },
   ]
 

@@ -1,11 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import Cookies from 'js-cookie'
 import './login.css'
 import HeroBg from './Assets/Hero-bg.png'
 import ForgetPassword from './componenet/ForgetPassword'
 import ErrorUi from './componenet/ErrorUi'
 import { loginUser } from './Api'
 import { loginWithPrivy } from './Api/privy'
+import { loginSuccess } from '../../store/slices/authSlice'
 import { toast } from 'sonner'
 import { loginSchema } from './schema'
 import { usePrivy } from '@privy-io/react-auth'
@@ -70,7 +73,13 @@ const EyeOff = () => (
 
 function SignIn() {
   const navigate = useNavigate()
-  const { getAccessToken, ready, authenticated, login: openPrivyModal } = usePrivy()
+  const dispatch = useDispatch()
+  const {
+    getAccessToken,
+    ready,
+    authenticated,
+    login: openPrivyModal,
+  } = usePrivy()
 
   const [showPassword, setShowPassword] = useState(false)
   const [passwordType, setPasswordType] = useState('password')
@@ -87,7 +96,9 @@ function SignIn() {
   const mountedRef = useRef(true)
 
   useEffect(() => {
-    return () => { mountedRef.current = false }
+    return () => {
+      mountedRef.current = false
+    }
   }, [])
 
   useEffect(() => {
@@ -97,8 +108,9 @@ function SignIn() {
       setWaitingForPrivyAuth(false)
       try {
         const privyToken = await getAccessToken()
-        await loginWithPrivy(privyToken)
+        const data = await loginWithPrivy(privyToken)
         if (!mountedRef.current) return
+        dispatch(loginSuccess({ user: data.user, token: data.accessToken }))
         toast.success('Logged in successfully')
         navigate('/dashboard')
       } catch (err) {
@@ -140,6 +152,13 @@ function SignIn() {
       const result = await loginUser(userEmail, password)
 
       if (result.success) {
+        const { user, accessToken } = result.data.data || result.data
+        Cookies.set('session', accessToken, {
+          expires: 1 / 96,
+          secure: true,
+          sameSite: 'Strict',
+        })
+        dispatch(loginSuccess({ user, token: accessToken }))
         toast.success('Logged in successfully')
         navigate('/dashboard')
       } else {
@@ -167,6 +186,10 @@ function SignIn() {
   const handlePrivyLogin = async () => {
     setOauthLoading('privy')
     try {
+      if (authenticated) {
+        setWaitingForPrivyAuth(true)
+        return
+      }
       await openPrivyModal({ loginMethods: ['email'] })
       setWaitingForPrivyAuth(true)
     } catch (err) {
@@ -179,7 +202,7 @@ function SignIn() {
   const socialLoading = oauthLoading !== null
 
   return (
-    <div className="bg-white flex w-full min-h-screen overflow-x-hidden">
+    <div className="bg-white flex w-full h-screen overflow-hidden">
       {showError && (
         <ErrorUi
           message={errorMessage}
@@ -198,7 +221,7 @@ function SignIn() {
       )}
 
       {/* Left Image */}
-      <div className="hidden lg:flex lg:w-1/2 min-h-screen">
+      <div className="hidden lg:flex lg:w-1/2 h-screen">
         <img
           src={HeroBg}
           alt="Hero Background"
@@ -207,7 +230,7 @@ function SignIn() {
       </div>
 
       {/* Right Form */}
-      <div className="w-full lg:w-1/2 min-h-screen flex items-center justify-center overflow-y-auto">
+      <div className="w-full lg:w-1/2 h-screen flex items-center justify-center">
         <div className="w-full max-w-lg px-6 sm:px-8 md:px-12 py-8">
           <div className="header">
             <h2 className="text-3xl sm:text-4xl md:text-4xl font-bold font-sora leading-tight">

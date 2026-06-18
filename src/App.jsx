@@ -1,6 +1,10 @@
 import './App.css'
-import { Navigate, Route, Routes } from 'react-router-dom'
-import { PrivyProvider } from '@privy-io/react-auth'
+import { useEffect } from 'react'
+import { Route, Routes } from 'react-router-dom'
+import { PrivyProvider, usePrivy } from '@privy-io/react-auth'
+import { useDispatch, useSelector } from 'react-redux'
+import { hydrateSession, loginSuccess } from './store/slices/authSlice'
+import { loginWithPrivy } from './Features/SignIn/Api/privy'
 import SignIn from './Features/SignIn/Index'
 import SignUp from './Features/SignUp/Index'
 import VerifyEmail from './Features/verify-email'
@@ -20,26 +24,92 @@ import Layout from './Features/Dashboard/Layout'
 import Bounties from './pages/Bounties'
 import Blogs from './pages/Blogs'
 import Hackathons from './pages/Hackathons/Index'
-import { useState } from 'react'
 import Grants from './pages/Grants'
+import NotFound from './pages/NotFound'
+import ErrorBoundary from './Components/Ui/ErrorBoundary'
+import ProtectedRoute from './Components/auth/ProtectedRoute'
+import AuthGate from './Components/auth/AuthGate'
 
 function Home() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true)
   return (
     <div className="min-h-screen bg-[#F0FAF4] font-sans antialiased">
       <Navbar />
       <main>
-        <Hero isLoggedIn={isLoggedIn} />
+        <Hero />
         <StatsBar />
         <PlatformShowcase />
         <SimplifySection />
         <BountiesSection />
         <BlogSection />
         <PartnersSection />
-        <CTASection isLoggedIn={isLoggedIn} />
+        <CTASection />
       </main>
       <Footer />
     </div>
+  )
+}
+
+function AppRoutes() {
+  const dispatch = useDispatch()
+  const { loading, isAuthenticated } = useSelector((state) => state.auth)
+  const { ready, authenticated, getAccessToken } = usePrivy()
+
+  useEffect(() => {
+    dispatch(hydrateSession())
+  }, [dispatch])
+
+  // Sync Privy's restored session into Redux
+  useEffect(() => {
+    if (!ready || !authenticated || isAuthenticated) return
+
+    const syncPrivySession = async () => {
+      try {
+        const privyToken = await getAccessToken()
+        const data = await loginWithPrivy(privyToken)
+        dispatch(loginSuccess({ user: data.user, token: data.accessToken }))
+      } catch {
+        // Privy session exists but backend rejected it — no action needed
+      }
+    }
+
+    syncPrivySession()
+  }, [ready, authenticated, isAuthenticated, getAccessToken, dispatch])
+
+  if (loading || (ready && authenticated && !isAuthenticated)) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#F0FAF4]">
+        <div className="w-8 h-8 border-3 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    )
+  }
+
+  return (
+    <Routes>
+      {/* Public routes */}
+      <Route path="/" element={<Home />} />
+      <Route path="/community" element={<CommunityPage />} />
+      <Route path="/bounties" element={<Bounties />} />
+      <Route path="/blogs" element={<Blogs />} />
+      <Route path="/hackathons" element={<Hackathons />} />
+      <Route path="/grants" element={<Grants />} />
+      <Route path="/verify-email" element={<VerifyEmail />} />
+      <Route path="/reset-password/:token" element={<SignUp />} />
+
+      {/* Auth pages — redirect to dashboard if already logged in */}
+      <Route element={<AuthGate />}>
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
+      </Route>
+
+      {/* Protected — require auth */}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/dashboard" element={<Layout />}>
+          <Route index element={<Dashboard />} />
+        </Route>
+      </Route>
+
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   )
 }
 
@@ -65,33 +135,20 @@ function App() {
   }
 
   return (
-    <PrivyProvider
-      appId={PRIVY_APP_ID}
-      config={{
-        loginMethods: ['email'],
-        appearance: {
-          theme: 'light',
-          accentColor: '#16a34a', // green-600 — matches TASBUN brand
-        },
-      }}
-    >
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<Layout />}>
-          <Route index element={<Dashboard />} />
-        </Route>
-        <Route path="/community" element={<CommunityPage />} />
-        <Route path="/bounties" element={<Bounties />} />
-        <Route path="/blogs" element={<Blogs />} />
-        <Route path="/hackathons" element={<Hackathons />} />
-        <Route path="/grants" element={<Grants />} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/reset-password/:token" element={<SignUp />} />
-        <Route path="/verify-email" element={<VerifyEmail />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </PrivyProvider>
+    <ErrorBoundary>
+      <PrivyProvider
+        appId={PRIVY_APP_ID}
+        config={{
+          loginMethods: ['email'],
+          appearance: {
+            theme: 'light',
+            accentColor: '#16a34a',
+          },
+        }}
+      >
+        <AppRoutes />
+      </PrivyProvider>
+    </ErrorBoundary>
   )
 }
 

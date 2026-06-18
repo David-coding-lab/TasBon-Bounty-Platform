@@ -14,10 +14,10 @@ export default function Founder() {
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
           <span className="text-[#34A563] text-sm font-bold tracking-wider uppercase block mb-3 font-sans">
-            Director of Ops
+            Meet the
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-black font-sans tracking-tight">
-            Meet the DOO at Tashub
+            Director Of Operations
           </h2>
         </motion.div>
 
@@ -45,7 +45,7 @@ export default function Founder() {
                   Amio Anthony
                 </h3>
                 <span className="text-[#34A563] text-base font-bold font-sans block mb-6">
-                  Director of Operations
+                  Web3 Educator & Software Developer
                 </span>
                 <p className="text-base sm:text-lg text-gray-600 font-sans leading-relaxed">
                   An educator, community builder, and software developer

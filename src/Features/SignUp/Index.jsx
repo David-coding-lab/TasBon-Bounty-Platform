@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import Hero from './Assets/Hero-bg.png'
 import { signUpSchema } from './schema'
 import './index.css'
@@ -8,6 +9,7 @@ import CheckEmail from './Components/CheckEmail'
 import ErrorUi from './Components/ErrorUi'
 import { registerUser } from './Api'
 import { loginWithPrivy } from '../SignIn/Api/privy'
+import { loginSuccess } from '../../store/slices/authSlice'
 import { usePrivy } from '@privy-io/react-auth'
 
 function PrivyIcon() {
@@ -24,7 +26,13 @@ function PrivyIcon() {
 
 function SignUp() {
   const navigate = useNavigate()
-  const { getAccessToken, ready, authenticated, login: openPrivyModal } = usePrivy()
+  const dispatch = useDispatch()
+  const {
+    getAccessToken,
+    ready,
+    authenticated,
+    login: openPrivyModal,
+  } = usePrivy()
 
   const [showError, setShowError] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
@@ -42,13 +50,17 @@ function SignUp() {
   const [showCheckEmail, setShowCheckEmail] = useState(false)
   const [showEmailField, setShowEmailField] = useState(false)
   const [showPasswordField, setShowPasswordField] = useState(false)
-  const [showConfirmPasswordField, setShowConfirmPasswordField] = useState(false)
+  const [showConfirmPasswordField, setShowConfirmPasswordField] =
+    useState(false)
   const [showPasswordVisible, setShowPasswordVisible] = useState(false)
-  const [showConfirmPasswordVisible, setShowConfirmPasswordVisible] = useState(false)
+  const [showConfirmPasswordVisible, setShowConfirmPasswordVisible] =
+    useState(false)
   const mountedRef = useRef(true)
 
   useEffect(() => {
-    return () => { mountedRef.current = false }
+    return () => {
+      mountedRef.current = false
+    }
   }, [])
 
   useEffect(() => {
@@ -58,8 +70,9 @@ function SignUp() {
       setWaitingForPrivyAuth(false)
       try {
         const privyToken = await getAccessToken()
-        await loginWithPrivy(privyToken)
+        const data = await loginWithPrivy(privyToken)
         if (!mountedRef.current) return
+        dispatch(loginSuccess({ user: data.user, token: data.accessToken }))
         toast.success('Account created successfully')
         navigate('/dashboard')
       } catch (err) {
@@ -78,7 +91,8 @@ function SignUp() {
     setFormData((prev) => ({ ...prev, [name]: value }))
     if (name === 'fullName' && value.length >= 3) setShowEmailField(true)
     if (name === 'email' && value.length >= 3) setShowPasswordField(true)
-    if (name === 'password' && value.length >= 3) setShowConfirmPasswordField(true)
+    if (name === 'password' && value.length >= 3)
+      setShowConfirmPasswordField(true)
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }))
   }
 
@@ -113,7 +127,9 @@ function SignUp() {
     } catch (error) {
       const newErrors = {}
       if (error.issues) {
-        error.issues.forEach((issue) => { newErrors[issue.path[0]] = issue.message })
+        error.issues.forEach((issue) => {
+          newErrors[issue.path[0]] = issue.message
+        })
       } else {
         console.error(error.message)
       }
@@ -127,6 +143,10 @@ function SignUp() {
   const handlePrivySignUp = async () => {
     setOauthLoading('privy')
     try {
+      if (authenticated) {
+        setWaitingForPrivyAuth(true)
+        return
+      }
       await openPrivyModal({ loginMethods: ['email'] })
       setWaitingForPrivyAuth(true)
     } catch (err) {
@@ -138,16 +158,48 @@ function SignUp() {
   const socialLoading = oauthLoading !== null
 
   const EyeOpen = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="h-5 w-5"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+      />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+      />
     </svg>
   )
 
   const EyeOff = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029" />
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3l18 18" />
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="h-5 w-5"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029"
+      />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M3 3l18 18"
+      />
     </svg>
   )
 
@@ -157,13 +209,23 @@ function SignUp() {
         <CheckEmail
           email={formData.email}
           onClose={() => setShowCheckEmail(false)}
-          onGoToInbox={() => window.open('https://mail.google.com/', '_blank', 'noopener,noreferrer')}
+          onGoToInbox={() =>
+            window.open(
+              'https://mail.google.com/',
+              '_blank',
+              'noopener,noreferrer',
+            )
+          }
         />
       )}
 
       {/* Left Image */}
       <div className="w-[50vw] h-screen hidden lg:flex">
-        <img src={Hero} alt="Hero Background" className="w-full h-full object-cover" />
+        <img
+          src={Hero}
+          alt="Hero Background"
+          className="w-full h-full object-cover"
+        />
       </div>
 
       {/* Right Form */}
@@ -227,7 +289,9 @@ function SignUp() {
                 disabled={isLoading}
                 className={`w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed ${errors.userName ? 'border-2 border-red-500' : ''}`}
               />
-              {errors.userName && <p className="text-red-500 text-sm mt-1">{errors.userName}</p>}
+              {errors.userName && (
+                <p className="text-red-500 text-sm mt-1">{errors.userName}</p>
+              )}
             </div>
 
             <div>
@@ -240,7 +304,9 @@ function SignUp() {
                 disabled={isLoading}
                 className={`w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed ${errors.fullName ? 'border-2 border-red-500' : ''}`}
               />
-              {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
+              {errors.fullName && (
+                <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>
+              )}
             </div>
 
             {showEmailField && (
@@ -254,7 +320,9 @@ function SignUp() {
                   disabled={isLoading}
                   className={`w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed ${errors.email ? 'border-2 border-red-500' : ''}`}
                 />
-                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                )}
               </div>
             )}
 
@@ -278,7 +346,9 @@ function SignUp() {
                     {showPasswordVisible ? <EyeOff /> : <EyeOpen />}
                   </button>
                 </div>
-                {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+                {errors.password && (
+                  <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+                )}
               </div>
             )}
 
@@ -300,7 +370,11 @@ function SignUp() {
                 >
                   {showConfirmPasswordVisible ? <EyeOff /> : <EyeOpen />}
                 </button>
-                {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
+                {errors.confirmPassword && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.confirmPassword}
+                  </p>
+                )}
               </div>
             )}
 
@@ -311,7 +385,10 @@ function SignUp() {
             >
               {isLoading ? (
                 <span className="flex items-center gap-2">
-                  <span className="material-symbols-outlined animate-spin" style={{ fontSize: '20px' }}>
+                  <span
+                    className="material-symbols-outlined animate-spin"
+                    style={{ fontSize: '20px' }}
+                  >
                     progress_activity
                   </span>
                   Loading...
@@ -324,7 +401,10 @@ function SignUp() {
 
           <div className="text-center text-sm text-gray-500 mt-4">
             Already a Bounty Hunter?
-            <Link to="/signin" className="text-green-600 hover:underline font-medium ms-1">
+            <Link
+              to="/signin"
+              className="text-green-600 hover:underline font-medium ms-1"
+            >
               Sign In
             </Link>
           </div>
