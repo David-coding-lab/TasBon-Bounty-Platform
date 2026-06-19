@@ -18,10 +18,12 @@ import CommunityPage from './pages/community/index'
 import Dashboard from './Features/Dashboard/Pages/Home'
 import Layout from './Features/Dashboard/Layout'
 import Bounties from './pages/Bounties'
+import DashBounties from './Features/Dashboard/Pages/Bounties/index'
 import Blogs from './pages/Blogs'
 import Hackathons from './pages/Hackathons/Index'
 import { useState } from 'react'
 import Grants from './pages/Grants'
+import ViewBounty from './Features/Dashboard/Pages/Bounties/components/ui/ViewBounty'
 
 function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(true)
@@ -79,6 +81,11 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Layout />}>
           <Route index element={<Dashboard />} />
+          <Route path="/dashboard/bounties" element={<DashBounties />} />
+          <Route
+            path="/dashboard/bounties/view-bounty"
+            element={<ViewBounty />}
+          />
         </Route>
         <Route path="/community" element={<CommunityPage />} />
         <Route path="/bounties" element={<Bounties />} />

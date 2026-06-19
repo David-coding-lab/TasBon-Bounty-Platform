@@ -1,4 +1,5 @@
 import React from 'react'
+import { TypeAnimation } from 'react-type-animation'
 import { TrendingUp, MoreHorizontal } from 'lucide-react'
 
 /* Hero section — welcome greeting, subtitle, and stat cards */
@@ -29,7 +30,14 @@ const Hero = () => {
             <TrendingUp className="w-5 h-5 text-[#4A5565]" />
           </div>
           {/* Value */}
-          <p className="text-[#0A0A0A] text-2xl font-bold">$2,450.00</p>
+          <p className="text-[#0A0A0A] text-2xl font-bold">
+            <TypeAnimation
+              sequence={['$0.00', 1000, '$2,450.00', 1000]}
+              speed={50}
+              cursor={false}
+              repeat={0}
+            />
+          </p>
           {/* Change indicator */}
           <p className="text-sm text-[#009966]">+9.5% this month</p>
         </div>
@@ -66,7 +74,14 @@ const Hero = () => {
             <span className="text-sm text-[#4A5565]">Success Rate</span>
           </div>
           {/* Value */}
-          <p className="text-[#0A0A0A] text-2xl font-bold">78%</p>
+          <p className="text-[#0A0A0A] text-2xl font-bold">
+            <TypeAnimation
+              sequence={['0%', 1500, '78%', 1500]}
+              speed={50}
+              repeat={0}
+              cursor={false}
+            />
+          </p>
           {/* Change indicator */}
           <p className="text-sm text-[#009966]">+5% this month</p>
         </div>
