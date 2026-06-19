@@ -1,6 +1,7 @@
 import './App.css'
 import { useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
+import { Toaster } from 'sonner'
 import { PrivyProvider, usePrivy } from '@privy-io/react-auth'
 import { useDispatch, useSelector } from 'react-redux'
 import { hydrateSession, loginSuccess } from './store/slices/authSlice'
@@ -136,6 +137,7 @@ function App() {
 
   return (
     <ErrorBoundary>
+      <Toaster position="top-right" richColors />
       <PrivyProvider
         appId={PRIVY_APP_ID}
         config={{
