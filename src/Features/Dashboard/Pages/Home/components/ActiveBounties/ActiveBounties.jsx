@@ -90,7 +90,7 @@ const ActiveBounties = () => {
               <td className="text-base text-[#4A5565] p-3">{item.deadline}</td>
               {/* Submit action button */}
               <td className="p-3">
-                <button className="p-3 rounded-2xl bg-[#009966] text-[#FFFFFF] text-base cursor-pointer">
+                <button className="py-2 px-4 rounded-2xl bg-[#009966] text-[#FFFFFF] text-base cursor-pointer">
                   Submit
                 </button>
               </td>
