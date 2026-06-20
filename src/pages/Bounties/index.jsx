@@ -1,17 +1,13 @@
 import { useState, useEffect, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { toast } from 'sonner'
 import Navbar from '../../Components/NavBar'
 import CTASection from '../../Components/Ctasection'
 import Footer from '../../Components/Footer'
 import BountiesCard from '../../Components/Bounties/BountiesCard'
 import Glow from './assets/glow.png'
-
-import MobileAppImg from './assets/mobile-app.svg'
-import ReactComponentImg from './assets/react-component.svg'
-import BrandIdentityImg from './assets/brand-identity.svg'
-import NexusProtocolIcon from './assets/nexus-protocol.svg'
-import LayerOneIcon from './assets/layer-one.svg'
-import DAOCollectiveIcon from './assets/dao-collective.svg'
+import { fetchRecommendedBounties, fetchActiveBounties } from './Api/bounties'
 
 const filters = ['All', 'Design', 'Development', 'Content', 'Others']
 
@@ -19,239 +15,56 @@ const sortOptions = [
   { label: 'Newest', value: 'newest' },
   { label: 'Highest Price', value: 'price-desc' },
   { label: 'Lowest Price', value: 'price-asc' },
-  { label: 'Beginner Friendly', value: 'beginner' },
-  { label: 'Advanced', value: 'advanced' },
 ]
-
-function parsePrice(priceStr) {
-  return parseInt(priceStr.replace(/[^0-9]/g, ''), 10) || 0
-}
-
-const levelOrder = { Beginner: 0, Intermediate: 1, Advanced: 2 }
 
 function sortBounties(bounties, sortValue) {
   const sorted = [...bounties]
   switch (sortValue) {
     case 'price-desc':
-      return sorted.sort((a, b) => parsePrice(b.price) - parsePrice(a.price))
+      return sorted.sort((a, b) => b.rewardAmount - a.rewardAmount)
     case 'price-asc':
-      return sorted.sort((a, b) => parsePrice(a.price) - parsePrice(b.price))
-    case 'beginner':
-      return sorted.sort(
-        (a, b) => (levelOrder[a.level] ?? 1) - (levelOrder[b.level] ?? 1),
-      )
-    case 'advanced':
-      return sorted.sort(
-        (a, b) => (levelOrder[b.level] ?? 1) - (levelOrder[a.level] ?? 1),
-      )
+      return sorted.sort((a, b) => a.rewardAmount - b.rewardAmount)
     default:
       return sorted
   }
 }
 
-const mockBounties = [
-  {
-    headerImg: MobileAppImg,
-    categoryName: 'Smart Contract',
-    title: 'Audit DeFi Protocol Smart Contracts',
-    issuerIcon: NexusProtocolIcon,
-    issuerName: 'Nexus Protocol',
-    price: '$1,200 USDC',
-    level: 'Intermediate',
-  },
-  {
-    headerImg: ReactComponentImg,
-    categoryName: 'Frontend',
-    title: 'Build Analytics Dashboard for DAO',
-    issuerIcon: LayerOneIcon,
-    issuerName: 'LayerOne',
-    price: '$750 USDC',
-    level: 'Intermediate',
-  },
-  {
-    headerImg: BrandIdentityImg,
-    categoryName: 'Web3',
-    title: 'Integrate Wallet Connect for Web App',
-    issuerIcon: DAOCollectiveIcon,
-    issuerName: 'DAO Collective',
-    price: '$600 USDC',
-    level: 'Beginner',
-  },
-  {
-    headerImg: MobileAppImg,
-    categoryName: 'Design',
-    title: 'Redesign NFT Marketplace Landing Page',
-    issuerIcon: NexusProtocolIcon,
-    issuerName: 'Nexus Protocol',
-    price: '$900 USDC',
-    level: 'Advanced',
-  },
-  {
-    headerImg: ReactComponentImg,
-    categoryName: 'Development',
-    title: 'Build Token Staking Interface',
-    issuerIcon: LayerOneIcon,
-    issuerName: 'LayerOne',
-    price: '$1,500 USDC',
-    level: 'Advanced',
-  },
-  {
-    headerImg: BrandIdentityImg,
-    categoryName: 'Content',
-    title: 'Write Technical Documentation for SDK',
-    issuerIcon: DAOCollectiveIcon,
-    issuerName: 'DAO Collective',
-    price: '$400 USDC',
-    level: 'Beginner',
-  },
-  {
-    headerImg: MobileAppImg,
-    categoryName: 'Smart Contract',
-    title: 'Develop Multi-Sig Wallet Contract',
-    issuerIcon: NexusProtocolIcon,
-    issuerName: 'Nexus Protocol',
-    price: '$2,000 USDC',
-    level: 'Advanced',
-  },
-  {
-    headerImg: ReactComponentImg,
-    categoryName: 'Frontend',
-    title: 'Create Interactive Data Visualization',
-    issuerIcon: LayerOneIcon,
-    issuerName: 'LayerOne',
-    price: '$850 USDC',
-    level: 'Intermediate',
-  },
-  {
-    headerImg: BrandIdentityImg,
-    categoryName: 'Design',
-    title: 'Design Mobile App UI for DeFi Wallet',
-    issuerIcon: DAOCollectiveIcon,
-    issuerName: 'DAO Collective',
-    price: '$1,100 USDC',
-    level: 'Intermediate',
-  },
-  {
-    headerImg: MobileAppImg,
-    categoryName: 'Web3',
-    title: 'Build Cross-Chain Bridge Interface',
-    issuerIcon: NexusProtocolIcon,
-    issuerName: 'Nexus Protocol',
-    price: '$1,800 USDC',
-    level: 'Advanced',
-  },
-  {
-    headerImg: ReactComponentImg,
-    categoryName: 'Content',
-    title: 'Create Video Tutorials for Protocol',
-    issuerIcon: LayerOneIcon,
-    issuerName: 'LayerOne',
-    price: '$500 USDC',
-    level: 'Beginner',
-  },
-  {
-    headerImg: BrandIdentityImg,
-    categoryName: 'Development',
-    title: 'Implement Governance Voting System',
-    issuerIcon: DAOCollectiveIcon,
-    issuerName: 'DAO Collective',
-    price: '$1,400 USDC',
-    level: 'Advanced',
-  },
-  {
-    headerImg: MobileAppImg,
-    categoryName: 'Frontend',
-    title: 'Build Portfolio Tracker Dashboard',
-    issuerIcon: NexusProtocolIcon,
-    issuerName: 'Nexus Protocol',
-    price: '$950 USDC',
-    level: 'Intermediate',
-  },
-  {
-    headerImg: ReactComponentImg,
-    categoryName: 'Smart Contract',
-    title: 'Create ERC-721 Minting Contract',
-    issuerIcon: LayerOneIcon,
-    issuerName: 'LayerOne',
-    price: '$1,300 USDC',
-    level: 'Intermediate',
-  },
-  {
-    headerImg: BrandIdentityImg,
-    categoryName: 'Design',
-    title: 'Design Email Templates for Platform',
-    issuerIcon: DAOCollectiveIcon,
-    issuerName: 'DAO Collective',
-    price: '$350 USDC',
-    level: 'Beginner',
-  },
-  {
-    headerImg: MobileAppImg,
-    categoryName: 'Web3',
-    title: 'Integrate IPFS Storage for dApp',
-    issuerIcon: NexusProtocolIcon,
-    issuerName: 'Nexus Protocol',
-    price: '$700 USDC',
-    level: 'Intermediate',
-  },
-  {
-    headerImg: ReactComponentImg,
-    categoryName: 'Development',
-    title: 'Build Real-Time Notification Service',
-    issuerIcon: LayerOneIcon,
-    issuerName: 'LayerOne',
-    price: '$1,000 USDC',
-    level: 'Intermediate',
-  },
-  {
-    headerImg: BrandIdentityImg,
-    categoryName: 'Content',
-    title: 'Write Whitepaper for New Protocol',
-    issuerIcon: DAOCollectiveIcon,
-    issuerName: 'DAO Collective',
-    price: '$800 USDC',
-    level: 'Advanced',
-  },
-  {
-    headerImg: MobileAppImg,
-    categoryName: 'Frontend',
-    title: 'Create Responsive Admin Panel',
-    issuerIcon: NexusProtocolIcon,
-    issuerName: 'Nexus Protocol',
-    price: '$1,100 USDC',
-    level: 'Intermediate',
-  },
-  {
-    headerImg: ReactComponentImg,
-    categoryName: 'Smart Contract',
-    title: 'Develop Yield Farming Contract',
-    issuerIcon: LayerOneIcon,
-    issuerName: 'LayerOne',
-    price: '$2,500 USDC',
-    level: 'Advanced',
-  },
-]
-
 export default function Bounties() {
   const [searchParams] = useSearchParams()
   const [activeFilter, setActiveFilter] = useState('All')
   const [searchQuery, setSearchQuery] = useState('')
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }, [])
+  const [bounties, setBounties] = useState([])
+  const [loading, setLoading] = useState(true)
+  const { isAuthenticated } = useSelector((state) => state.auth)
 
   const [activeSort, setActiveSort] = useState('newest')
   const [sortOpen, setSortOpen] = useState(false)
   const sortRef = useRef(null)
 
   useEffect(() => {
-    const category = searchParams.get('category')
     window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [])
+
+  useEffect(() => {
+    const category = searchParams.get('category')
     if (category && filters.includes(category)) {
       setActiveFilter(category)
-      console.log('Category from URL:', category)
     }
   }, [searchParams])
+
+  useEffect(() => {
+    const fetchFn = isAuthenticated
+      ? fetchRecommendedBounties
+      : fetchActiveBounties
+
+    fetchFn()
+      .then((res) => setBounties(res.data))
+      .catch((err) => {
+        toast.error(err.message || 'Failed to load bounties')
+        setBounties([])
+      })
+      .finally(() => setLoading(false))
+  }, [isAuthenticated])
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -264,14 +77,17 @@ export default function Bounties() {
   }, [])
 
   const filteredBounties = sortBounties(
-    mockBounties.filter((bounty) => {
+    bounties.filter((bounty) => {
+      const category = bounty.category || ''
       const matchesCategory =
-        activeFilter === 'All' || bounty.categoryName === activeFilter
+        activeFilter === 'All' || category === activeFilter
       const matchesSearch =
         !searchQuery ||
         bounty.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        bounty.issuerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        bounty.categoryName.toLowerCase().includes(searchQuery.toLowerCase())
+        (bounty.clientName || '')
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()) ||
+        category.toLowerCase().includes(searchQuery.toLowerCase())
       return matchesCategory && matchesSearch
     }),
     activeSort,
@@ -375,29 +191,55 @@ export default function Bounties() {
         </div>
 
         <div className="max-w-6xl mx-auto mb-10 px-4 sm:px-6 mt-12">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {filteredBounties.map((bounty, index) => (
-              <BountiesCard
-                key={index}
-                headerImg={bounty.headerImg}
-                categoryName={bounty.categoryName}
-                title={bounty.title}
-                issuerIcon={bounty.issuerIcon}
-                issuerName={bounty.issuerName}
-                price={bounty.price}
-                level={bounty.level}
-              />
-            ))}
-          </div>
-          {filteredBounties.length === 0 && (
-            <div className="text-center py-16">
-              <p className="text-gray-500 text-lg font-sora">
-                No bounties found
-              </p>
-              <p className="text-gray-400 text-sm mt-2">
-                Try adjusting your search or filters
-              </p>
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="flex flex-col gap-2 border border-[#E5E7EB] rounded-2xl overflow-hidden animate-pulse"
+                >
+                  <div className="w-full h-40 bg-gray-200" />
+                  <div className="p-3 space-y-3">
+                    <div className="h-3 bg-gray-200 rounded w-1/3" />
+                    <div className="h-5 bg-gray-200 rounded w-3/4" />
+                    <div className="h-3 bg-gray-200 rounded w-1/2" />
+                    <div className="h-6 bg-gray-200 rounded w-1/3" />
+                    <div className="h-10 bg-gray-200 rounded w-full" />
+                  </div>
+                </div>
+              ))}
             </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                {filteredBounties.map((bounty) => (
+                  <BountiesCard
+                    key={bounty.id}
+                    headerImg={bounty.clientAvatar}
+                    categoryName={bounty.category || ''}
+                    title={bounty.title}
+                    issuerIcon={bounty.clientAvatar}
+                    issuerName={bounty.clientName}
+                    price={`$${bounty.rewardAmount} ${bounty.rewardToken}`}
+                    level={bounty.difficulty || ''}
+                  />
+                ))}
+              </div>
+              {filteredBounties.length === 0 && (
+                <div className="text-center py-16">
+                  <p className="text-gray-500 text-lg font-sora">
+                    {isAuthenticated
+                      ? 'No bounties found'
+                      : 'Sign in to see active bounties'}
+                  </p>
+                  <p className="text-gray-400 text-sm mt-2">
+                    {isAuthenticated
+                      ? 'Try adjusting your search or filters'
+                      : 'Log in to access bounty listings'}
+                  </p>
+                </div>
+              )}
+            </>
           )}
           <div className="flex justify-center mt-10">
             <button className="px-8 py-3 rounded-xl text-sm font-medium border border-[#009966] text-[#009966] bg-white hover:bg-[#f0faf4] transition-colors cursor-pointer">

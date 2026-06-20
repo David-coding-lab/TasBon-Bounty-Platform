@@ -2,8 +2,10 @@ import { motion } from 'framer-motion'
 import { TypeAnimation } from 'react-type-animation'
 import Illustration from '../Assets/Illustration.png'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
-export default function Hero({ isLoggedIn }) {
+export default function Hero() {
+  const { isAuthenticated: isLoggedIn } = useSelector((state) => state.auth)
   return (
     <section className="bg-[#F0FAF4] py-16 md:py-24 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

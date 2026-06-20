@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
-export default function CTASection({ isLoggedIn }) {
+export default function CTASection() {
+  const { isAuthenticated: isLoggedIn } = useSelector((state) => state.auth)
   return (
     <section className="py-20 bg-[#154E2C]">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
