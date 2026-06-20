@@ -1,30 +1,60 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import { toast } from 'sonner'
 import { fetchRecommendedBounties } from '../pages/Bounties/Api/bounties'
 
 import '../index.css'
 
+const CACHE_KEY = 'bounties_recommended'
+const CACHE_TTL = 3 * 60 * 60 * 1000
+
+function getCached() {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY)
+    if (!raw) return null
+    const { data, timestamp } = JSON.parse(raw)
+    if (Date.now() - timestamp > CACHE_TTL) {
+      localStorage.removeItem(CACHE_KEY)
+      return null
+    }
+    return data
+  } catch {
+    return null
+  }
+}
+
+function setCache(data) {
+  try {
+    localStorage.setItem(
+      CACHE_KEY,
+      JSON.stringify({ data, timestamp: Date.now() }),
+    )
+  } catch {}
+}
+
 export default function BountiesSection() {
-  const [bounties, setBounties] = useState([])
+  const [bounties, setBounties] = useState(() => getCached() || [])
   const [loading, setLoading] = useState(true)
-  const { isAuthenticated } = useSelector((state) => state.auth)
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    const cached = getCached()
+    if (cached) {
+      setBounties(cached)
       setLoading(false)
       return
     }
     fetchRecommendedBounties()
-      .then((res) => setBounties(res.data))
+      .then((res) => {
+        setBounties(res.data)
+        setCache(res.data)
+      })
       .catch((err) => {
         toast.error(err.message || 'Failed to load bounties')
         setBounties([])
       })
       .finally(() => setLoading(false))
-  }, [isAuthenticated])
+  }, [])
 
   return (
     <section className="py-20 bg-white">
@@ -168,13 +198,10 @@ export default function BountiesSection() {
               ))}
         </motion.div>
 
-        {/* Empty state for unauthenticated users */}
         {!loading && bounties.length === 0 && (
           <div className="text-center py-8">
             <p className="text-gray-500 text-sm">
-              {isAuthenticated
-                ? 'No recommended bounties right now.'
-                : 'Sign in to see bounties recommended for you.'}
+              No recommended bounties right now.
             </p>
           </div>
         )}
