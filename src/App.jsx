@@ -23,11 +23,9 @@ import CommunityPage from './pages/community/index'
 import Dashboard from './Features/Dashboard/Pages/Home'
 import Layout from './Features/Dashboard/Layout'
 import Bounties from './pages/Bounties'
-import DashBounties from './Features/Dashboard/Pages/Bounties/index'
 import Blogs from './pages/Blogs'
 import Hackathons from './pages/Hackathons/Index'
 import Grants from './pages/Grants'
-import ViewBounty from './Features/Dashboard/Pages/Bounties/components/ui/ViewBounty'
 import NotFound from './pages/NotFound'
 import ErrorBoundary from './Components/Ui/ErrorBoundary'
 import ProtectedRoute from './Components/auth/ProtectedRoute'
@@ -138,38 +136,6 @@ function App() {
   }
 
   return (
-    <PrivyProvider
-      appId={PRIVY_APP_ID}
-      config={{
-        loginMethods: ['email'],
-        appearance: {
-          theme: 'light',
-          accentColor: '#16a34a', // green-600 — matches TASBUN brand
-        },
-      }}
-    >
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<Layout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="/dashboard/bounties" element={<DashBounties />} />
-          <Route
-            path="/dashboard/bounties/view-bounty"
-            element={<ViewBounty />}
-          />
-        </Route>
-        <Route path="/community" element={<CommunityPage />} />
-        <Route path="/bounties" element={<Bounties />} />
-        <Route path="/blogs" element={<Blogs />} />
-        <Route path="/hackathons" element={<Hackathons />} />
-        <Route path="/grants" element={<Grants />} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/reset-password/:token" element={<SignUp />} />
-        <Route path="/verify-email" element={<VerifyEmail />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </PrivyProvider>
     <ErrorBoundary>
       <Toaster position="top-right" richColors />
       <PrivyProvider
