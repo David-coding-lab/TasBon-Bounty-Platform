@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import DashboardVideo from '../Assets/videos/dashBoard.mp4'
+import DashboardVideo from '../Assets/videos/dashboardPreview.mp4'
 
 export default function PlatformShowcase() {
   return (
@@ -33,10 +33,11 @@ export default function PlatformShowcase() {
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
         >
+          {/* Dashboard preview video — fits container width, no zoom */}
           <div className="flex justify-center">
             <video
               src={DashboardVideo}
-              className="w-[110%] min-w-[110%] rounded-2xl shadow-lg h-auto object-cover"
+              className="w-full h-auto rounded-2xl shadow-lg object-contain"
               autoPlay
               loop
               muted

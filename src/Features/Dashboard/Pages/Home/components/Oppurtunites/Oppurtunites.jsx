@@ -10,7 +10,7 @@ const opportunityCards = [
     description: 'Build, compete and win exciting prizes.',
     icon: Trophy,
     linkText: 'Explore hackathons',
-    linkUrl: '#',
+    linkUrl: '/hackathons',
     color: 'text-[#009966]',
   },
   {
@@ -19,7 +19,7 @@ const opportunityCards = [
     description: 'Get funding to build your ideas and projects.',
     icon: Gift,
     linkText: 'Explore grants',
-    linkUrl: '#',
+    linkUrl: '/grants',
     color: 'text-[#E17100]',
   },
   {
@@ -28,7 +28,7 @@ const opportunityCards = [
     description: 'Find more bounties that match your skills.',
     icon: Search,
     linkText: 'Browse bounties',
-    linkUrl: '#',
+    linkUrl: '/dashboard/bounties',
     color: 'text-[#155DFC]',
   },
 ]

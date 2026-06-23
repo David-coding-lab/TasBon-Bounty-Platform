@@ -1,6 +1,7 @@
 import './App.css'
 import { useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
+import { Toaster } from 'sonner'
 import { PrivyProvider, usePrivy } from '@privy-io/react-auth'
 import { useDispatch, useSelector } from 'react-redux'
 import { hydrateSession, loginSuccess } from './store/slices/authSlice'
@@ -23,6 +24,7 @@ import Dashboard from './Features/Dashboard/Pages/Home'
 import Layout from './Features/Dashboard/Layout'
 import Bounties from './pages/Bounties'
 import Blogs from './pages/Blogs'
+import BlogSlug from './pages/Blogs/Slug'
 import Hackathons from './pages/Hackathons/Index'
 import Grants from './pages/Grants'
 import NotFound from './pages/NotFound'
@@ -90,6 +92,7 @@ function AppRoutes() {
       <Route path="/community" element={<CommunityPage />} />
       <Route path="/bounties" element={<Bounties />} />
       <Route path="/blogs" element={<Blogs />} />
+      <Route path="/blogs/:slug" element={<BlogSlug />} />
       <Route path="/hackathons" element={<Hackathons />} />
       <Route path="/grants" element={<Grants />} />
       <Route path="/verify-email" element={<VerifyEmail />} />
@@ -136,6 +139,7 @@ function App() {
 
   return (
     <ErrorBoundary>
+      <Toaster position="top-right" richColors />
       <PrivyProvider
         appId={PRIVY_APP_ID}
         config={{

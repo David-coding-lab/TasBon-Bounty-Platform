@@ -20,7 +20,7 @@ import Logo from '../../Assets/logo.png'
  */
 const navItems = [
   { icon: Home, label: 'Dashboard', path: '/dashboard' },
-  { icon: Target, label: 'Bounties', path: '/bounties' },
+  { icon: Target, label: 'Bounties', path: '/dashboard/bounties' },
   { icon: FileText, label: 'Application', path: '/application' },
   { icon: Trophy, label: 'Hackathons', path: '/hackathons' },
   { icon: DollarSign, label: 'Grant', path: '/grant' },
@@ -80,7 +80,8 @@ const SideBar = () => {
   return (
     <div className="h-full bg-[#ffffff] flex flex-col">
       {/* Header - Logo and brand name with bottom border and shadow */}
-      <div className="flex items-center gap-2 p-6">
+
+      <Link to="/" className="flex items-center gap-2">
         {/* Logo copied from landing page navbar */}
         <img
           src={Logo}
@@ -91,7 +92,7 @@ const SideBar = () => {
         <span className="font-inter font-bold text-[#009966] text-xl">
           TASBUN
         </span>
-      </div>
+      </Link>
 
       {/* Primary navigation links section - bordered */}
       <div className="w-full px-3 flex flex-col space-y-1 border-b border-gray-200">

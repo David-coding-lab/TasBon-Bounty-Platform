@@ -1,3 +1,0 @@
-protected route 
-auth gate
-loading in landing to load logged in user
