@@ -7,7 +7,7 @@ import CTASection from '../../Components/Ctasection'
 import Footer from '../../Components/Footer'
 import BountiesCard from '../../Components/Bounties/BountiesCard'
 import Glow from './assets/glow.png'
-import { fetchRecommendedBounties, fetchActiveBounties } from './Api/bounties'
+import { fetchActiveBounties } from './Api/bounties'
 
 const filters = ['All', 'Design', 'Development', 'Content', 'Others']
 
@@ -53,18 +53,14 @@ export default function Bounties() {
   }, [searchParams])
 
   useEffect(() => {
-    const fetchFn = isAuthenticated
-      ? fetchRecommendedBounties
-      : fetchActiveBounties
-
-    fetchFn()
+    fetchActiveBounties()
       .then((res) => setBounties(res.data))
       .catch((err) => {
         toast.error(err.message || 'Failed to load bounties')
         setBounties([])
       })
       .finally(() => setLoading(false))
-  }, [isAuthenticated])
+  }, [])
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -228,14 +224,10 @@ export default function Bounties() {
               {filteredBounties.length === 0 && (
                 <div className="text-center py-16">
                   <p className="text-gray-500 text-lg font-sora">
-                    {isAuthenticated
-                      ? 'No bounties found'
-                      : 'Sign in to see active bounties'}
+                    No bounties found
                   </p>
                   <p className="text-gray-400 text-sm mt-2">
-                    {isAuthenticated
-                      ? 'Try adjusting your search or filters'
-                      : 'Log in to access bounty listings'}
+                    Try adjusting your search or filters
                   </p>
                 </div>
               )}
