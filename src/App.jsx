@@ -24,7 +24,6 @@ import Dashboard from './Features/Dashboard/Pages/Home'
 import Layout from './Features/Dashboard/Layout'
 import Bounties from './pages/Bounties'
 import Blogs from './pages/Blogs'
-import BlogSlug from './pages/Blogs/Slug'
 import Hackathons from './pages/Hackathons/Index'
 import Grants from './pages/Grants'
 import NotFound from './pages/NotFound'
@@ -92,7 +91,6 @@ function AppRoutes() {
       <Route path="/community" element={<CommunityPage />} />
       <Route path="/bounties" element={<Bounties />} />
       <Route path="/blogs" element={<Blogs />} />
-      <Route path="/blogs/:slug" element={<BlogSlug />} />
       <Route path="/hackathons" element={<Hackathons />} />
       <Route path="/grants" element={<Grants />} />
       <Route path="/verify-email" element={<VerifyEmail />} />
