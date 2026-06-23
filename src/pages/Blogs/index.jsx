@@ -1,4 +1,3 @@
-import Footer from '../../Components/Footer'
 import Navbar from '../../Components/NavBar'
 import Footer from '../../Components/Footer'
 import { fetchBlogs } from './Api/blogs'
