@@ -98,7 +98,7 @@ const Information = () => {
             <img src={profileImage} alt="Profile" />
           </div>
           {/* Name and role */}
-          <div className="flex flex-col">
+          <div className="flex flex-col hover:cursor-pointer hover:underline hover:text-[#009966]">
             <span className="text-lg text-[#FFFFFF]">Alex Rivera</span>
             <span className="text-sm text-[#A4F4CF]">Builder</span>
           </div>
@@ -151,7 +151,7 @@ const Information = () => {
                 className="w-8 h-8 rounded-full"
               />
               <div className="flex flex-col">
-                <span className="text-base text-[#0A0A0A]">
+                <span className="text-base text-[#0A0A0A] hover:cursor-pointer hover:underline hover:text-[#009966]">
                   {protocol.name}
                 </span>
                 <span className="text-xs text-[#4A5565]">
@@ -177,7 +177,7 @@ const Information = () => {
             return (
               <li
                 key={notification.id}
-                className="flex flex-row gap-2 justify-between items-start"
+                className="flex flex-row gap-2 justify-between items-start "
               >
                 {/* Icon and message */}
                 <div className="flex flex-row gap-2 items-start">
@@ -185,7 +185,7 @@ const Information = () => {
                     size={18}
                     className={`${notification.color} shrink-0 mt-0.5`}
                   />
-                  <span className="text-sm text-[#0A0A0A]">
+                  <span className="text-sm text-[#0A0A0A] hover:cursor-pointer hover:underline hover:text-[#009966]">
                     {notification.message}
                   </span>
                 </div>

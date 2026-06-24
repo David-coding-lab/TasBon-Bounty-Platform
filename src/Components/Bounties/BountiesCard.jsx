@@ -1,5 +1,6 @@
 import React from 'react'
 import { ArrowRight, Circle } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 /* BountiesCard — reusable bounty card used across multiple pages */
 const BountiesCard = ({
@@ -46,9 +47,11 @@ const BountiesCard = ({
 
         {/* Apply button */}
         <button className="bg-[#009966] w-full py-3 flex flex-row items-center justify-center gap-2 rounded-lg cursor-pointer">
-          <span className="text-[#FFFFFF] text-base font-medium">
-            View bounty
-          </span>
+          <Link to="/dashboard/bounties/view-bounty">
+            <span className="text-[#FFFFFF] text-base font-medium">
+              View bounty
+            </span>
+          </Link>
           <ArrowRight className="w-4 h-4 text-[#FFFFFF]" />
         </button>
       </div>

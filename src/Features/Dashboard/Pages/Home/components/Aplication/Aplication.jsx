@@ -109,7 +109,7 @@ const Aplication = () => {
             {applicationData.map((item, index) => (
               <tr key={index} className="border-b border-[#E5E7EB]">
                 {/* Opportunity name */}
-                <td className="text-base text-[#0A0A0A] p-3">
+                <td className="text-base text-[#0A0A0A] p-3 hover:cursor-pointer hover:underline hover:text-[#009966]">
                   {item.opportunity}
                 </td>
                 {/* Type */}
