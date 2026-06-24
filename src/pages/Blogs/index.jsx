@@ -13,6 +13,8 @@ const CATEGORIES = [
 
 import TopSection from './components/TopSection'
 import MiddleSection from './components/MiddleSection'
+import { useSearchParams } from 'react-router-dom'
+import { useCallback, useEffect, useState } from 'react'
 
 export default function Blogs() {
   const [searchParams, setSearchParams] = useSearchParams()
