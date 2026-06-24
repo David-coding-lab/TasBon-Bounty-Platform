@@ -214,6 +214,7 @@ export default function Bounties() {
                     headerImg={bounty.clientAvatar}
                     categoryName={bounty.category || ''}
                     title={bounty.title}
+                    description={bounty.description}
                     issuerIcon={bounty.clientAvatar}
                     issuerName={bounty.clientName}
                     price={`$${bounty.rewardAmount} ${bounty.rewardToken}`}

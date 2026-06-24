@@ -5,7 +5,7 @@ import Footer from '../../Components/Footer'
 import { fetchBlogs } from './Api/blogs'
 import TopSection from './components/TopSection'
 import MiddleSection from './components/MiddleSection'
-import NewsletterBanner from './components/NewsletterBanner'
+
 
 export default function Blogs() {
   const [featured, setFeatured] = useState(null)
@@ -42,7 +42,7 @@ export default function Blogs() {
         <>
           <TopSection featuredPost={featured} />
           <MiddleSection posts={posts} />
-          <NewsletterBanner />
+
         </>
       )}
       <Footer />

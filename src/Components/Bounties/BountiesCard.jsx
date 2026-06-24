@@ -7,6 +7,7 @@ const BountiesCard = ({
   headerImg,
   categoryName,
   title,
+  description,
   issuerIcon,
   issuerName,
   price,
@@ -25,6 +26,12 @@ const BountiesCard = ({
 
         {/* Bounty title — single line with truncation */}
         <p className="text-lg font-semibold text-[#0A0A0A] truncate">{title}</p>
+
+        {description && (
+          <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">
+            {description}
+          </p>
+        )}
 
         {/* Issuer info: icon and name */}
         <div className="flex flex-row space-x-2 items-center">
