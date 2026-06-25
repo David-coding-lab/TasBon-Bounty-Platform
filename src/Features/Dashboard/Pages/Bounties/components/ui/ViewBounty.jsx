@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { ArrowLeft, Circle, Clock, User, Tag, DollarSign, Award } from 'lucide-react'
 import { toast } from 'sonner'
-import { fetchBountyById } from '../../../../../pages/Bounties/Api/bounties'
+import { fetchBountyById } from '../../../../../../pages/Bounties/Api/bounties'
 
 export default function ViewBounty() {
   const { bountyId } = useParams()

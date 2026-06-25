@@ -2,12 +2,12 @@ import React from 'react'
 import NftBanner from '../../components/Information/NftBanner'
 import { useState } from 'react'
 
-import MobileAppImg from '../../../../Pages/Bounties/assets/mobile-app.svg'
-import ReactComponentImg from '../../../../Pages/Bounties/assets/react-component.svg'
-import BrandIdentityImg from '../../../../Pages/Bounties/assets/brand-identity.svg'
-import NexusProtocolIcon from '../../../../Pages/Bounties/assets/nexus-protocol.svg'
-import LayerOneIcon from '../../../../Pages/Bounties/assets/layer-one.svg'
-import DAOCollectiveIcon from '../../../../Pages/Bounties/assets/dao-collective.svg'
+import MobileAppImg from '../../../../pages/Bounties/assets/mobile-app.svg'
+import ReactComponentImg from '../../../../pages/Bounties/assets/react-component.svg'
+import BrandIdentityImg from '../../../../pages/Bounties/assets/brand-identity.svg'
+import NexusProtocolIcon from '../../../../pages/Bounties/assets/nexus-protocol.svg'
+import LayerOneIcon from '../../../../pages/Bounties/assets/layer-one.svg'
+import DAOCollectiveIcon from '../../../../pages/Bounties/assets/dao-collective.svg'
 import BountiesCard from '../../../../Components/Bounties/BountiesCard'
 
 const DashBounties = () => {
