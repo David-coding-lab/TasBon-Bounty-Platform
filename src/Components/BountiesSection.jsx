@@ -120,7 +120,7 @@ export default function BountiesSection() {
                   }}
                   whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
                 >
-                  <Link to="/bounties">
+                  <Link to={`/dashboard/bounties/${b.id}`}>
                     <div className="flex p-2 mb-3">
                       <div className="gap-3 flex">
                         <div className="w-10 h-10 p-0.5 bg-[#E6F6E2] rounded-3xl">
@@ -219,6 +219,10 @@ export default function BountiesSection() {
             Explore all bounties →
           </Link>
         </div>
+
+        <p className="text-center text-xs text-gray-400 mt-2">
+          Click a bounty to view details — sign in to apply.
+        </p>
       </div>
     </section>
   )

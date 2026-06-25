@@ -12,6 +12,7 @@ const BountiesCard = ({
   issuerName,
   price,
   level,
+  bountyId,
 }) => {
   return (
     /* Card container: vertical layout with border and rounded bottom corners */
@@ -53,14 +54,15 @@ const BountiesCard = ({
         </div>
 
         {/* Apply button */}
-        <button className="bg-[#009966] w-full py-3 flex flex-row items-center justify-center gap-2 rounded-lg cursor-pointer">
-          <Link to="/dashboard/bounties/view-bounty">
-            <span className="text-[#FFFFFF] text-base font-medium">
-              View bounty
-            </span>
-          </Link>
+        <Link
+          to={`/dashboard/bounties/${bountyId}`}
+          className="bg-[#009966] w-full py-3 flex flex-row items-center justify-center gap-2 rounded-lg cursor-pointer"
+        >
+          <span className="text-[#FFFFFF] text-base font-medium">
+            View bounty
+          </span>
           <ArrowRight className="w-4 h-4 text-[#FFFFFF]" />
-        </button>
+        </Link>
       </div>
     </div>
   )

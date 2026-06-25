@@ -17,6 +17,7 @@ const DashBounties = () => {
 
   const mockBounties = [
     {
+      id: 1,
       headerImg: MobileAppImg,
       categoryName: 'Smart Contract',
       title: 'Audit DeFi Protocol Smart Contracts',
@@ -27,6 +28,7 @@ const DashBounties = () => {
       level: 'Intermediate',
     },
     {
+      id: 2,
       headerImg: ReactComponentImg,
       categoryName: 'Frontend',
       title: 'Build Analytics Dashboard for DAO',
@@ -37,6 +39,7 @@ const DashBounties = () => {
       level: 'Intermediate',
     },
     {
+      id: 3,
       headerImg: BrandIdentityImg,
       categoryName: 'Web3',
       title: 'Integrate Wallet Connect for Web App',
@@ -47,6 +50,7 @@ const DashBounties = () => {
       level: 'Beginner',
     },
     {
+      id: 4,
       headerImg: MobileAppImg,
       categoryName: 'Design',
       title: 'Redesign NFT Marketplace Landing Page',
@@ -57,6 +61,7 @@ const DashBounties = () => {
       level: 'Advanced',
     },
     {
+      id: 5,
       headerImg: ReactComponentImg,
       categoryName: 'Development',
       title: 'Build Token Staking Interface',
@@ -67,6 +72,7 @@ const DashBounties = () => {
       level: 'Advanced',
     },
     {
+      id: 6,
       headerImg: BrandIdentityImg,
       categoryName: 'Content',
       title: 'Write Technical Documentation for SDK',
@@ -77,6 +83,7 @@ const DashBounties = () => {
       level: 'Beginner',
     },
     {
+      id: 7,
       headerImg: MobileAppImg,
       categoryName: 'Smart Contract',
       title: 'Develop Multi-Sig Wallet Contract',
@@ -87,6 +94,7 @@ const DashBounties = () => {
       level: 'Advanced',
     },
     {
+      id: 8,
       headerImg: ReactComponentImg,
       categoryName: 'Frontend',
       title: 'Create Interactive Data Visualization',
@@ -97,6 +105,7 @@ const DashBounties = () => {
       level: 'Intermediate',
     },
     {
+      id: 9,
       headerImg: BrandIdentityImg,
       categoryName: 'Design',
       title: 'Design Mobile App UI for DeFi Wallet',
@@ -107,6 +116,7 @@ const DashBounties = () => {
       level: 'Intermediate',
     },
     {
+      id: 10,
       headerImg: MobileAppImg,
       categoryName: 'Web3',
       title: 'Build Cross-Chain Bridge Interface',
@@ -117,6 +127,7 @@ const DashBounties = () => {
       level: 'Advanced',
     },
     {
+      id: 11,
       headerImg: ReactComponentImg,
       categoryName: 'Content',
       title: 'Create Video Tutorials for Protocol',
@@ -127,6 +138,7 @@ const DashBounties = () => {
       level: 'Beginner',
     },
     {
+      id: 12,
       headerImg: BrandIdentityImg,
       categoryName: 'Development',
       title: 'Implement Governance Voting System',
@@ -137,6 +149,7 @@ const DashBounties = () => {
       level: 'Advanced',
     },
     {
+      id: 13,
       headerImg: MobileAppImg,
       categoryName: 'Frontend',
       title: 'Build Portfolio Tracker Dashboard',
@@ -147,6 +160,7 @@ const DashBounties = () => {
       level: 'Intermediate',
     },
     {
+      id: 14,
       headerImg: ReactComponentImg,
       categoryName: 'Smart Contract',
       title: 'Create ERC-721 Minting Contract',
@@ -157,6 +171,7 @@ const DashBounties = () => {
       level: 'Intermediate',
     },
     {
+      id: 15,
       headerImg: BrandIdentityImg,
       categoryName: 'Design',
       title: 'Design Email Templates for Platform',
@@ -167,6 +182,7 @@ const DashBounties = () => {
       level: 'Beginner',
     },
     {
+      id: 16,
       headerImg: MobileAppImg,
       categoryName: 'Web3',
       title: 'Integrate IPFS Storage for dApp',
@@ -177,6 +193,7 @@ const DashBounties = () => {
       level: 'Intermediate',
     },
     {
+      id: 17,
       headerImg: ReactComponentImg,
       categoryName: 'Development',
       title: 'Build Real-Time Notification Service',
@@ -187,6 +204,7 @@ const DashBounties = () => {
       level: 'Intermediate',
     },
     {
+      id: 18,
       headerImg: BrandIdentityImg,
       categoryName: 'Content',
       title: 'Write Whitepaper for New Protocol',
@@ -197,6 +215,7 @@ const DashBounties = () => {
       level: 'Advanced',
     },
     {
+      id: 19,
       headerImg: MobileAppImg,
       categoryName: 'Frontend',
       title: 'Create Responsive Admin Panel',
@@ -207,6 +226,7 @@ const DashBounties = () => {
       level: 'Intermediate',
     },
     {
+      id: 20,
       headerImg: ReactComponentImg,
       categoryName: 'Smart Contract',
       title: 'Develop Yield Farming Contract',
@@ -274,6 +294,7 @@ const DashBounties = () => {
             {fliterBounties.map((bounty, index) => (
               <BountiesCard
                 key={index}
+                bountyId={bounty.id || index}
                 headerImg={bounty.headerImg}
                 categoryName={bounty.categoryName}
                 title={bounty.title}

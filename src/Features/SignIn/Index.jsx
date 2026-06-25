@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import Cookies from 'js-cookie'
 import './login.css'
@@ -74,6 +74,8 @@ const EyeOff = () => (
 function SignIn() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [searchParams] = useSearchParams()
+  const redirectTo = searchParams.get('redirect') || '/dashboard'
   const {
     getAccessToken,
     ready,
@@ -112,7 +114,7 @@ function SignIn() {
         if (!mountedRef.current) return
         dispatch(loginSuccess({ user: data.user, token: data.accessToken }))
         toast.success('Logged in successfully')
-        navigate('/dashboard')
+        navigate(decodeURIComponent(redirectTo), { replace: true })
       } catch (err) {
         if (!mountedRef.current) return
         setErrorMessage(err.message || 'Privy login failed')
@@ -123,7 +125,7 @@ function SignIn() {
     }
 
     doPrivyLogin()
-  }, [waitingForPrivyAuth, ready, authenticated, getAccessToken, navigate])
+  }, [waitingForPrivyAuth, ready, authenticated, getAccessToken, navigate, redirectTo])
 
   const togglePasswordVisibility = () => {
     const next = !showPassword
@@ -160,7 +162,7 @@ function SignIn() {
         })
         dispatch(loginSuccess({ user, token: accessToken }))
         toast.success('Logged in successfully')
-        navigate('/dashboard')
+        navigate(decodeURIComponent(redirectTo), { replace: true })
       } else {
         toast.error(result?.message || 'Login unsuccessful')
         setErrorMessage(result?.message || 'Login unsuccessful')
