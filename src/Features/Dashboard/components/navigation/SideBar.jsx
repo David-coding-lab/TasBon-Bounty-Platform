@@ -101,7 +101,7 @@ const SideBar = () => {
           <NavItem
             key={item.label}
             {...item}
-            isActive={pathname === item.path}
+            isActive={pathname === item.path || (item.path !== '/dashboard' && pathname.startsWith(item.path + '/'))}
           />
         ))}
       </div>
@@ -112,7 +112,7 @@ const SideBar = () => {
           <NavItem
             key={item.label}
             {...item}
-            isActive={pathname === item.path}
+            isActive={pathname === item.path || (item.path !== '/dashboard' && pathname.startsWith(item.path + '/'))}
           />
         ))}
       </div>

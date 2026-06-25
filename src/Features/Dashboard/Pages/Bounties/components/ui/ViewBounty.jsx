@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { ArrowLeft, Circle, Clock, User, Tag, DollarSign, Award } from 'lucide-react'
 import { toast } from 'sonner'
 import { fetchBountyById } from '../../../../../../pages/Bounties/Api/bounties'
 
 export default function ViewBounty() {
   const { bountyId } = useParams()
+  const navigate = useNavigate()
   const [bounty, setBounty] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -30,24 +31,24 @@ export default function ViewBounty() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
         <p className="text-gray-500 text-lg">Bounty not found</p>
-        <Link
-          to="/dashboard/bounties"
-          className="text-emerald-600 font-medium hover:underline flex items-center gap-1"
+        <button
+          onClick={() => navigate(-1)}
+          className="text-emerald-600 font-medium hover:underline flex items-center gap-1 cursor-pointer"
         >
           <ArrowLeft size={16} /> Back to bounties
-        </Link>
+        </button>
       </div>
     )
   }
 
   return (
     <div className="max-w-4xl mx-auto">
-      <Link
-        to="/dashboard/bounties"
-        className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-emerald-600 mb-6 transition-colors"
+      <button
+        onClick={() => navigate(-1)}
+        className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-emerald-600 mb-6 transition-colors cursor-pointer"
       >
         <ArrowLeft size={16} /> Back to bounties
-      </Link>
+      </button>
 
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
         {bounty.imageUrl && (
