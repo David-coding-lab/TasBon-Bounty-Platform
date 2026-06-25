@@ -1,14 +1,20 @@
 import { ArrowRight } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import diversityIcon from '../assets/diversity_3.svg'
+import editorChoiceIcon from '../assets/editor_choice (1).svg'
+import mapIcon from '../assets/map.svg'
+import moneyBagIcon from '../assets/money_bag.svg'
+import productUpdateIcon from '../assets/product_update.svg'
+import vectorIcon from '../assets/Vector .svg'
 
 const categories = [
-  { name: 'Community', count: '07' },
-  { name: 'Bounties', count: '18' },
-  { name: 'Hackathons', count: '03' },
-  { name: 'Grants', count: '07' },
-  { name: 'Guides', count: '07' },
-  { name: 'Product Updates', count: '05' },
+  { name: 'Community', count: '07', icon: diversityIcon },
+  { name: 'Bounties', count: '18', icon: moneyBagIcon },
+  { name: 'Hackathons', count: '03', icon: editorChoiceIcon },
+  { name: 'Grants', count: '07', icon: mapIcon },
+  { name: 'Guides', count: '07', icon: vectorIcon },
+  { name: 'Product Updates', count: '05', icon: productUpdateIcon },
 ]
 
 export default function TopSection({ featuredPost }) {
@@ -104,9 +110,12 @@ export default function TopSection({ featuredPost }) {
             <a
               key={cat.name}
               href={`/${cat.name.toLowerCase()}`}
-              className="flex justify-between text-sm hover:text-green-600 py-2"
+              className="flex items-center justify-between text-sm hover:text-green-600 py-2"
             >
-              <span>{cat.name}</span>
+              <span className="flex items-center gap-2">
+                <img src={cat.icon} alt="" className="w-4 h-4 object-contain" />
+                <span>{cat.name}</span>
+              </span>
               <span className="text-gray-400">{cat.count}</span>
             </a>
           ))}
