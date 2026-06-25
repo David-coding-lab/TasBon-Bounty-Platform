@@ -21,6 +21,8 @@ import Footer from './Components/Footer'
 import BlogSection from './Components/BlogSection'
 import CommunityPage from './pages/community/index'
 import Dashboard from './Features/Dashboard/Pages/Home'
+import DashBounties from './Features/Dashboard/Pages/Bounties'
+import ViewBounty from './Features/Dashboard/Pages/Bounties/components/ui/ViewBounty'
 import Layout from './Features/Dashboard/Layout'
 import Bounties from './pages/Bounties'
 import Blogs from './pages/Blogs'
@@ -108,6 +110,8 @@ function AppRoutes() {
       <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<Layout />}>
           <Route index element={<Dashboard />} />
+          <Route path="bounties" element={<DashBounties />} />
+          <Route path="bounties/:bountyId" element={<ViewBounty />} />
         </Route>
       </Route>
 

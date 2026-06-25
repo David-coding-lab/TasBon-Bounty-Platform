@@ -211,6 +211,7 @@ export default function Bounties() {
                 {filteredBounties.map((bounty) => (
                   <BountiesCard
                     key={bounty.id}
+                    bountyId={bounty.id}
                     headerImg={bounty.clientAvatar}
                     categoryName={bounty.category || ''}
                     title={bounty.title}
