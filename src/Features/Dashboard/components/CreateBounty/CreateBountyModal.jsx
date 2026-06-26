@@ -1,9 +1,9 @@
 import { useState, useRef } from 'react'
-import Step1BountyDetails from './steps/step1BountyDetails'
-import Step2RewardLogistics from './steps/Step2RewardLogistics '
+import Step1BountyDetails from './steps/Step1BountyDetails'
+import Step2RewardLogistics from './steps/Step2RewardLogistics'
 import Step3ReviewPublish from './steps/Step3ReviewPublish'
 import BountyFooter from './components/BountyFooter'
-import BountyHeader from './components/Bountyheader'
+import BountyHeader from './components/BountyHeader'
 import StepsIndicator from './components/StepsIndicator'
 
 const CreateBountyModal = ({ isOpen, onClose }) => {
