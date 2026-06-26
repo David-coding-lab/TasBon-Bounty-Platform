@@ -1,5 +1,8 @@
+import { useState } from 'react'
+import { toast } from 'sonner'
 import Logo from '../Assets/logo.png'
 import { Link } from 'react-router-dom'
+import { config } from '../../lib/config'
 
 const footerLinks = {
   Opportunities: [
@@ -24,6 +27,37 @@ const footerLinks = {
 }
 
 export default function Footer() {
+  const [email, setEmail] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault()
+    if (!email) return
+
+    setLoading(true)
+    try {
+      const res = await fetch(
+        `${config.VITE_API_URL}/api/v1/newsletter/subscribe`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        },
+      )
+      const data = await res.json()
+      if (data.success) {
+        toast.success(data.message || 'Subscribed successfully!')
+        setEmail('')
+      } else {
+        toast.error(data.message || 'Subscription failed')
+      }
+    } catch {
+      toast.error('Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <footer className="bg-[#EFF8F2] ">
       {/* Newsletter */}
@@ -37,16 +71,26 @@ export default function Footer() {
               Stay up to date with the latest happenings in the ecosystem.
             </p>
           </div>
-          <div className="flex w-full md:w-auto gap-2 border rounded-tr-lg rounded-br-lg border-tl-30 border-[#34A563] ">
+          <form
+            onSubmit={handleSubscribe}
+            className="flex w-full md:w-auto gap-2 border rounded-tr-lg rounded-br-lg border-tl-30 border-[#34A563] "
+          >
             <input
               type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
+              required
               className="flex-1 md:w-64 px-4 py-2.5 font-sora rounded-sm text-sm outline-none"
             />
-            <button className="bg-primary font-sora hover:bg-[#139449] cursor-pointer text-white font-semibold px-8 py-2.5 rounded-lg text-sm transition-colors whitespace-nowrap">
-              Subscribe
+            <button
+              type="submit"
+              disabled={loading}
+              className="bg-primary font-sora hover:bg-[#139449] cursor-pointer text-white font-semibold px-8 py-2.5 rounded-lg text-sm transition-colors whitespace-nowrap disabled:opacity-50"
+            >
+              {loading ? 'Subscribing...' : 'Subscribe'}
             </button>
-          </div>
+          </form>
         </div>
       </div>
 

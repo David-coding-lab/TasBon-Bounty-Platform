@@ -7,10 +7,12 @@ const BountiesCard = ({
   headerImg,
   categoryName,
   title,
+  description,
   issuerIcon,
   issuerName,
   price,
   level,
+  bountyId,
 }) => {
   return (
     /* Card container: vertical layout with border and rounded bottom corners */
@@ -25,6 +27,12 @@ const BountiesCard = ({
 
         {/* Bounty title — single line with truncation */}
         <p className="text-lg font-semibold text-[#0A0A0A] truncate">{title}</p>
+
+        {description && (
+          <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">
+            {description}
+          </p>
+        )}
 
         {/* Issuer info: icon and name */}
         <div className="flex flex-row space-x-2 items-center">
@@ -46,14 +54,15 @@ const BountiesCard = ({
         </div>
 
         {/* Apply button */}
-        <button className="bg-[#009966] w-full py-3 flex flex-row items-center justify-center gap-2 rounded-lg cursor-pointer">
-          <Link to="/dashboard/bounties/view-bounty">
-            <span className="text-[#FFFFFF] text-base font-medium">
-              View bounty
-            </span>
-          </Link>
+        <Link
+          to={`/dashboard/bounties/${bountyId}`}
+          className="bg-[#009966] w-full py-3 flex flex-row items-center justify-center gap-2 rounded-lg cursor-pointer"
+        >
+          <span className="text-[#FFFFFF] text-base font-medium">
+            View bounty
+          </span>
           <ArrowRight className="w-4 h-4 text-[#FFFFFF]" />
-        </button>
+        </Link>
       </div>
     </div>
   )

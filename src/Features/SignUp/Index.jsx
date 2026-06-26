@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import Hero from './Assets/Hero-bg.png'
 import { signUpSchema } from './schema'
@@ -27,6 +27,8 @@ function PrivyIcon() {
 function SignUp() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [searchParams] = useSearchParams()
+  const redirectTo = searchParams.get('redirect') || '/dashboard'
   const {
     getAccessToken,
     ready,
@@ -74,7 +76,7 @@ function SignUp() {
         if (!mountedRef.current) return
         dispatch(loginSuccess({ user: data.user, token: data.accessToken }))
         toast.success('Account created successfully')
-        navigate('/dashboard')
+        navigate(decodeURIComponent(redirectTo), { replace: true })
       } catch (err) {
         if (!mountedRef.current) return
         toast.error(err.message || 'Privy sign-up failed')
@@ -84,7 +86,14 @@ function SignUp() {
     }
 
     doPrivySignUp()
-  }, [waitingForPrivyAuth, ready, authenticated, getAccessToken, navigate])
+  }, [
+    waitingForPrivyAuth,
+    ready,
+    authenticated,
+    getAccessToken,
+    navigate,
+    redirectTo,
+  ])
 
   const handleChange = (e) => {
     const { name, value } = e.target

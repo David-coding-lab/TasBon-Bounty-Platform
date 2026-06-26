@@ -120,7 +120,7 @@ export default function BountiesSection() {
                   }}
                   whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
                 >
-                  <Link to="/bounties">
+                  <Link to={`/dashboard/bounties/${b.id}`}>
                     <div className="flex p-2 mb-3">
                       <div className="gap-3 flex">
                         <div className="w-10 h-10 p-0.5 bg-[#E6F6E2] rounded-3xl">
@@ -142,9 +142,13 @@ export default function BountiesSection() {
                     </div>
 
                     <div className="p-4">
-                      <h3 className="text-sm font-bold font-sora w-50 text-[#101820] mb-3 leading-snug">
+                      <h3 className="text-sm font-bold font-sora w-50 text-[#101820] mb-1 leading-snug">
                         {b.title}
                       </h3>
+
+                      <p className="text-xs text-gray-500 mb-3 line-clamp-2 leading-relaxed">
+                        {b.description}
+                      </p>
 
                       <div className="flex items-center justify-between">
                         <span className="text-xs bg-[#E6F6E2] uppercase text-[#4B5662] font-semibold px-2 py-1 rounded-md">
@@ -215,6 +219,10 @@ export default function BountiesSection() {
             Explore all bounties →
           </Link>
         </div>
+
+        <p className="text-center text-xs text-gray-400 mt-2">
+          Click a bounty to view details — sign in to apply.
+        </p>
       </div>
     </section>
   )

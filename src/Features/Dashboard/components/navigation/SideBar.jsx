@@ -81,14 +81,15 @@ const SideBar = () => {
     <div className="h-full bg-[#ffffff] flex flex-col">
       {/* Header - Logo and brand name with bottom border and shadow */}
 
-      <Link to="/" className="flex items-center gap-2">
-        {/* Logo copied from landing page navbar */}
+      <Link
+        to="/"
+        className="flex items-center gap-2 px-3 py-4 border-b border-gray-200"
+      >
         <img
           src={Logo}
           alt="TASBUN Logo"
           className="h-10 w-auto object-contain"
         />
-        {/* Brand name - Inter font, bold, black */}
         <span className="font-inter font-bold text-[#009966] text-xl">
           TASBUN
         </span>
@@ -100,7 +101,11 @@ const SideBar = () => {
           <NavItem
             key={item.label}
             {...item}
-            isActive={pathname === item.path}
+            isActive={
+              pathname === item.path ||
+              (item.path !== '/dashboard' &&
+                pathname.startsWith(item.path + '/'))
+            }
           />
         ))}
       </div>
@@ -111,7 +116,11 @@ const SideBar = () => {
           <NavItem
             key={item.label}
             {...item}
-            isActive={pathname === item.path}
+            isActive={
+              pathname === item.path ||
+              (item.path !== '/dashboard' &&
+                pathname.startsWith(item.path + '/'))
+            }
           />
         ))}
       </div>
