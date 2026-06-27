@@ -95,22 +95,22 @@ export default function Bounties() {
     <div className="min-h-screen bg-[#Fff] font-sans antialiased">
       <Navbar />
       <main>
-        <div className="relative container mx-auto w-full h-[60vh] overflow-hidden">
+        <div className="relative container m-auto w-full min-h-[30vh] lg:min-h-[40vh] overflow-hidden pb-5">
           <img
             src={Glow}
             alt=""
-            className="absolute right-1/2 translate-x-250 top-75 -translate-y-1/2 w-187.5 pointer-events-none select-none"
+            className="hidden sm:block absolute right-1/2 translate-x-250 top-75 -translate-y-1/2 w-187.5 pointer-events-none select-none h-150"
           />
-          <div className="flex flex-col items-start pl-40 pt-5">
-            <h1 className="text-[80px] leading-none font-sora font-bold text-center mt-20 text-[#0E4E2F]">
+          <div className="flex flex-col max-w-7xl mx-auto pl-5 lg:pl-10 pt-5 lg:pt-20">
+            <h2 className="lg:text-4xl text-2xl md:text-3xl leading-none font-sora font-bold pt-4 md:mt-4 lg:mt-5 text-[#0E4E2F]">
               Bounties
-            </h1>
-            <p className="text-center text-gray-600 mt-4 text-2xl">
+            </h2>
+            <p className="text-gray-600 my-5 lg:text-2xl max-w-3xl">
               Find challenges, build solutions and earn rewards.
             </p>
           </div>
-          <div className="flex pl-40 mt-20 w-full">
-            <div className="relative w-full max-w-7xl">
+          <div className="mt-4 lg:mt-8 w-full max-w-4xl mx-auto">
+            <div className="relative w-full">
               <svg
                 className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-black/50"
                 fill="none"
@@ -126,11 +126,11 @@ export default function Bounties() {
                 placeholder="Search bounties..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-white border-2 border-gray-200 rounded-full py-5 pl-16 pr-6 text-base text-black placeholder:text-black/50 focus:outline-none focus:border-green-500 transition-colors"
+                className="w-full bg-white border-2 border-gray-200 rounded-full py-2 pl-16 pr-6 text-base text-black placeholder:text-black/50 focus:outline-none focus:border-green-500 transition-colors"
               />
             </div>
           </div>
-          <div className="flex items-center pl-40 mt-6 w-full max-w-[89vw] gap-3 flex-wrap">
+          <div className="mt-8 w-full max-w-4xl mx-auto flex flex-wrap gap-3 justify-center sm:justify-end items-center">
             {filters.map((filter) => (
               <button
                 key={filter}
@@ -144,7 +144,7 @@ export default function Bounties() {
                 {filter}
               </button>
             ))}
-            <div className="relative z-50 ml-auto" ref={sortRef}>
+            <div className="relative z-50" ref={sortRef}>
               <button
                 onClick={() => setSortOpen(!sortOpen)}
                 className="flex items-center gap-2 px-5 py-2 rounded-2xl text-sm font-medium border border-black/30 bg-white text-black cursor-pointer hover:bg-gray-50 transition-colors"
@@ -186,9 +186,9 @@ export default function Bounties() {
           </div>
         </div>
 
-        <div className="max-w-6xl mx-auto mb-10 px-4 sm:px-6 mt-12">
+        <div className="max-w-7xl mx-auto mb-10 px-4 sm:px-6 mt-6">
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
               {Array.from({ length: 8 }).map((_, i) => (
                 <div
                   key={i}
@@ -207,7 +207,7 @@ export default function Bounties() {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5">
                 {filteredBounties.map((bounty) => (
                   <BountiesCard
                     key={bounty.id}

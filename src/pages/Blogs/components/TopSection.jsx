@@ -19,7 +19,7 @@ const categories = [
 
 export default function TopSection({ featuredPost }) {
   return (
-    <section className="max-w-7xl mx-auto px-4 pt-32 pb-16 grid lg:grid-cols-3 gap-8">
+    <section className="max-w-7xl mx-auto px-4 pt-7 pb-16 grid lg:grid-cols-3 gap-8">
       {/* Left - Featured Card */}
       <motion.div
         className="lg:col-span-2"

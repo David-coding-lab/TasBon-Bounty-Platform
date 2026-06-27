@@ -16,17 +16,25 @@ const BountiesCard = ({
 }) => {
   return (
     /* Card container: vertical layout with border and rounded bottom corners */
-    <div className="flex flex-col gap-2 border border-[#E5E7EB] rounded-2xl overflow-hidden flex-1">
+    <div className="flex flex-col gap-1.5 border border-[#E5E7EB] rounded-2xl overflow-hidden">
       {/* Header image — full width */}
-      <img src={headerImg} alt={title} className="w-full object-cover" />
+      <img
+        src={headerImg}
+        alt={title}
+        className="w-full h-36 sm:h-40 md:h-36 object-cover"
+      />
 
       {/* Card body — white background with content */}
-      <div className="bg-[#FFFFFF] p-3 flex flex-col space-y-3">
+      <div className="bg-[#FFFFFF] p-2.5 flex flex-col space-y-2">
         {/* Bounty category name */}
-        <p className="text-xs text-[#007A55]">{categoryName}</p>
+        <p className="text-[10px] sm:text-[11px] text-[#007A55]">
+          {categoryName}
+        </p>
 
         {/* Bounty title — single line with truncation */}
-        <p className="text-lg font-semibold text-[#0A0A0A] truncate">{title}</p>
+        <p className="text-sm sm:text-base font-semibold text-[#0A0A0A] truncate">
+          {title}
+        </p>
 
         {description && (
           <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">
@@ -45,7 +53,7 @@ const BountiesCard = ({
         </div>
 
         {/* Bounty price */}
-        <p className="text-xl font-bold text-[#0A0A0A]">{price}</p>
+        <p className="text-lg font-bold text-[#0A0A0A]">{price}</p>
 
         {/* Bounty level with dot icon */}
         <div className="flex flex-row items-center space-x-1">
@@ -56,9 +64,9 @@ const BountiesCard = ({
         {/* Apply button */}
         <Link
           to={`/dashboard/bounties/${bountyId}`}
-          className="bg-[#009966] w-full py-3 flex flex-row items-center justify-center gap-2 rounded-lg cursor-pointer"
+          className="bg-[#009966] w-full py-2.5 flex flex-row items-center justify-center gap-2 rounded-lg cursor-pointer"
         >
-          <span className="text-[#FFFFFF] text-base font-medium">
+          <span className="text-[#FFFFFF] text-sm font-medium">
             View bounty
           </span>
           <ArrowRight className="w-4 h-4 text-[#FFFFFF]" />
