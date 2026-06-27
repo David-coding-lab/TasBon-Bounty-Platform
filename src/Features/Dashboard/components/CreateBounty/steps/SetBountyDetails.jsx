@@ -70,22 +70,131 @@ export default function Step1BountyDetails({
 
       {/* Description */}
       <div className="flex flex-col gap-1.5">
-        <label className="font-inter font-semibold text-sm text-[#1a2a41] flex items-center gap-1">
+        <label className="font-inter font-semibold text-base text-[#1a2a41]">
           Description / Scope of work
-          <span className="text-[#e74c3c]">*</span>
         </label>
-        <div className="relative">
+        <p className="font-inter text-sm text-[#6b7a8f] -mt-0.5">
+          Describe your requirements, goals and any specific details.
+        </p>
+        <div className="border border-[#dce1e8] rounded-xl overflow-hidden bg-[#fafbfc] focus-within:border-[#34A563] focus-within:ring-2 focus-within:ring-[#34A563]/20 transition-all mt-1">
           <textarea
-            className="w-full py-3 px-4 border border-[#dce1e8] rounded-xl font-inter text-sm text-[#1a2a41] bg-white outline-none transition-all resize-y min-h-25 placeholder:text-[#a0b0c4] focus:border-[#34A563] focus:ring-2 focus:ring-[#34A563]/20"
-            placeholder="Describe your requirements, goals and any specific details."
+            className="w-full py-4 px-5 font-inter text-sm text-[#1a2a41] bg-transparent outline-none resize-y min-h-[160px] placeholder:text-[#a0b0c4]"
+            placeholder="Provide a detailed description of the work to be done..."
             value={formData.description}
             onChange={(e) => updateFormData('description', e.target.value)}
             maxLength={3000}
-            rows={5}
+            rows={6}
           />
-          <span className="absolute bottom-2.5 right-3 font-inter text-[11px] text-[#a0b0c4] pointer-events-none">
-            {formData.description.length}/3000
-          </span>
+          <div className="flex items-center justify-between px-3 py-2 border-t border-[#dce1e8] bg-white">
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                className="p-1.5 rounded hover:bg-[#f0f3f7] text-[#6b7a8f] transition-colors"
+              >
+                <span className="material-symbols-outlined text-lg">undo</span>
+              </button>
+              <button
+                type="button"
+                className="p-1.5 rounded hover:bg-[#f0f3f7] text-[#6b7a8f] transition-colors"
+              >
+                <span className="material-symbols-outlined text-lg">redo</span>
+              </button>
+              <div className="w-px h-5 bg-[#dce1e8] mx-1" />
+              <button
+                type="button"
+                className="p-1.5 rounded hover:bg-[#f0f3f7] text-[#6b7a8f] transition-colors"
+              >
+                <span className="material-symbols-outlined text-lg">title</span>
+              </button>
+              <span className="font-inter text-xs text-[#6b7a8f] px-1">
+                Inter
+              </span>
+              <span className="material-symbols-outlined text-sm text-[#6b7a8f]">
+                expand_more
+              </span>
+              <span className="font-inter text-xs text-[#6b7a8f] px-1">24</span>
+              <span className="material-symbols-outlined text-sm text-[#6b7a8f]">
+                expand_more
+              </span>
+              <div className="w-px h-5 bg-[#dce1e8] mx-1" />
+              <button
+                type="button"
+                className="p-1.5 rounded hover:bg-[#f0f3f7] text-[#6b7a8f] transition-colors"
+              >
+                <span className="material-symbols-outlined text-lg">
+                  format_bold
+                </span>
+              </button>
+              <button
+                type="button"
+                className="p-1.5 rounded hover:bg-[#f0f3f7] text-[#6b7a8f] transition-colors"
+              >
+                <span className="material-symbols-outlined text-lg">
+                  format_italic
+                </span>
+              </button>
+              <button
+                type="button"
+                className="p-1.5 rounded hover:bg-[#f0f3f7] text-[#6b7a8f] transition-colors"
+              >
+                <span className="material-symbols-outlined text-lg">
+                  format_underlined
+                </span>
+              </button>
+              <div className="w-px h-5 bg-[#dce1e8] mx-1" />
+              <button
+                type="button"
+                className="p-1.5 rounded hover:bg-[#f0f3f7] text-[#6b7a8f] transition-colors"
+              >
+                <span className="material-symbols-outlined text-lg">
+                  format_align_left
+                </span>
+              </button>
+              <button
+                type="button"
+                className="p-1.5 rounded hover:bg-[#f0f3f7] text-[#6b7a8f] transition-colors"
+              >
+                <span className="material-symbols-outlined text-lg">
+                  format_align_center
+                </span>
+              </button>
+              <button
+                type="button"
+                className="p-1.5 rounded hover:bg-[#f0f3f7] text-[#6b7a8f] transition-colors"
+              >
+                <span className="material-symbols-outlined text-lg">
+                  format_align_right
+                </span>
+              </button>
+              <span className="material-symbols-outlined text-sm text-[#6b7a8f]">
+                expand_more
+              </span>
+              <div className="w-px h-5 bg-[#dce1e8] mx-1" />
+              <button
+                type="button"
+                className="p-1.5 rounded hover:bg-[#f0f3f7] text-[#6b7a8f] transition-colors"
+              >
+                <span className="material-symbols-outlined text-lg">
+                  format_list_bulleted
+                </span>
+              </button>
+              <span className="material-symbols-outlined text-sm text-[#6b7a8f]">
+                expand_more
+              </span>
+              <div className="w-px h-5 bg-[#dce1e8] mx-1" />
+              <button
+                type="button"
+                className="p-1.5 rounded hover:bg-[#f0f3f7] text-[#6b7a8f] transition-colors"
+              >
+                <span className="material-symbols-outlined text-lg">
+                  expand_more
+                </span>
+              </button>
+            </div>
+            <span className="font-inter text-xs text-[#a0b0c4]">
+              {formData.description.length}/3000
+            </span>
+          </div>
         </div>
       </div>
 

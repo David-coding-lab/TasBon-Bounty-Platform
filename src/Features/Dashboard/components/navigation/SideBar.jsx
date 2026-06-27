@@ -143,8 +143,10 @@ const SideBar = () => {
           </div>
           {/* CTA button */}
           <button className="bg-[#FFFFFF] text-[#006045] text-base px-3 py-1 rounded-md flex flex-row items-center space-x-2 w-fit cursor-pointer">
-            <span>Create bounty</span>
-            <ArrowRight size={16} className="text-[#006045]" />
+            <Link to="?modal=create-bounty" className="flex items-center gap-1">
+              <span>Create bounty</span>
+              <ArrowRight size={16} className="text-[#006045]" />
+            </Link>
           </button>
         </div>
       </div>

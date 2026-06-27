@@ -12,7 +12,6 @@ const Home = () => {
   return (
     /* Page layout: full height, white background, vertical stack with spacing */
     <div className="flex flex-col space-y-6 h-full bg-[#FFFFFF] p-6 ">
-      <CreateBountyModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
       {/* Hero section */}
       <Hero />
       {/* Recommended bounties section */}
