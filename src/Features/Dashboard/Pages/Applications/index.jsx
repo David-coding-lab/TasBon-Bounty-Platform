@@ -246,7 +246,9 @@ const ApplicationsPage = () => {
             (col) => (
               <span
                 key={col}
-                className="text-xs font-medium text-[#6B7280] uppercase tracking-wide"
+                className={`text-xs font-medium text-[#6B7280] uppercase tracking-wide ${
+                  col === 'Reward' ? 'text-right' : 'text-left'
+                }`}
               >
                 {col}
               </span>
