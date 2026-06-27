@@ -14,11 +14,14 @@ export default function NewsletterBanner() {
 
     setLoading(true)
     try {
-      const res = await fetch(`${config.VITE_API_URL}/api/v1/newsletter/subscribe`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      })
+      const res = await fetch(
+        `${config.VITE_API_URL}/api/v1/newsletter/subscribe`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        },
+      )
       const data = await res.json()
       if (data.success) {
         toast.success(data.message || 'Subscribed successfully!')

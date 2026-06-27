@@ -29,10 +29,10 @@ export async function fetchActiveBounties() {
 }
 
 export async function fetchBountyById(id) {
-  const response = await fetch(
-    `${config.VITE_API_URL}/api/v1/bounties/${id}`,
-    { headers: authHeaders(), credentials: 'include' },
-  )
+  const response = await fetch(`${config.VITE_API_URL}/api/v1/bounties/${id}`, {
+    headers: authHeaders(),
+    credentials: 'include',
+  })
 
   const data = await response.json()
   if (!response.ok) throw new Error(data.message || 'Failed to fetch bounty')

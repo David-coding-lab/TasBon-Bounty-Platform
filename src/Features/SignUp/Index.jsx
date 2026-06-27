@@ -86,7 +86,14 @@ function SignUp() {
     }
 
     doPrivySignUp()
-  }, [waitingForPrivyAuth, ready, authenticated, getAccessToken, navigate, redirectTo])
+  }, [
+    waitingForPrivyAuth,
+    ready,
+    authenticated,
+    getAccessToken,
+    navigate,
+    redirectTo,
+  ])
 
   const handleChange = (e) => {
     const { name, value } = e.target

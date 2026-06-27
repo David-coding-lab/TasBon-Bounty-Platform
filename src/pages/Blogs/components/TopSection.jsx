@@ -35,7 +35,10 @@ export default function TopSection({ featuredPost }) {
               transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
             >
               <img
-                src={featuredPost?.imageUrl || 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800'}
+                src={
+                  featuredPost?.imageUrl ||
+                  'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800'
+                }
                 alt={featuredPost?.title || 'Featured post'}
                 className="w-full h-72 object-cover"
               />
@@ -65,13 +68,15 @@ export default function TopSection({ featuredPost }) {
 
             <h2 className="text-2xl md:text-3xl font-bold mb-4 leading-tight hover:text-green-600 cursor-pointer">
               <Link to={featuredPost ? `/blogs/${featuredPost.slug}` : '#'}>
-                {featuredPost?.title || 'Building more than code: how communities create lasting impact'}
+                {featuredPost?.title ||
+                  'Building more than code: how communities create lasting impact'}
               </Link>
             </h2>
 
             <p className="text-gray-600 text-base mb-6 leading-relaxed">
               {featuredPost?.message
-                ? featuredPost.message.slice(0, 200) + (featuredPost.message.length > 200 ? '...' : '')
+                ? featuredPost.message.slice(0, 200) +
+                  (featuredPost.message.length > 200 ? '...' : '')
                 : 'Communities are the heartbeat of web3 and innovation.'}
             </p>
 

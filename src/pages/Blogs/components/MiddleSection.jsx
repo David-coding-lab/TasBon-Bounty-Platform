@@ -33,11 +33,16 @@ export default function MiddleSection({ posts }) {
               <article
                 key={article.id}
                 className={`flex gap-4 md:gap-6 pb-6 ${
-                  i !== latestPosts.length - 1 ? 'border-b border-gray-100' : 'pb-0'
+                  i !== latestPosts.length - 1
+                    ? 'border-b border-gray-100'
+                    : 'pb-0'
                 }`}
               >
                 <img
-                  src={article.imageUrl || 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=300'}
+                  src={
+                    article.imageUrl ||
+                    'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=300'
+                  }
                   alt={article.title}
                   className="w-40 h-32 md:w-48 md:h-36 rounded-lg object-cover flex-shrink-0"
                 />
@@ -53,7 +58,8 @@ export default function MiddleSection({ posts }) {
 
                   <p className="text-gray-600 text-sm mb-3">
                     {article.message
-                      ? article.message.slice(0, 120) + (article.message.length > 120 ? '...' : '')
+                      ? article.message.slice(0, 120) +
+                        (article.message.length > 120 ? '...' : '')
                       : ''}
                   </p>
 
@@ -103,7 +109,10 @@ export default function MiddleSection({ posts }) {
                     className="flex gap-3 hover:opacity-80 transition"
                   >
                     <img
-                      src={article.imageUrl || 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=150'}
+                      src={
+                        article.imageUrl ||
+                        'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=150'
+                      }
                       alt={article.title}
                       className="w-20 h-20 rounded-lg object-cover flex-shrink-0"
                     />

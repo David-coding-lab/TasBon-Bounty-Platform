@@ -125,7 +125,14 @@ function SignIn() {
     }
 
     doPrivyLogin()
-  }, [waitingForPrivyAuth, ready, authenticated, getAccessToken, navigate, redirectTo])
+  }, [
+    waitingForPrivyAuth,
+    ready,
+    authenticated,
+    getAccessToken,
+    navigate,
+    redirectTo,
+  ])
 
   const togglePasswordVisibility = () => {
     const next = !showPassword

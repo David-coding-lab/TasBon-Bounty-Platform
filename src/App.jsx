@@ -23,6 +23,7 @@ import CommunityPage from './pages/community/index'
 import Dashboard from './Features/Dashboard/Pages/Home'
 import DashBounties from './Features/Dashboard/Pages/Bounties'
 import ViewBounty from './Features/Dashboard/Pages/Bounties/components/ui/ViewBounty'
+import Applications from './Features/Dashboard/Pages/Applications'
 import Layout from './Features/Dashboard/Layout'
 import Bounties from './pages/Bounties'
 import Blogs from './pages/Blogs'
@@ -112,6 +113,7 @@ function AppRoutes() {
           <Route index element={<Dashboard />} />
           <Route path="bounties" element={<DashBounties />} />
           <Route path="bounties/:bountyId" element={<ViewBounty />} />
+          <Route path="applications" element={<Applications />} />
         </Route>
       </Route>
 

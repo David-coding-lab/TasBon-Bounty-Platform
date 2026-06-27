@@ -1,6 +1,14 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Circle, Clock, User, Tag, DollarSign, Award } from 'lucide-react'
+import {
+  ArrowLeft,
+  Circle,
+  Clock,
+  User,
+  Tag,
+  DollarSign,
+  Award,
+} from 'lucide-react'
 import { toast } from 'sonner'
 import { fetchBountyById } from '../../../../../../pages/Bounties/Api/bounties'
 
@@ -92,7 +100,9 @@ export default function ViewBounty() {
 
           {bounty.description && (
             <div className="mb-8">
-              <h2 className="text-lg font-semibold text-gray-900 mb-3">Description</h2>
+              <h2 className="text-lg font-semibold text-gray-900 mb-3">
+                Description
+              </h2>
               <p className="text-gray-600 leading-relaxed whitespace-pre-line">
                 {bounty.description}
               </p>
@@ -115,7 +125,9 @@ export default function ViewBounty() {
             {bounty.rewardAmount && (
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <DollarSign size={16} className="text-gray-400" />
-                <span>${bounty.rewardAmount} {bounty.rewardToken}</span>
+                <span>
+                  ${bounty.rewardAmount} {bounty.rewardToken}
+                </span>
               </div>
             )}
             {bounty.deadline && (
