@@ -1,12 +1,12 @@
 import { useState, useRef } from 'react'
-import Step1BountyDetails from './steps/Step1BountyDetails'
 import Step2RewardLogistics from './steps/Step2RewardLogistics'
 import Step3ReviewPublish from './steps/Step3ReviewPublish'
 import BountyFooter from './components/BountyFooter'
 import BountyHeader from './components/BountyHeader'
 import StepsIndicator from './components/StepsIndicator'
+import Step1BountyDetails from './steps/SetBountyDetails'
 
-const CreateBountyModal = ({ isOpen, onClose }) => {
+const CreateBountyModal = ({ isOpen, onClose = () => {} }) => {
   const [activeStep, setActiveStep] = useState(1)
   const [formData, setFormData] = useState({
     title: '',

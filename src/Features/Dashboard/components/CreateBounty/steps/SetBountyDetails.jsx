@@ -89,38 +89,6 @@ export default function Step1BountyDetails({
         </div>
       </div>
 
-      {/* Deliverables */}
-      <div className="flex flex-col gap-1.5">
-        <label className="font-inter font-semibold text-sm text-[#1a2a41] flex items-center gap-1">
-          Deliverables
-        </label>
-        <div className="flex flex-col gap-2">
-          {formData.deliverables.map((item, idx) => (
-            <div
-              key={idx}
-              className="flex items-center justify-between bg-[#f8fafc] py-2 pl-4 pr-3 rounded-lg font-inter text-sm text-[#1a2a41]"
-            >
-              <span>{item}</span>
-              <button
-                className="bg-transparent border-none cursor-pointer text-[#a0b0c4] p-1 flex items-center justify-center rounded transition-colors hover:bg-[#f0f3f7] hover:text-[#e74c3c]"
-                onClick={() => removeDeliverable(idx)}
-              >
-                <span className="material-symbols-outlined text-xl">
-                  delete
-                </span>
-              </button>
-            </div>
-          ))}
-          <button
-            className="bg-transparent border border-dashed border-[#dce1e8] rounded-lg py-2.5 px-4 font-inter font-medium text-sm text-[#34A563] flex items-center gap-1.5 cursor-pointer transition-colors justify-center hover:bg-[#f0fdf4] hover:border-[#34A563]"
-            onClick={addDeliverable}
-          >
-            <span className="material-symbols-outlined text-xl">add</span>
-            Add deliverable
-          </button>
-        </div>
-      </div>
-
       {/* Attachments */}
       <div className="flex flex-col gap-1.5">
         <label className="font-inter font-semibold text-sm text-[#1a2a41] flex items-center gap-1">
