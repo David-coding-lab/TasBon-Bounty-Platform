@@ -1,7 +1,8 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet, useParams } from 'react-router-dom'
 import SideBar from './components/navigation/SideBar'
 import NavBar from './components/navigation/NavBar'
 import RightBar from './components/Information/RightBar'
+import { useEffect, useState } from 'react'
 
 /**
  * Dashboard Layout - Main layout wrapper for all dashboard pages.
@@ -17,6 +18,18 @@ import RightBar from './components/Information/RightBar'
  * └──────────┴─────────────────────┴──────────┘
  */
 const Layout = () => {
+  const hideSidebarRoutes = ['/bounties/ ']
+  const currentUrl = window.location.href
+  const [hideSidebar, setHideSidebar] = useState(false)
+
+  function initHideSideBar() {
+    hideSidebarRoutes.forEach((i) => {
+      i === currentUrl && setHideSidebar(true)
+    })
+  }
+
+  initHideSideBar()
+
   return (
     // Outer container - full screen height, horizontal flex layout
     <div className="flex h-screen overflow-hidden">
@@ -40,9 +53,11 @@ const Layout = () => {
           </main>
 
           {/* Right Sidebar - sits under the navbar, on the right side */}
-          <aside className="w-70 shrink-0 bg-white border-l border-gray-200 overflow-y-auto p-4">
-            <RightBar />
-          </aside>
+          {hideSidebar && (
+            <aside className="w-70 shrink-0 bg-white border-l border-gray-200 overflow-y-auto p-4">
+              <RightBar />
+            </aside>
+          )}
         </div>
       </div>
     </div>
