@@ -28,6 +28,22 @@ export async function fetchActiveBounties() {
   return data
 }
 
+export async function createBounty(bountyData) {
+  const response = await fetch(`${config.VITE_API_URL}/api/v1/bounties`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...authHeaders(),
+    },
+    credentials: 'include',
+    body: JSON.stringify(bountyData),
+  })
+
+  const data = await response.json()
+  if (!response.ok) throw new Error(data.message || 'Failed to create bounty')
+  return data
+}
+
 export async function fetchBountyById(id) {
   const response = await fetch(`${config.VITE_API_URL}/api/v1/bounties/${id}`, {
     headers: authHeaders(),

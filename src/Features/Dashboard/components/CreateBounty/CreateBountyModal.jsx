@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import Step2RewardLogistics from './steps/Step2RewardLogistics'
 import Step3ReviewPublish from './steps/Step3ReviewPublish'
 import BountyFooter from './components/BountyFooter'
@@ -6,6 +6,8 @@ import StepsIndicator from './components/StepsIndicator'
 import Step1BountyDetails from './steps/SetBountyDetails'
 import { useNavigate } from 'react-router-dom'
 import BountyHeader from './components/Header'
+import { createBounty } from '../../../../pages/Bounties/Api/bounties'
+import { toast } from 'sonner'
 
 const CreateBountyModal = () => {
   const [activeStep, setActiveStep] = useState(1)
@@ -29,6 +31,32 @@ const CreateBountyModal = () => {
 
   const handleBack = () => {
     if (activeStep > 1) setActiveStep(activeStep - 1)
+  }
+
+  const [isPublishing, setIsPublishing] = useState(false)
+
+  const handlePublish = async () => {
+    setIsPublishing(true)
+    try {
+      await createBounty({
+        title: formData.title,
+        description: formData.description,
+        deliverables: formData.deliverables,
+        attachments: formData.attachments,
+        skills: formData.skills,
+        rewardAmount: formData.rewardAmount,
+        rewardType: formData.rewardType,
+        isPrivate: formData.isPrivate,
+        applicationDeadline: formData.applicationDeadline || null,
+        bountyDeadline: formData.bountyDeadline || null,
+      })
+      toast.success('Bounty published successfully!')
+      navigate(-1)
+    } catch (error) {
+      toast.error(error.message || 'Failed to publish bounty')
+    } finally {
+      setIsPublishing(false)
+    }
   }
 
   const handleClose = () => {
@@ -136,7 +164,8 @@ const CreateBountyModal = () => {
           activeStep={activeStep}
           onBack={handleBack}
           onNext={handleNext}
-          onClose={handleClose}
+          onPublish={handlePublish}
+          isPublishing={isPublishing}
         />
       </div>
     </div>
