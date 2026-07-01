@@ -22,7 +22,7 @@ export default function BountyFooter({ activeStep, onBack, onNext, onClose }) {
         </button>
       ) : (
         <button
-          className="flex items-center gap-1.5 px-5 py-2.5 rounded-full font-['Inter'] font-semibold text-sm border-none cursor-pointer transition-all duration-150 bg-[#0b1a33] text-white shadow-[0_4px_8px_rgba(11,26,51,0.2)] ml-auto hover:bg-[#1a2a41] hover:shadow-[0_6px_12px_rgba(11,26,51,0.25)] active:scale-[0.97] max-sm:justify-center max-sm:w-full max-sm:ml-0 max-sm:order-0"
+          className="flex items-center gap-1.5 px-5 py-2.5 rounded-full font-['Inter'] font-semibold text-sm border-none cursor-pointer transition-all duration-150 bg-[#34A563] text-white shadow-[0_4px_8px_rgba(52,165,99,0.2)] ml-auto hover:bg-[#2b8a52] hover:shadow-[0_6px_12px_rgba(52,165,99,0.25)] active:scale-[0.97] max-sm:justify-center max-sm:w-full max-sm:ml-0 max-sm:order-0"
           onClick={onClose}
         >
           Publish Bounty

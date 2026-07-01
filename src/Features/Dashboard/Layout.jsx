@@ -33,6 +33,13 @@ const Layout = () => {
   return (
     // Outer container - full screen height, horizontal flex layout
     <div className="flex h-screen overflow-hidden">
+      {/* Modal Overlay - Rendered over everything when active */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs">
+          <CreateBountyModal />
+        </div>
+      )}
+
       {/* Left Sidebar - spans full height from top to bottom */}
       <aside className="w-62.5 shrink-0">
         <SideBar />

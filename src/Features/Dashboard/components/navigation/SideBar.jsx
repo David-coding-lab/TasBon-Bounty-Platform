@@ -21,7 +21,7 @@ import Logo from '../../Assets/logo.png'
 const navItems = [
   { icon: Home, label: 'Dashboard', path: '/dashboard' },
   { icon: Target, label: 'Bounties', path: '/dashboard/bounties' },
-  { icon: FileText, label: 'Application', path: '/application' },
+  { icon: FileText, label: 'Applications', path: '/dashboard/applications' },
   { icon: Trophy, label: 'Hackathons', path: '/hackathons' },
   { icon: DollarSign, label: 'Grant', path: '/grant' },
   { icon: Wallet, label: 'Earnings', path: '/earnings' },
@@ -143,8 +143,10 @@ const SideBar = () => {
           </div>
           {/* CTA button */}
           <button className="bg-[#FFFFFF] text-[#006045] text-base px-3 py-1 rounded-md flex flex-row items-center space-x-2 w-fit cursor-pointer">
-            <span>Get Started</span>
-            <ArrowRight size={16} className="text-[#006045]" />
+            <Link to="?modal=create-bounty" className="flex items-center gap-1">
+              <span>Create bounty</span>
+              <ArrowRight size={16} className="text-[#006045]" />
+            </Link>
           </button>
         </div>
       </div>

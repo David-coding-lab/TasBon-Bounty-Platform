@@ -1,60 +1,66 @@
 export default function StepsIndicator({ activeStep }) {
   const steps = [
-    { number: 1, label: 'Bounty Details' },
-    { number: 2, label: 'Reward & logistics' },
-    { number: 3, label: 'Review & Publish' },
+    { number: 1, label: 'Bounty Details', subtitle: 'Tell us what you need' },
+    {
+      number: 2,
+      label: 'Reward & logistics',
+      subtitle: 'Set reward and timeline',
+    },
+    {
+      number: 3,
+      label: 'Review & Publish',
+      subtitle: 'Review and publish bounty',
+    },
   ]
 
   return (
-    <div className="flex items-start justify-between px-8 pt-5 pb-4 gap-2 flex-wrap max-sm:px-4 max-sm:pt-3 max-sm:pb-2">
+    <div className="flex items-center justify-between px-8 pt-5 pb-4 max-sm:px-4 max-sm:pt-3 max-sm:pb-2">
       {steps.map((step, idx) => {
         const isActive = step.number === activeStep
         const isCompleted = step.number < activeStep
         return (
           <div
             key={step.number}
-            className="flex flex-col items-center flex-1 min-w-[60px]"
+            className="flex items-center flex-1 last:flex-none"
           >
-            <div className="flex items-center w-full relative">
-              {idx > 0 && (
-                <div
-                  className={`flex-1 h-0.5 transition-colors duration-300 ${
-                    isCompleted ? 'bg-[#34A563]' : 'bg-[#dce1e8]'
-                  }`}
-                />
-              )}
+            <div className="flex items-center gap-3 shrink-0">
               <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center font-['Inter'] font-semibold text-sm shrink-0 border-2 transition-all duration-300 max-sm:w-7 max-sm:h-7 max-sm:text-xs ${
+                className={`w-10 h-10 rounded-full flex items-center justify-center font-['Inter'] font-semibold text-base shrink-0 max-sm:w-8 max-sm:h-8 max-sm:text-sm ${
                   isActive || isCompleted
-                    ? 'bg-[#34A563] text-white border-[#34A563]'
-                    : 'bg-[#f0f3f7] text-[#6b7a8f] border-transparent'
+                    ? 'bg-[#34A563] text-white'
+                    : 'bg-[#d9d9d9] text-white'
                 }`}
               >
                 {isCompleted ? (
                   <span className="material-symbols-outlined text-lg">
-                    check_small
+                    check
                   </span>
                 ) : (
                   <span>{step.number}</span>
                 )}
               </div>
-              {idx < steps.length - 1 && (
-                <div
-                  className={`flex-1 h-0.5 transition-colors duration-300 ${
-                    isCompleted ? 'bg-[#34A563]' : 'bg-[#dce1e8]'
+              <div className="flex flex-col">
+                <span
+                  className={`font-['Inter'] text-sm font-semibold max-sm:text-xs ${
+                    isActive || isCompleted
+                      ? 'text-[#34A563]'
+                      : 'text-[#0b1a33]'
                   }`}
-                />
-              )}
+                >
+                  {step.label}
+                </span>
+                <span className="font-['Inter'] text-xs text-[#6b7a8f] font-normal max-sm:text-[10px]">
+                  {step.subtitle}
+                </span>
+              </div>
             </div>
-            <span
-              className={`mt-2 font-['Inter'] text-xs text-center whitespace-nowrap transition-colors duration-300 max-sm:text-[10px] ${
-                isActive
-                  ? 'text-[#0b1a33] font-semibold'
-                  : 'text-[#6b7a8f] font-medium'
-              }`}
-            >
-              {step.label}
-            </span>
+            {idx < steps.length - 1 && (
+              <div
+                className={`flex-1 h-0.5 mx-4 max-sm:mx-2 ${
+                  isCompleted ? 'bg-[#34A563]' : 'bg-[#dce1e8]'
+                }`}
+              />
+            )}
           </div>
         )
       })}

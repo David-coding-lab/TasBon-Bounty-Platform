@@ -1,13 +1,15 @@
 import { useState, useRef } from 'react'
-import Step1BountyDetails from './steps/Step1BountyDetails'
 import Step2RewardLogistics from './steps/Step2RewardLogistics'
 import Step3ReviewPublish from './steps/Step3ReviewPublish'
 import BountyFooter from './components/BountyFooter'
-import BountyHeader from './components/BountyHeader'
 import StepsIndicator from './components/StepsIndicator'
+import Step1BountyDetails from './steps/SetBountyDetails'
+import { useNavigate } from 'react-router-dom'
+import BountyHeader from './components/Header'
 
-const CreateBountyModal = ({ isOpen, onClose }) => {
+const CreateBountyModal = () => {
   const [activeStep, setActiveStep] = useState(1)
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -30,7 +32,7 @@ const CreateBountyModal = ({ isOpen, onClose }) => {
   }
 
   const handleClose = () => {
-    if (onClose) onClose()
+    navigate(-1) // Navigate back to the previous page
   }
 
   const handleOverlayClick = (e) => {
@@ -117,11 +119,11 @@ const CreateBountyModal = ({ isOpen, onClose }) => {
     }
   }
 
-  if (!isOpen) return null
+  // if (!isOpen) return null
 
   return (
     <div
-      className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-1000 p-5"
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm w-[100vw] h-[100vh] flex items-center justify-center z-1000 p-5"
       onClick={handleOverlayClick}
     >
       <div className="bg-white rounded-3xl max-w-205 w-full max-h-[90vh] flex flex-col shadow-2xl animate-[modalFadeIn_0.25s_ease-out] overflow-hidden">
