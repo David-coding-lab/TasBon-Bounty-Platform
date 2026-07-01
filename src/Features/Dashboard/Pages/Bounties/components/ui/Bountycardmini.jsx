@@ -1,5 +1,5 @@
 import React from 'react'
-import BountyImage from '../../../../Assets/bountyicon.png'
+import BountyImage from '../../../../Assets/bountyIcon.png'
 
 const Bountycardmini = ({ title, price, tag, image_description }) => {
   return (
