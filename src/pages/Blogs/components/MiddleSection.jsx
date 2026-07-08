@@ -143,7 +143,7 @@ export default function MiddleSection({ posts }) {
               {tags.map((tag) => (
                 <a
                   key={tag}
-                  href={`/${tag.toLowerCase()}`}
+                  href={`/blogs/${tag.toLowerCase()}`}
                   className="px-3 py-1.5 text-sm border border-gray-200 rounded-md hover:bg-gray-50 hover:border-green-500 hover:text-green-600 transition"
                 >
                   {tag}
