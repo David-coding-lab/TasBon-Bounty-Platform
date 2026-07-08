@@ -1,8 +1,9 @@
-import { Outlet, useParams } from 'react-router-dom'
+import { Outlet, useSearchParams } from 'react-router-dom'
 import SideBar from './components/navigation/SideBar'
 import NavBar from './components/navigation/NavBar'
 import RightBar from './components/Information/RightBar'
 import { useEffect, useState } from 'react'
+import CreateBountyModal from './components/CreateBounty/CreateBountyModal'
 
 /**
  * Dashboard Layout - Main layout wrapper for all dashboard pages.
@@ -34,11 +35,7 @@ const Layout = () => {
     // Outer container - full screen height, horizontal flex layout
     <div className="flex h-screen overflow-hidden">
       {/* Modal Overlay - Rendered over everything when active */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs">
-          <CreateBountyModal />
-        </div>
-      )}
+      <CreateBountyModal />
 
       {/* Left Sidebar - spans full height from top to bottom */}
       <aside className="w-62.5 shrink-0">

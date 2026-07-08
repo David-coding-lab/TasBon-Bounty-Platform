@@ -12,6 +12,7 @@ import { toast } from 'sonner'
 const CreateBountyModal = () => {
   const [activeStep, setActiveStep] = useState(1)
   const navigate = useNavigate()
+  const isOpen = window.location.href.includes('?modal=create-bounty')
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -147,26 +148,28 @@ const CreateBountyModal = () => {
     }
   }
 
-  // if (!isOpen) return null
+  if (!isOpen) return null
 
   return (
-    <div
-      className="fixed inset-0 bg-black/60 backdrop-blur-sm w-[100vw] h-[100vh] flex items-center justify-center z-1000 p-5"
-      onClick={handleOverlayClick}
-    >
-      <div className="bg-white rounded-3xl max-w-205 w-full max-h-[90vh] flex flex-col shadow-2xl animate-[modalFadeIn_0.25s_ease-out] overflow-hidden">
-        <BountyHeader onClose={handleClose} />
-        <StepsIndicator activeStep={activeStep} />
-        <div className="flex-1 overflow-y-auto px-8 pt-5 pb-6 scrollbar-thin scrollbar-track-[#f0f3f7] scrollbar-thumb-[#d0d7e0] hover:scrollbar-thumb-[#b0c0d0] max-sm:px-5 max-sm:pt-4 max-sm:pb-5">
-          {renderStepContent()}
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs">
+      <div
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm w-[100vw] h-[100vh] flex items-center justify-center z-1000 p-5"
+        onClick={handleOverlayClick}
+      >
+        <div className="bg-white rounded-3xl max-w-205 w-full max-h-[90vh] flex flex-col shadow-2xl animate-[modalFadeIn_0.25s_ease-out] overflow-hidden">
+          <BountyHeader onClose={handleClose} />
+          <StepsIndicator activeStep={activeStep} />
+          <div className="flex-1 overflow-y-auto px-8 pt-5 pb-6 scrollbar-thin scrollbar-track-[#f0f3f7] scrollbar-thumb-[#d0d7e0] hover:scrollbar-thumb-[#b0c0d0] max-sm:px-5 max-sm:pt-4 max-sm:pb-5">
+            {renderStepContent()}
+          </div>
+          <BountyFooter
+            activeStep={activeStep}
+            onBack={handleBack}
+            onNext={handleNext}
+            onPublish={handlePublish}
+            isPublishing={isPublishing}
+          />
         </div>
-        <BountyFooter
-          activeStep={activeStep}
-          onBack={handleBack}
-          onNext={handleNext}
-          onPublish={handlePublish}
-          isPublishing={isPublishing}
-        />
       </div>
     </div>
   )
