@@ -78,7 +78,7 @@ const SideBar = () => {
   const { pathname } = useLocation()
 
   return (
-    <div className="h-full bg-[#ffffff] flex flex-col">
+    <div className="h-full bg-[#ffffff] border-r border-gray-200 mr-4 flex flex-col">
       {/* Header - Logo and brand name with bottom border and shadow */}
 
       <Link
