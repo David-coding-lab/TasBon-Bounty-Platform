@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Info, ArrowRight } from 'lucide-react'
 
 const defaultMockData = {
@@ -52,6 +52,21 @@ const EarningsDashboard = ({ data = defaultMockData }) => {
   const [currency, setCurrency] = useState('USD')
   const [hoveredIndex, setHoveredIndex] = useState(null)
 
+  // States to simulate asynchronous backend loading
+  const [earningsByCategory, setEarningsByCategory] = useState([])
+  const [isLoadingCategory, setIsLoadingCategory] = useState(true)
+  const [hoveredCategoryIndex, setHoveredCategoryIndex] = useState(null)
+
+  // Simulate API fetch from backend
+  useEffect(() => {
+    setIsLoadingCategory(true)
+    const timer = setTimeout(() => {
+      setEarningsByCategory(data.earnings_by_category)
+      setIsLoadingCategory(false)
+    }, 850)
+    return () => clearTimeout(timer)
+  }, [data.earnings_by_category])
+
   // Map amount values to Y-axis coordinates (viewBox height is 240)
   // Max expected value for graph height is 20000, Y-range from 50 to 220
   const points = data.earnings_overview.map((d, index) => {
@@ -89,7 +104,7 @@ const EarningsDashboard = ({ data = defaultMockData }) => {
   const circumference = 226.195
   let currentOffset = 0
 
-  const donutCategories = data.earnings_by_category.map((c) => {
+  const donutCategories = earningsByCategory.map((c) => {
     const dashLength = (c.percentage / 100) * circumference
     const dashOffset = currentOffset
     currentOffset -= dashLength
@@ -302,7 +317,7 @@ const EarningsDashboard = ({ data = defaultMockData }) => {
       </div>
 
       {/* Right Panel: Earnings by Category */}
-      <div className="bg-white border border-[#E5E7EB] rounded-2xl p-6 shadow-sm flex flex-col justify-between h-full">
+      <div className="bg-white border border-[#E5E7EB] rounded-2xl p-6 shadow-sm flex flex-col justify-between h-full min-h-[350px]">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-6">
           <div className="flex items-center space-x-2">
@@ -313,76 +328,155 @@ const EarningsDashboard = ({ data = defaultMockData }) => {
           </div>
         </div>
 
-        {/* Content Section */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 my-auto">
-          {/* Donut Chart */}
-          <div className="relative w-40 h-40 flex items-center justify-center shrink-0">
-            <svg
-              className="w-full h-full transform -rotate-90"
-              viewBox="0 0 100 100"
-            >
-              {/* Gray Base Background ring */}
-              <circle
-                cx="50"
-                cy="50"
-                r="36"
-                fill="transparent"
-                stroke="#FFFFFF"
-                strokeWidth="9"
-              />
-              {/* Segments */}
-              {donutCategories.map((c, i) => (
+        {isLoadingCategory ? (
+          /* Premium Shimmer Loading skeleton for category chart and legend */
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 my-auto animate-pulse">
+            {/* Donut Chart Skeleton */}
+            <div className="w-36 h-36 rounded-full border-[10px] border-gray-100 flex items-center justify-center shrink-0">
+              <div className="w-16 h-8 bg-gray-100 rounded-lg" />
+            </div>
+            {/* Legend Skeleton */}
+            <div className="flex-1 w-full space-y-4">
+              {[1, 2, 3, 4].map((n) => (
+                <div key={n} className="flex justify-between items-center">
+                  <div className="flex items-center space-x-2.5">
+                    <div className="w-2.5 h-2.5 bg-gray-100 rounded-full" />
+                    <div className="w-20 h-4 bg-gray-100 rounded-md" />
+                  </div>
+                  <div className="w-16 h-4 bg-gray-100 rounded-md" />
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          /* Content Section */
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 my-auto">
+            {/* Donut Chart */}
+            <div className="relative w-40 h-40 flex items-center justify-center shrink-0">
+              <svg
+                className="w-full h-full transform -rotate-90"
+                viewBox="0 0 100 100"
+              >
+                {/* Gray Base Background ring */}
                 <circle
-                  key={i}
                   cx="50"
                   cy="50"
                   r="36"
                   fill="transparent"
-                  stroke={c.color}
+                  stroke="#FFFFFF"
                   strokeWidth="9"
-                  strokeDasharray={`${c.dashLength - 1.5} ${circumference}`}
-                  strokeDashoffset={c.dashOffset - 0.75}
-                  className="transition-all duration-300"
                 />
-              ))}
-            </svg>
+                {/* Segments */}
+                {donutCategories.map((c, i) => {
+                  const isHovered = hoveredCategoryIndex === i
+                  const hasActiveHover = hoveredCategoryIndex !== null
+                  return (
+                    <circle
+                      key={i}
+                      cx="50"
+                      cy="50"
+                      r="36"
+                      fill="transparent"
+                      stroke={c.color}
+                      strokeWidth={isHovered ? '11.5' : '9'}
+                      strokeDasharray={`${c.dashLength - 1.5} ${circumference}`}
+                      strokeDashoffset={c.dashOffset - 0.75}
+                      className="transition-all duration-350 cursor-pointer origin-center"
+                      style={{
+                        opacity: hasActiveHover ? (isHovered ? 1 : 0.45) : 1,
+                      }}
+                      onMouseEnter={() => setHoveredCategoryIndex(i)}
+                      onMouseLeave={() => setHoveredCategoryIndex(null)}
+                    />
+                  )
+                })}
+              </svg>
 
-            {/* Inner labels */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-              <span className="text-lg font-black text-[#111827] leading-none">
-                {formatCurrency(data.total_earned).replace('.00', '')}
-              </span>
-              <span className="text-xs text-[#9CA3AF] font-medium mt-1">
-                Total
-              </span>
+              {/* Inner labels - Updates dynamically on hover */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-center px-4">
+                {hoveredCategoryIndex !== null ? (
+                  <>
+                    <span className="text-[17px] font-black text-[#111827] leading-none transition-all duration-150">
+                      {formatCurrency(
+                        earningsByCategory[hoveredCategoryIndex].amount,
+                      ).replace('.00', '')}
+                    </span>
+                    <span
+                      className="text-[11px] font-bold mt-1 transition-all duration-150 uppercase tracking-wider"
+                      style={{
+                        color: earningsByCategory[hoveredCategoryIndex].color,
+                      }}
+                    >
+                      {earningsByCategory[hoveredCategoryIndex].category}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className="text-lg font-black text-[#111827] leading-none transition-all duration-150">
+                      {formatCurrency(data.total_earned).replace('.00', '')}
+                    </span>
+                    <span className="text-xs text-[#9CA3AF] font-medium mt-1 transition-all duration-150">
+                      Total
+                    </span>
+                  </>
+                )}
+              </div>
+            </div>
+
+            {/* Legend Items */}
+            <div className="flex-1 w-full space-y-3.5">
+              {donutCategories.map((c, idx) => {
+                const isHovered = hoveredCategoryIndex === idx
+                const hasActiveHover = hoveredCategoryIndex !== null
+                return (
+                  <div
+                    key={idx}
+                    className="flex items-center justify-between p-1.5 -mx-1.5 rounded-xl transition-all duration-200 cursor-pointer"
+                    style={{
+                      backgroundColor: isHovered ? '#F9FAFB' : 'transparent',
+                      opacity: hasActiveHover ? (isHovered ? 1 : 0.6) : 1,
+                    }}
+                    onMouseEnter={() => setHoveredCategoryIndex(idx)}
+                    onMouseLeave={() => setHoveredCategoryIndex(null)}
+                  >
+                    <div className="flex items-center space-x-2.5">
+                      <span
+                        className="w-2.5 h-2.5 rounded-full transition-transform duration-200"
+                        style={{
+                          backgroundColor: c.color,
+                          transform: isHovered ? 'scale(1.25)' : 'scale(1)',
+                        }}
+                      />
+                      <span
+                        className={`text-sm transition-all duration-200 ${
+                          isHovered
+                            ? 'font-black text-[#111827]'
+                            : 'font-semibold text-[#4B5563]'
+                        }`}
+                      >
+                        {c.category}
+                      </span>
+                    </div>
+                    <div className="text-sm text-right">
+                      <span
+                        className={`transition-all duration-200 mr-1 ${
+                          isHovered
+                            ? 'font-black text-[#111827]'
+                            : 'font-bold text-[#111827]'
+                        }`}
+                      >
+                        {formatCurrency(c.amount)}
+                      </span>
+                      <span className="text-xs text-[#9CA3AF] font-medium">
+                        {c.percentage}%
+                      </span>
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           </div>
-
-          {/* Legend Items */}
-          <div className="flex-1 w-full space-y-3.5">
-            {donutCategories.map((c, idx) => (
-              <div key={idx} className="flex items-center justify-between">
-                <div className="flex items-center space-x-2.5">
-                  <span
-                    className="w-2.5 h-2.5 rounded-full"
-                    style={{ backgroundColor: c.color }}
-                  />
-                  <span className="text-sm font-semibold text-[#4B5563]">
-                    {c.category}
-                  </span>
-                </div>
-                <div className="text-sm text-right">
-                  <span className="font-bold text-[#111827] mr-1">
-                    {formatCurrency(c.amount)}
-                  </span>
-                  <span className="text-xs text-[#9CA3AF] font-medium">
-                    {c.percentage}%
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        )}
 
         {/* Footer breakdown link */}
         <div className="mt-6 border-t border-gray-100 pt-4 flex justify-end">
