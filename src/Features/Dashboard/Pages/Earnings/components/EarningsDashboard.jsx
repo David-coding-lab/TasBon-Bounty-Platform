@@ -178,7 +178,13 @@ const EarningsDashboard = ({ data = defaultMockData }) => {
         <div className="relative flex-1 min-h-[220px]">
           <svg className="w-full h-full min-h-[220px]" viewBox="0 0 600 240">
             <defs>
-              <linearGradient id="dashboardChartGradient" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient
+                id="dashboardChartGradient"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
                 <stop offset="0%" stopColor="#00A854" stopOpacity="0.25" />
                 <stop offset="100%" stopColor="#00A854" stopOpacity="0.0" />
               </linearGradient>
@@ -311,15 +317,18 @@ const EarningsDashboard = ({ data = defaultMockData }) => {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6 my-auto">
           {/* Donut Chart */}
           <div className="relative w-40 h-40 flex items-center justify-center shrink-0">
-            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+            <svg
+              className="w-full h-full transform -rotate-90"
+              viewBox="0 0 100 100"
+            >
               {/* Gray Base Background ring */}
               <circle
                 cx="50"
                 cy="50"
                 r="36"
                 fill="transparent"
-                stroke="#F3F4F6"
-                strokeWidth="10"
+                stroke="#FFFFFF"
+                strokeWidth="9"
               />
               {/* Segments */}
               {donutCategories.map((c, i) => (
@@ -330,10 +339,9 @@ const EarningsDashboard = ({ data = defaultMockData }) => {
                   r="36"
                   fill="transparent"
                   stroke={c.color}
-                  strokeWidth="10"
-                  strokeDasharray={`${c.dashLength} ${circumference}`}
-                  strokeDashoffset={c.dashOffset}
-                  strokeLinecap="round"
+                  strokeWidth="9"
+                  strokeDasharray={`${c.dashLength - 1.5} ${circumference}`}
+                  strokeDashoffset={c.dashOffset - 0.75}
                   className="transition-all duration-300"
                 />
               ))}
