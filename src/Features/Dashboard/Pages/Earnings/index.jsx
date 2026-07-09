@@ -1,7 +1,6 @@
 import { Settings, Download } from 'lucide-react'
 import MetricsCards from './components/MetricsCards'
-import EarningsOverview from './components/EarningsOverview'
-import EarningsByCategory from './components/EarningsByCategory'
+import EarningsDashboard from './components/EarningsDashboard'
 import RecentTransactions from './components/RecentTransactions'
 import PayoutMethods from './components/PayoutMethods'
 import QuickStats from './components/QuickStats'
@@ -37,14 +36,7 @@ const Earnings = () => {
       <MetricsCards />
 
       {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <EarningsOverview />
-        </div>
-        <div className="lg:col-span-1">
-          <EarningsByCategory />
-        </div>
-      </div>
+      <EarningsDashboard />
 
       {/* Bottom Transactions & Settings Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
