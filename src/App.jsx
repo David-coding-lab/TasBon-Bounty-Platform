@@ -24,6 +24,7 @@ import Dashboard from './Features/Dashboard/Pages/Home'
 import DashBounties from './Features/Dashboard/Pages/Bounties'
 import ViewBounty from './Features/Dashboard/Pages/Bounties/components/ui/ViewBounty'
 import Applications from './Features/Dashboard/Pages/Applications'
+import Earnings from './Features/Dashboard/Pages/Earnings'
 import Layout from './Features/Dashboard/Layout'
 import Bounties from './pages/Bounties'
 import Blogs from './pages/Blogs'
@@ -114,6 +115,7 @@ function AppRoutes() {
           <Route path="bounties" element={<DashBounties />} />
           <Route path="bounties/:bountyId" element={<ViewBounty />} />
           <Route path="applications" element={<Applications />} />
+          <Route path="earnings" element={<Earnings />} />
         </Route>
       </Route>
 
