@@ -24,7 +24,7 @@ const navItems = [
   { icon: FileText, label: 'Applications', path: '/dashboard/applications' },
   { icon: Trophy, label: 'Hackathons', path: '/hackathons' },
   { icon: DollarSign, label: 'Grant', path: '/grants' },
-  { icon: Wallet, label: 'Earnings', path: '/earnings' },
+  { icon: Wallet, label: 'Earnings', path: '/dashboard/earnings' },
 ]
 
 /**
