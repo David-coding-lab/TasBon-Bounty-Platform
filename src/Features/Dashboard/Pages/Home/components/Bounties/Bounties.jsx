@@ -1,86 +1,62 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
 import { ArrowRight } from 'lucide-react'
-import BountiesCard from '../../../../../../Components/Bounties/BountiesCard'
+import { fetchRecommendedBounties } from '../../../../../../pages/Bounties/Api/bounties'
 
-/* Header image imports */
-import MobileAppImg from '../../assets/Image (Mobile App Redesign for Finance Platform).svg'
-import ReactComponentImg from '../../assets/Image (Build React Component Library with TypeScript).svg'
-import BrandIdentityImg from '../../assets/Image (Create Brand Identity for Tech Startup).svg'
-
-/* Issuer icon imports */
-import NexusProtocolIcon from '../../assets/Image (Nexus Protocol).svg'
-import LayerOneIcon from '../../assets/Image (LayerOne).svg'
-import DAOCollectiveIcon from '../../assets/Image (DAO Collective).svg'
-
-/* Bounty card data for the home page */
-const bountyData = [
-  {
-    headerImg: MobileAppImg,
-    categoryName: 'Smart Contract',
-    title: 'Audit DeFi Protocol Smart Contracts',
-    issuerIcon: NexusProtocolIcon,
-    issuerName: 'Nexus Protocol',
-    price: '$1,200 USDC',
-    level: 'Intermediate',
-  },
-  {
-    headerImg: ReactComponentImg,
-    categoryName: 'Frontend',
-    title: 'Build Analytics Dashboard for DAO',
-    issuerIcon: LayerOneIcon,
-    issuerName: 'LayerOne',
-    price: '$750 USDC',
-    level: 'Intermediate',
-  },
-  {
-    headerImg: BrandIdentityImg,
-    categoryName: 'Web3',
-    title: 'Integrate Wallet Connect for Web App',
-    issuerIcon: DAOCollectiveIcon,
-    issuerName: 'DAO Collective',
-    price: '$600 USDC',
-    level: 'Beginner',
-  },
-]
-
-/* Bounties section — recommended bounties for the user */
 const Bounties = () => {
-  return (
-    /* Main container: vertical stack with spacing */
-    <div className="flex flex-col space-y-4">
-      {/* Header row: titles on the left, "View all" on the right */}
-      <div className="flex flex-row justify-between items-center">
-        {/* Left side: heading and subheading */}
-        <div className="flex flex-col">
-          <h2 className="font-[Inter] text-xl font-bold text-[#0A0A0A]">
-            Recommended for you
-          </h2>
-          <p className="font-[Inter] text-sm text-[#4A5565]">
-            Bounties that match your skills and interests
-          </p>
-        </div>
+  const [bounties, setBounties] = useState([])
+  const [loading, setLoading] = useState(true)
 
-        {/* Right side: View all link with arrow */}
+  useEffect(() => {
+    fetchRecommendedBounties()
+      .then((res) => setBounties(res.data || []))
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [])
+
+  return (
+    <div className="flex flex-col space-y-4">
+      <div className="flex flex-row justify-between items-center">
+        <div className="flex flex-col">
+          <h2 className="font-[Inter] text-xl font-bold text-[#0A0A0A]">Recommended for you</h2>
+          <p className="font-[Inter] text-sm text-[#4A5565]">Bounties that match your skills and interests</p>
+        </div>
         <div className="flex flex-row items-center gap-1 cursor-pointer">
           <span className="text-base text-[#009966]">View all</span>
           <ArrowRight className="w-4 h-4 text-[#009966]" />
         </div>
       </div>
 
-      {/* Bounty cards row — mapped from bountyData */}
-      <div className="flex flex-row gap-4">
-        {bountyData.map((bounty, index) => (
-          <BountiesCard
-            key={index}
-            headerImg={bounty.headerImg}
-            categoryName={bounty.categoryName}
-            title={bounty.title}
-            issuerIcon={bounty.issuerIcon}
-            issuerName={bounty.issuerName}
-            price={bounty.price}
-            level={bounty.level}
-          />
-        ))}
+      <div className="flex flex-row gap-4 overflow-x-auto pb-2">
+        {loading
+          ? Array(3).fill(null).map((_, i) => (
+              <div key={i} className="min-w-[280px] bg-white border border-gray-200 rounded-xl p-4 animate-pulse">
+                <div className="h-32 bg-gray-100 rounded-lg mb-3" />
+                <div className="h-4 bg-gray-100 rounded w-20 mb-2" />
+                <div className="h-5 bg-gray-100 rounded w-48 mb-2" />
+                <div className="h-4 bg-gray-100 rounded w-32" />
+              </div>
+            ))
+          : bounties.map((bounty, index) => (
+              <div key={bounty.id || index} className="min-w-[280px] bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                <div className="h-32 bg-gradient-to-br from-[#009966]/10 to-[#00B87C]/10 flex items-center justify-center">
+                  <span className="text-4xl opacity-30">📋</span>
+                </div>
+                <div className="p-4">
+                  <span className="text-xs font-semibold text-[#009966] bg-[#E6F8F2] px-2 py-0.5 rounded-full">{bounty.category}</span>
+                  <h3 className="text-sm font-bold text-[#0A0A0A] mt-2 line-clamp-2">{bounty.title}</h3>
+                  <div className="flex items-center gap-2 mt-2">
+                    <div className="w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center text-[8px] font-bold text-gray-500">
+                      {bounty.clientName?.charAt(0)}
+                    </div>
+                    <span className="text-xs text-[#4A5565]">{bounty.clientName}</span>
+                  </div>
+                  <div className="flex items-center justify-between mt-3">
+                    <span className="text-sm font-bold text-[#009966]">{bounty.rewardAmount} {bounty.rewardToken}</span>
+                    <span className="text-xs text-[#4A5565] bg-gray-100 px-2 py-0.5 rounded-full">{bounty.difficulty}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
       </div>
     </div>
   )
