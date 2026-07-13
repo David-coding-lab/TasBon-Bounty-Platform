@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { ArrowLeft, Clock } from 'lucide-react'
 import { toast } from 'sonner'
-import { fetchBountyById } from '../../../../../../pages/Bounties/Api/bounties'
+import { fetchBountyById, submitBountyWork } from '../../../../../../pages/Bounties/Api/bounties'
 import {
   Bookmark,
   Share2,
@@ -12,12 +12,14 @@ import {
   Download,
   ArrowRight,
   ChevronRight,
+  Loader2,
 } from 'lucide-react'
 import TaskDetails from './TaskDetails'
 import AboutCreator from './AboutCreator'
 import GroupPhoto from '../../../../Assets/bountyIconLarge.png'
 import ApplyBountyModal from './ApplyBountyModal'
 import ApplicationPendingModal from './ApplicationPendingModal'
+import SubmissionReceivedModal from './SubmissionReceivedModal'
 
 // ViewBounty page loads a single bounty by ID and displays details,
 // timeline, attachments, creator info, and related bounty cards.
@@ -30,18 +32,35 @@ export default function ViewBounty() {
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isPendingModalOpen, setIsPendingModalOpen] = useState(false)
+  const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submissionMessage, setSubmissionMessage] = useState('')
+  const [isSubmissionReceivedOpen, setIsSubmissionReceivedOpen] = useState(false)
 
   const handleOpen = (state) => state(true)
   const handleClose = (state) => state(false)
 
   const handleApply = () => {
     handleClose(setIsModalOpen)
-
     setIsPendingModalOpen(true)
   }
 
   const handleViewApplication = () => {
     handleClose(setIsPendingModalOpen)
+  }
+
+  const handleSubmitBounty = async () => {
+    setIsSubmitting(true)
+    try {
+      await submitBountyWork(bountyId, { message: submissionMessage })
+      handleClose(setIsSubmitModalOpen)
+      setSubmissionMessage('')
+      setIsSubmissionReceivedOpen(true)
+    } catch (error) {
+      toast.error(error.message || 'Failed to submit work')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   useEffect(() => {
@@ -194,6 +213,70 @@ export default function ViewBounty() {
             <ApplicationPendingModal
               onContinueExploring={() => handleClose(setIsPendingModalOpen)}
               onViewApplication={handleViewApplication}
+            />
+          </div>
+        </div>
+      )}
+
+      {isSubmitModalOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+          onClick={() => !isSubmitting && handleClose(setIsSubmitModalOpen)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl"
+          >
+            <h2 className="text-xl font-bold text-slate-900 mb-2">Submit Your Work</h2>
+            <p className="text-sm text-slate-600 mb-4">
+              Add a message describing what you've completed.
+            </p>
+            <textarea
+              className="w-full border border-slate-200 rounded-xl p-4 text-sm resize-none h-32 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+              placeholder="Describe the work you've done, any notes for the reviewer..."
+              value={submissionMessage}
+              onChange={(e) => setSubmissionMessage(e.target.value)}
+              disabled={isSubmitting}
+            />
+            <div className="flex gap-3 mt-4">
+              <button
+                onClick={() => handleClose(setIsSubmitModalOpen)}
+                disabled={isSubmitting}
+                className="flex-1 py-3 rounded-xl border border-slate-200 text-slate-900 font-bold text-sm hover:bg-slate-50 transition-colors disabled:opacity-50 cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSubmitBounty}
+                disabled={isSubmitting}
+                className="flex-1 py-3 rounded-xl bg-emerald-700 text-white font-bold text-sm hover:bg-emerald-800 transition-colors flex items-center justify-center gap-2 disabled:opacity-70 cursor-pointer"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Submitting...
+                  </>
+                  ) : (
+                    'Submit Work'
+                  )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isSubmissionReceivedOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+          onClick={() => handleClose(setIsSubmissionReceivedOpen)}
+        >
+          <div onClick={(e) => e.stopPropagation()}>
+            <SubmissionReceivedModal
+              onContinueExploring={() => {
+                handleClose(setIsSubmissionReceivedOpen)
+                navigate(-1)
+              }}
+              onViewApplication={() => handleClose(setIsSubmissionReceivedOpen)}
             />
           </div>
         </div>
@@ -426,18 +509,22 @@ export default function ViewBounty() {
               )}
 
               <button
-                onClick={() => handleOpen(setIsModalOpen)}
-                disabled={reviewStatus === 'pending'}
-                className={`flex flex-row ${reviewStatus === 'pending' ? 'cursor-not-allowed' : 'cursor-pointer'} items-center justify-center space-x-3 ${reviewStatus === 'pending' ? 'bg-[#C5C9C7]' : reviewStatus === 'selected' ? 'bg-[#34A563]' : 'bg-[#34A563]'} rounded-2xl py-4 w-full`}
+                onClick={() => reviewStatus === 'selected' ? handleOpen(setIsSubmitModalOpen) : handleOpen(setIsModalOpen)}
+                disabled={reviewStatus === 'pending' || isSubmitting}
+                className={`flex flex-row ${reviewStatus === 'pending' || isSubmitting ? 'cursor-not-allowed' : 'cursor-pointer'} items-center justify-center space-x-3 ${reviewStatus === 'pending' ? 'bg-[#C5C9C7]' : 'bg-[#34A563]'} rounded-2xl py-4 w-full`}
               >
+                {isSubmitting ? (
+                  <Loader2 className="animate-spin" />
+                ) : (
+                  <ArrowRight color="#FFFFFF" />
+                )}
                 <span className="text-white text-md font-inter font-bold">
                   {reviewStatus === 'pending'
                     ? 'Application Pending'
                     : reviewStatus === 'selected'
-                      ? 'Submit Bounty'
+                      ? isSubmitting ? 'Submitting...' : 'Submit Bounty'
                       : 'Apply for Bounty'}
                 </span>
-                <ArrowRight color="#FFFFFF" />
               </button>
 
               <div className="flex flex-row space-x-4 items-center border border-gray-200 rounded-2xl p-4">

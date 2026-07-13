@@ -1,0 +1,47 @@
+IMAGE GENERATION API - POLLINATIONS.AI
+Free, no API key required.
+
+ENDPOINT (Image):
+https://image.pollinations.ai/prompt/{prompt}
+
+USAGE:
+curl "https://image.pollinations.ai/prompt/your%20description%20here" -o output.jpg
+
+NOTES:
+- Returns JPEG image directly
+- Use URL-encoded prompts (spaces = %20)
+- 768x768 default resolution
+- No auth/rate limits for basic use
+
+VIDEO GENERATION - POLLINATIONS.AI
+Requires API key (free credits from enter.pollinations.ai)
+
+ENDPOINT (Video):
+https://gen.pollinations.ai/video/{prompt}
+
+AUTH:
+Header: Authorization: Bearer YOUR_API_KEY
+
+USAGE:
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+  "https://gen.pollinations.ai/video/your%20prompt" -o output.mp4
+
+MODELS: Seedance, Veo (alpha)
+
+VIDEO GENERATION - GOOGLE VEO 3.1
+Free for all Google account holders (as of April 2026).
+
+ACCESS:
+https://aistudio.google.com (select Veo 3.1 model)
+https://googleflow.com (Google Flow interface)
+Google Vids (Google Workspace)
+
+FREE TIER:
+- ~10-12 videos per month (or daily via Flow/Vids)
+- 8-second clips at 720p/1080p
+- Native synchronized audio
+- No watermark
+- Commercial use allowed
+- Text-to-video & image-to-video
+
+PAID (Gemini Ultra): $20/month - higher quality, more generations, 1080p

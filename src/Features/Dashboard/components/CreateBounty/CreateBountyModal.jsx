@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Step2RewardLogistics from './steps/Step2RewardLogistics'
 import Step3ReviewPublish from './steps/Step3ReviewPublish'
 import BountyFooter from './components/BountyFooter'
@@ -7,12 +7,14 @@ import Step1BountyDetails from './steps/SetBountyDetails'
 import { useNavigate } from 'react-router-dom'
 import BountyHeader from './components/Header'
 import { createBounty } from '../../../../pages/Bounties/Api/bounties'
+import { uploadFile } from '../../../../services/api'
 import { toast } from 'sonner'
 
 const CreateBountyModal = () => {
   const [activeStep, setActiveStep] = useState(1)
   const navigate = useNavigate()
   const isOpen = window.location.href.includes('?modal=create-bounty')
+  const filesRef = useRef({})
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -39,11 +41,27 @@ const CreateBountyModal = () => {
   const handlePublish = async () => {
     setIsPublishing(true)
     try {
+      let attachmentUrls = [...formData.attachments]
+
+      if (formData.attachments.length > 0) {
+        const uploadResults = await Promise.all(
+          formData.attachments.map(async (name) => {
+            const file = filesRef.current[name]
+            if (file) {
+              const result = await uploadFile(file)
+              return result.data.url
+            }
+            return name
+          }),
+        )
+        attachmentUrls = uploadResults
+      }
+
       await createBounty({
         title: formData.title,
         description: formData.description,
         deliverables: formData.deliverables,
-        attachments: formData.attachments,
+        attachments: attachmentUrls,
         skills: formData.skills,
         rewardAmount: formData.rewardAmount,
         rewardType: formData.rewardType,
@@ -91,25 +109,24 @@ const CreateBountyModal = () => {
   const handleFileUpload = (e) => {
     const files = Array.from(e.target.files)
     if (files.length) {
+      files.forEach((f) => { filesRef.current[f.name] = f })
       const fileNames = files.map((f) => f.name)
       updateFormData('attachments', [...formData.attachments, ...fileNames])
     }
   }
 
+  const handleFilesSelect = (files) => {
+    files.forEach((f) => { filesRef.current[f.name] = f })
+    const fileNames = files.map((f) => f.name)
+    updateFormData('attachments', [...formData.attachments, ...fileNames])
+  }
+
   const removeAttachment = (index) => {
+    const name = formData.attachments[index]
+    delete filesRef.current[name]
     const updated = [...formData.attachments]
     updated.splice(index, 1)
     updateFormData('attachments', updated)
-  }
-
-  const addSkill = (e) => {
-    if (e.key === 'Enter') {
-      const value = e.target.value.trim()
-      if (value && !formData.skills.includes(value)) {
-        updateFormData('skills', [...formData.skills, value])
-      }
-      e.target.value = ''
-    }
   }
 
   const removeSkill = (skill) => {
@@ -130,6 +147,7 @@ const CreateBountyModal = () => {
             removeDeliverable={removeDeliverable}
             handleFileUpload={handleFileUpload}
             removeAttachment={removeAttachment}
+            onFilesSelect={handleFilesSelect}
           />
         )
       case 2:
@@ -137,7 +155,6 @@ const CreateBountyModal = () => {
           <Step2RewardLogistics
             formData={formData}
             updateFormData={updateFormData}
-            addSkill={addSkill}
             removeSkill={removeSkill}
           />
         )
