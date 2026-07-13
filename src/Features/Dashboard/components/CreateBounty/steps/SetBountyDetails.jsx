@@ -7,6 +7,7 @@ export default function Step1BountyDetails({
   removeDeliverable,
   handleFileUpload,
   removeAttachment,
+  onFilesSelect,
 }) {
   const fileInputRef = useRef(null)
 
@@ -40,8 +41,7 @@ export default function Step1BountyDetails({
     )
     const files = Array.from(e.dataTransfer.files)
     if (files.length) {
-      const fileNames = files.map((f) => f.name)
-      updateFormData('attachments', [...formData.attachments, ...fileNames])
+      onFilesSelect(files)
     }
   }
 

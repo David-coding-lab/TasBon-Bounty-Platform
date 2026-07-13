@@ -37,3 +37,21 @@ export function apiPut(path, body) {
 export function apiDelete(path) {
   return request(path, { method: 'DELETE' })
 }
+
+export async function uploadFile(file) {
+  const formData = new FormData()
+  formData.append('image', file)
+
+  const response = await fetch(`${config.VITE_API_URL}/api/v1/upload`, {
+    method: 'POST',
+    headers: {
+      ...authHeaders(),
+    },
+    credentials: 'include',
+    body: formData,
+  })
+
+  const data = await response.json()
+  if (!response.ok) throw new Error(data.message || 'Upload failed')
+  return data
+}

@@ -165,12 +165,12 @@ export default function Step2RewardLogistics({
                   type="date"
                   className="border-0 outline-none bg-transparent text-sm text-[#1a2a41] font-medium w-full"
                   value={formData.applicationDeadline?.split('T')[0] || ''}
-                  onChange={(e) => {
+                    onChange={(e) => {
                     const time =
-                      formData.applicationDeadline?.split('T')[1] || '23:59'
+                      formData.applicationDeadline?.split('T')[1]?.slice(0, 5) || '23:59'
                     updateFormData(
                       'applicationDeadline',
-                      `${e.target.value}T${time}`,
+                      `${e.target.value}T${time}:00.000Z`,
                     )
                   }}
                 />
@@ -183,12 +183,12 @@ export default function Step2RewardLogistics({
                     formData.applicationDeadline?.split('T')[1]?.slice(0, 5) ||
                     '23:59'
                   }
-                  onChange={(e) => {
+                   onChange={(e) => {
                     const date =
                       formData.applicationDeadline?.split('T')[0] || ''
                     updateFormData(
                       'applicationDeadline',
-                      `${date}T${e.target.value}`,
+                      `${date}T${e.target.value}:00.000Z`,
                     )
                   }}
                 />
@@ -258,10 +258,10 @@ export default function Step2RewardLogistics({
                   value={formData.bountyDeadline?.split('T')[0] || ''}
                   onChange={(e) => {
                     const time =
-                      formData.bountyDeadline?.split('T')[1] || '23:59'
+                      formData.bountyDeadline?.split('T')[1]?.slice(0, 5) || '23:59'
                     updateFormData(
                       'bountyDeadline',
-                      `${e.target.value}T${time}`,
+                      `${e.target.value}T${time}:00.000Z`,
                     )
                   }}
                 />
@@ -274,11 +274,11 @@ export default function Step2RewardLogistics({
                     formData.bountyDeadline?.split('T')[1]?.slice(0, 5) ||
                     '23:59'
                   }
-                  onChange={(e) => {
-                    const date = formData.bountyDeadline?.split('T')[0] || ''
+                    onChange={(e) => {
+                    const time = formData.bountyDeadline?.split('T')[1]?.slice(0, 5) || '23:59'
                     updateFormData(
                       'bountyDeadline',
-                      `${date}T${e.target.value}`,
+                      `${e.target.value}T${time}:00.000Z`,
                     )
                   }}
                 />
@@ -390,11 +390,11 @@ export default function Step2RewardLogistics({
             className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0`}
           >
             {formData.isPrivate ? (
-              <span class="material-symbols-outlined text-[#34A563] text">
+              <span className="material-symbols-outlined text-[#34A563] text">
                 public
               </span>
             ) : (
-              <span class="material-symbols-outlined">lock</span>
+              <span className="material-symbols-outlined">lock</span>
             )}
           </div>
           <div>
