@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { ArrowLeft, Clock } from 'lucide-react'
 import { toast } from 'sonner'
-import { fetchBountyById, submitBountyWork } from '../../../../../../pages/Bounties/Api/bounties'
+import { fetchBountyById, submitBountyWork, applyForBounty } from '../../../../../../pages/Bounties/Api/bounties'
 import {
   Bookmark,
   Share2,
@@ -32,6 +32,7 @@ export default function ViewBounty() {
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isPendingModalOpen, setIsPendingModalOpen] = useState(false)
+  const [isApplying, setIsApplying] = useState(false)
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submissionMessage, setSubmissionMessage] = useState('')
@@ -40,9 +41,17 @@ export default function ViewBounty() {
   const handleOpen = (state) => state(true)
   const handleClose = (state) => state(false)
 
-  const handleApply = () => {
-    handleClose(setIsModalOpen)
-    setIsPendingModalOpen(true)
+  const handleApply = async (data) => {
+    setIsApplying(true)
+    try {
+      await applyForBounty(bountyId, data)
+      handleClose(setIsModalOpen)
+      setIsPendingModalOpen(true)
+    } catch (error) {
+      toast.error(error.message || 'Failed to apply')
+    } finally {
+      setIsApplying(false)
+    }
   }
 
   const handleViewApplication = () => {
@@ -199,6 +208,7 @@ export default function ViewBounty() {
             <ApplyBountyModal
               onCancel={() => handleClose(setIsModalOpen)}
               onApply={handleApply}
+              isApplying={isApplying}
             />
           </div>
         </div>
