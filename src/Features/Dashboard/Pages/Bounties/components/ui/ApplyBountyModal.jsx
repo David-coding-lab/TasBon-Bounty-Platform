@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   FileText,
   DollarSign,
@@ -5,11 +6,13 @@ import {
   Folder,
   Calendar,
   ShieldCheck,
+  Loader2,
 } from 'lucide-react'
 
 export default function ApplyBountyModal({
   onCancel = () => {},
   onApply = () => {},
+  isApplying = false,
   bounty = {
     title: 'Build DeFi Analytics Dashboard',
     project: 'Nexus Protocol',
@@ -21,6 +24,16 @@ export default function ApplyBountyModal({
     deadline: 'May 31, 2025',
   },
 }) {
+  const [coverLetter, setCoverLetter] = useState('')
+  const [proposedAmount, setProposedAmount] = useState('')
+
+  const handleApply = () => {
+    onApply({
+      coverLetter,
+      proposedAmount: proposedAmount ? Number(proposedAmount) : undefined,
+    })
+  }
+
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4 font-[Inter]">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
@@ -85,6 +98,40 @@ export default function ApplyBountyModal({
           />
         </div>
 
+        {/* Cover Letter */}
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+            Cover Letter (Optional)
+          </label>
+          <textarea
+            className="w-full border border-slate-200 rounded-xl p-3 text-sm resize-none h-24 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+            placeholder="Tell the creator why you're a great fit for this bounty..."
+            value={coverLetter}
+            onChange={(e) => setCoverLetter(e.target.value)}
+            disabled={isApplying}
+          />
+        </div>
+
+        {/* Proposed Amount */}
+        <div className="mb-6">
+          <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+            Proposed Amount (Optional)
+          </label>
+          <div className="flex items-center border border-slate-200 rounded-xl px-3 focus-within:border-emerald-500 focus-within:ring-1 focus-within:ring-emerald-500">
+            <span className="text-slate-500 text-sm font-medium">$</span>
+            <input
+              type="number"
+              className="w-full border-0 outline-none py-3 px-2 text-sm"
+              placeholder="Enter your proposed reward"
+              value={proposedAmount}
+              onChange={(e) => setProposedAmount(e.target.value)}
+              disabled={isApplying}
+              min={0}
+            />
+            <span className="text-slate-500 text-sm">USDC</span>
+          </div>
+        </div>
+
         {/* Info box */}
         <div className="bg-[#15803D]/5 rounded-xl p-4 flex gap-3 mb-8">
           <ShieldCheck className="w-5 h-5 text-[#15803D] flex-shrink-0 mt-0.5" />
@@ -103,15 +150,24 @@ export default function ApplyBountyModal({
         <div className="flex gap-3">
           <button
             onClick={onCancel}
-            className="cursor-pointer flex-1 py-3 rounded-xl border border-slate-200 text-slate-900 font-bold text-[15px] hover:bg-slate-50 transition-colors"
+            disabled={isApplying}
+            className="cursor-pointer flex-1 py-3 rounded-xl border border-slate-200 text-slate-900 font-bold text-[15px] hover:bg-slate-50 transition-colors disabled:opacity-50"
           >
             Cancel
           </button>
           <button
-            onClick={onApply}
-            className="cursor-pointer flex-1 py-3 rounded-xl bg-[#34A853] text-white font-bold text-[15px] hover:bg-[#2c8f47] transition-colors"
+            onClick={handleApply}
+            disabled={isApplying}
+            className="cursor-pointer flex-1 py-3 rounded-xl bg-[#34A853] text-white font-bold text-[15px] hover:bg-[#2c8f47] transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
           >
-            Apply Now
+            {isApplying ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Applying...
+              </>
+            ) : (
+              'Apply Now'
+            )}
           </button>
         </div>
       </div>
