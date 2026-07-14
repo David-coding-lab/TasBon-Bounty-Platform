@@ -1,278 +1,57 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
 import NftBanner from '../../components/Information/NftBanner'
-import { useState } from 'react'
-
-import MobileAppImg from '../../../../pages/Bounties/assets/mobile-app.svg'
-import ReactComponentImg from '../../../../pages/Bounties/assets/react-component.svg'
-import BrandIdentityImg from '../../../../pages/Bounties/assets/brand-identity.svg'
-import NexusProtocolIcon from '../../../../pages/Bounties/assets/nexus-protocol.svg'
-import LayerOneIcon from '../../../../pages/Bounties/assets/layer-one.svg'
-import DAOCollectiveIcon from '../../../../pages/Bounties/assets/dao-collective.svg'
 import BountiesCard from '../../../../Components/Bounties/BountiesCard'
+import { listBounties } from '../../../../services/bounties'
+import { toast } from 'sonner'
+
+const CATEGORY_IMAGES = {
+  Design: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400',
+  Development: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400',
+  Content: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400',
+  Smart_Contract: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400',
+  Web3: 'https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?w=400',
+  Frontend: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400',
+}
+
+const CATEGORY_ICONS = {
+  Design: 'https://api.dicebear.com/7.x/shapes/svg?seed=design',
+  Development: 'https://api.dicebear.com/7.x/shapes/svg?seed=dev',
+  Content: 'https://api.dicebear.com/7.x/shapes/svg?seed=content',
+  Default: 'https://api.dicebear.com/7.x/shapes/svg?seed=bounty',
+}
 
 const DashBounties = () => {
   const filters = ['All', 'Design', 'Development', 'Content', 'Others']
   const [activeFilter, setActiveFilter] = useState('All')
   const [searchQuery, setSearchQuery] = useState('')
+  const [bounties, setBounties] = useState([])
+  const [loading, setLoading] = useState(true)
 
-  const mockBounties = [
-    {
-      id: 1,
-      headerImg: MobileAppImg,
-      categoryName: 'Smart Contract',
-      title: 'Audit DeFi Protocol Smart Contracts',
-      description:
-        'Comprehensive security audit of DeFi smart contracts to identify vulnerabilities and ensure protocol safety.',
-      issuerIcon: NexusProtocolIcon,
-      issuerName: 'Nexus Protocol',
-      price: '$1,200 USDC',
-      level: 'Intermediate',
-    },
-    {
-      id: 2,
-      headerImg: ReactComponentImg,
-      categoryName: 'Frontend',
-      title: 'Build Analytics Dashboard for DAO',
-      description:
-        'Create a real-time analytics dashboard with charts and metrics for DAO treasury management.',
-      issuerIcon: LayerOneIcon,
-      issuerName: 'LayerOne',
-      price: '$750 USDC',
-      level: 'Intermediate',
-    },
-    {
-      id: 3,
-      headerImg: BrandIdentityImg,
-      categoryName: 'Web3',
-      title: 'Integrate Wallet Connect for Web App',
-      description:
-        'Implement Wallet Connect integration to enable seamless dApp connectivity with multiple wallets.',
-      issuerIcon: DAOCollectiveIcon,
-      issuerName: 'DAO Collective',
-      price: '$600 USDC',
-      level: 'Beginner',
-    },
-    {
-      id: 4,
-      headerImg: MobileAppImg,
-      categoryName: 'Design',
-      title: 'Redesign NFT Marketplace Landing Page',
-      description:
-        'Redesign the landing page to improve user engagement and showcase NFT collections effectively.',
-      issuerIcon: NexusProtocolIcon,
-      issuerName: 'Nexus Protocol',
-      price: '$900 USDC',
-      level: 'Advanced',
-    },
-    {
-      id: 5,
-      headerImg: ReactComponentImg,
-      categoryName: 'Development',
-      title: 'Build Token Staking Interface',
-      description:
-        'Develop a token staking interface with APY tracking, unstaking, and reward distribution features.',
-      issuerIcon: LayerOneIcon,
-      issuerName: 'LayerOne',
-      price: '$1,500 USDC',
-      level: 'Advanced',
-    },
-    {
-      id: 6,
-      headerImg: BrandIdentityImg,
-      categoryName: 'Content',
-      title: 'Write Technical Documentation for SDK',
-      description:
-        'Create comprehensive technical documentation including API references and integration guides.',
-      issuerIcon: DAOCollectiveIcon,
-      issuerName: 'DAO Collective',
-      price: '$400 USDC',
-      level: 'Beginner',
-    },
-    {
-      id: 7,
-      headerImg: MobileAppImg,
-      categoryName: 'Smart Contract',
-      title: 'Develop Multi-Sig Wallet Contract',
-      description:
-        'Build a secure multi-signature wallet contract with customizable approval thresholds.',
-      issuerIcon: NexusProtocolIcon,
-      issuerName: 'Nexus Protocol',
-      price: '$2,000 USDC',
-      level: 'Advanced',
-    },
-    {
-      id: 8,
-      headerImg: ReactComponentImg,
-      categoryName: 'Frontend',
-      title: 'Create Interactive Data Visualization',
-      description:
-        'Build interactive charts and graphs for on-chain data analysis with filtering capabilities.',
-      issuerIcon: LayerOneIcon,
-      issuerName: 'LayerOne',
-      price: '$850 USDC',
-      level: 'Intermediate',
-    },
-    {
-      id: 9,
-      headerImg: BrandIdentityImg,
-      categoryName: 'Design',
-      title: 'Design Mobile App UI for DeFi Wallet',
-      description:
-        'Design a clean and intuitive mobile interface for a DeFi wallet with transaction tracking.',
-      issuerIcon: DAOCollectiveIcon,
-      issuerName: 'DAO Collective',
-      price: '$1,100 USDC',
-      level: 'Intermediate',
-    },
-    {
-      id: 10,
-      headerImg: MobileAppImg,
-      categoryName: 'Web3',
-      title: 'Build Cross-Chain Bridge Interface',
-      description:
-        'Develop a cross-chain bridge UI supporting multiple networks with real-time status updates.',
-      issuerIcon: NexusProtocolIcon,
-      issuerName: 'Nexus Protocol',
-      price: '$1,800 USDC',
-      level: 'Advanced',
-    },
-    {
-      id: 11,
-      headerImg: ReactComponentImg,
-      categoryName: 'Content',
-      title: 'Create Video Tutorials for Protocol',
-      description:
-        'Produce step-by-step video tutorials explaining protocol features and integration workflows.',
-      issuerIcon: LayerOneIcon,
-      issuerName: 'LayerOne',
-      price: '$500 USDC',
-      level: 'Beginner',
-    },
-    {
-      id: 12,
-      headerImg: BrandIdentityImg,
-      categoryName: 'Development',
-      title: 'Implement Governance Voting System',
-      description:
-        'Build an on-chain governance voting system with proposal creation and delegation features.',
-      issuerIcon: DAOCollectiveIcon,
-      issuerName: 'DAO Collective',
-      price: '$1,400 USDC',
-      level: 'Advanced',
-    },
-    {
-      id: 13,
-      headerImg: MobileAppImg,
-      categoryName: 'Frontend',
-      title: 'Build Portfolio Tracker Dashboard',
-      description:
-        'Create a portfolio tracker that aggregates and displays token balances across multiple chains.',
-      issuerIcon: NexusProtocolIcon,
-      issuerName: 'Nexus Protocol',
-      price: '$950 USDC',
-      level: 'Intermediate',
-    },
-    {
-      id: 14,
-      headerImg: ReactComponentImg,
-      categoryName: 'Smart Contract',
-      title: 'Create ERC-721 Minting Contract',
-      description:
-        'Develop an ERC-721 NFT minting contract with metadata storage and mint limits.',
-      issuerIcon: LayerOneIcon,
-      issuerName: 'LayerOne',
-      price: '$1,300 USDC',
-      level: 'Intermediate',
-    },
-    {
-      id: 15,
-      headerImg: BrandIdentityImg,
-      categoryName: 'Design',
-      title: 'Design Email Templates for Platform',
-      description:
-        'Design responsive email templates for notifications, alerts, and platform communications.',
-      issuerIcon: DAOCollectiveIcon,
-      issuerName: 'DAO Collective',
-      price: '$350 USDC',
-      level: 'Beginner',
-    },
-    {
-      id: 16,
-      headerImg: MobileAppImg,
-      categoryName: 'Web3',
-      title: 'Integrate IPFS Storage for dApp',
-      description:
-        'Integrate IPFS for decentralized file storage with upload and retrieval functionality.',
-      issuerIcon: NexusProtocolIcon,
-      issuerName: 'Nexus Protocol',
-      price: '$700 USDC',
-      level: 'Intermediate',
-    },
-    {
-      id: 17,
-      headerImg: ReactComponentImg,
-      categoryName: 'Development',
-      title: 'Build Real-Time Notification Service',
-      description:
-        'Develop a real-time notification system for on-chain events using WebSockets.',
-      issuerIcon: LayerOneIcon,
-      issuerName: 'LayerOne',
-      price: '$1,000 USDC',
-      level: 'Intermediate',
-    },
-    {
-      id: 18,
-      headerImg: BrandIdentityImg,
-      categoryName: 'Content',
-      title: 'Write Whitepaper for New Protocol',
-      description:
-        'Write a comprehensive whitepaper covering protocol architecture, tokenomics, and roadmap.',
-      issuerIcon: DAOCollectiveIcon,
-      issuerName: 'DAO Collective',
-      price: '$800 USDC',
-      level: 'Advanced',
-    },
-    {
-      id: 19,
-      headerImg: MobileAppImg,
-      categoryName: 'Frontend',
-      title: 'Create Responsive Admin Panel',
-      description:
-        'Build a responsive admin dashboard with user management, analytics, and configuration tools.',
-      issuerIcon: NexusProtocolIcon,
-      issuerName: 'Nexus Protocol',
-      price: '$1,100 USDC',
-      level: 'Intermediate',
-    },
-    {
-      id: 20,
-      headerImg: ReactComponentImg,
-      categoryName: 'Smart Contract',
-      title: 'Develop Yield Farming Contract',
-      description:
-        'Build a yield farming contract with multiple pools, reward distribution, and compounding logic.',
-      issuerIcon: LayerOneIcon,
-      issuerName: 'LayerOne',
-      price: '$2,500 USDC',
-      level: 'Advanced',
-    },
-  ]
+  useEffect(() => {
+    setLoading(true)
+    listBounties()
+      .then((res) => setBounties(res.data || []))
+      .catch((err) => toast.error(err.message || 'Failed to load bounties'))
+      .finally(() => setLoading(false))
+  }, [])
 
-  const fliterBounties = mockBounties.filter((bounty) => {
-    const matchesCategory =
-      activeFilter === 'All' || bounty.categoryName === activeFilter
-    const matchesSearch =
-      !searchQuery ||
-      bounty.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      bounty.issuerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      bounty.categoryName.toLowerCase().includes(searchQuery.toLowerCase())
+  const getCategoryImage = (category) => CATEGORY_IMAGES[category] || CATEGORY_IMAGES.Development
+  const getIssuerIcon = (_issuer) => CATEGORY_ICONS.Default
+
+  const filtered = bounties.filter((bounty) => {
+    const cat = bounty.category || bounty.categoryName || ''
+    const matchesCategory = activeFilter === 'All' || cat === activeFilter
+    const title = (bounty.title || '').toLowerCase()
+    const issuer = (bounty.issuerName || bounty.issuer?.name || '').toLowerCase()
+    const q = searchQuery.toLowerCase()
+    const matchesSearch = !q || title.includes(q) || issuer.includes(q) || cat.toLowerCase().includes(q)
     return matchesCategory && matchesSearch
   })
 
   return (
     <div className="flex flex-col space-y-8 w-full">
       <NftBanner />
-      <div className="flex flex-col space-y-4  ">
+      <div className="flex flex-col space-y-4">
         <div className="relative w-full max-w-7xl">
           <svg
             className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-black/50"
@@ -310,22 +89,30 @@ const DashBounties = () => {
         </div>
 
         <div className="max-w-6xl mx-auto mb-10 px-4 sm:px-6 mt-12">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {fliterBounties.map((bounty, index) => (
-              <BountiesCard
-                key={index}
-                bountyId={bounty.id || index}
-                headerImg={bounty.headerImg}
-                categoryName={bounty.categoryName}
-                title={bounty.title}
-                description={bounty.description}
-                issuerIcon={bounty.issuerIcon}
-                issuerName={bounty.issuerName}
-                price={bounty.price}
-                level={bounty.level}
-              />
-            ))}
-          </div>
+          {loading ? (
+            <div className="flex items-center justify-center py-20">
+              <div className="w-8 h-8 border-3 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+            </div>
+          ) : filtered.length === 0 ? (
+            <p className="text-center text-gray-500 py-20">No bounties found</p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+              {filtered.map((bounty, index) => (
+                <BountiesCard
+                  key={bounty.id || index}
+                  bountyId={bounty.id}
+                  headerImg={bounty.imageUrl || getCategoryImage(bounty.category || bounty.categoryName)}
+                  categoryName={bounty.category || bounty.categoryName}
+                  title={bounty.title}
+                  description={bounty.description || bounty.deliverables?.join(', ')}
+                  issuerIcon={bounty.issuer?.logo || getIssuerIcon(bounty.issuer?.name)}
+                  issuerName={bounty.issuer?.name || bounty.issuerName}
+                  price={bounty.reward ? `$${bounty.reward.toLocaleString()} ${bounty.rewardType === 'milestone' ? '(milestone)' : 'USDC'}` : ''}
+                  level={bounty.level || 'Intermediate'}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

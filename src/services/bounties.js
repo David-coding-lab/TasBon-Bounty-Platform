@@ -11,6 +11,22 @@ export function listBounties(params = {}) {
   return apiGet(`/api/v1/bounties${qs ? `?${qs}` : ''}`)
 }
 
+export function fetchRecommendedBounties() {
+  return apiGet('/api/v1/bounties/recommended')
+}
+
+export function fetchActiveBounties() {
+  return apiGet('/api/v1/bounties/active')
+}
+
+export function createBounty(bountyData) {
+  return apiPost('/api/v1/bounties', bountyData)
+}
+
+export function fetchBountyById(id) {
+  return apiGet(`/api/v1/bounties/${id}`)
+}
+
 export function getMyBounties() {
   return apiGet('/api/v1/bounties/mine')
 }

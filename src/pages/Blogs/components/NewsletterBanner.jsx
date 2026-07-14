@@ -7,10 +7,19 @@ import { config } from '../../../../lib/config'
 export default function NewsletterBanner() {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  const validateEmail = (value) => {
+    if (!value.trim()) return 'Email is required'
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'Please enter a valid email'
+    return ''
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!email) return
+    const err = validateEmail(email)
+    if (err) { setError(err); return }
+    setError('')
 
     setLoading(true)
     try {
@@ -77,26 +86,29 @@ export default function NewsletterBanner() {
           viewport={{ once: true }}
           className="flex items-center justify-center px-8 py-16"
         >
-          <form
-            onSubmit={handleSubmit}
-            className="flex bg-white rounded-lg overflow-hidden w-full max-w-lg h-[52px]"
-          >
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-              className="flex-1 px-5 py-3 text-black outline-none text-base"
-            />
-            <button
-              type="submit"
-              disabled={loading}
-              className="px-7 py-3 text-[#34A563] font-semibold text-base hover:bg-gray-50 transition disabled:opacity-50"
+          <div className="flex flex-col w-full max-w-lg">
+            <form
+              onSubmit={handleSubmit}
+              className="flex bg-white rounded-lg overflow-hidden h-[52px]"
             >
-              {loading ? 'Subscribing...' : 'Subscribe'}
-            </button>
-          </form>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); setError('') }}
+                placeholder="Enter your email"
+                required
+                className="flex-1 px-5 py-3 text-black outline-none text-base"
+              />
+              <button
+                type="submit"
+                disabled={loading}
+                className="px-7 py-3 text-[#34A563] font-semibold text-base hover:bg-gray-50 transition disabled:opacity-50"
+              >
+                {loading ? 'Subscribing...' : 'Subscribe'}
+              </button>
+            </form>
+            {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
+          </div>
         </motion.div>
       </div>
     </section>

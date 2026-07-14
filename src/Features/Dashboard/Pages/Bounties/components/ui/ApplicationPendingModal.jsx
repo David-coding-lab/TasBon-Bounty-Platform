@@ -3,6 +3,7 @@ import { Check, ShieldCheck, ArrowRight } from 'lucide-react'
 export default function ApplicationPendingModal({
   onViewApplication = () => {},
   onContinueExploring = () => {},
+  bounty,
 }) {
   return (
     <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 font-[Inter]">
@@ -21,6 +22,20 @@ export default function ApplicationPendingModal({
         Your application for this bounty has been successfully submitted to the
         creator.
       </p>
+
+      {/* Bounty card */}
+      {bounty && (
+        <div className="border border-slate-200 rounded-xl p-3 flex items-center gap-3 mb-6">
+          <div className="w-12 h-12 rounded-lg bg-[#15803D]/10 flex items-center justify-center text-[#15803D] font-bold text-lg shrink-0">
+            {bounty.title?.charAt(0) || 'B'}
+          </div>
+          <div>
+            <h3 className="font-bold text-slate-900 text-sm leading-snug">
+              {bounty.title}
+            </h3>
+          </div>
+        </div>
+      )}
 
       {/* Info box */}
       <div className="bg-[#15803D]/5 rounded-xl p-4 flex gap-3 mb-8">

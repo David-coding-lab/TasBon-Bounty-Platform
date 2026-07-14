@@ -8,6 +8,7 @@ export default function Step1BountyDetails({
   handleFileUpload,
   removeAttachment,
   onFilesSelect,
+  errors = {},
 }) {
   const fileInputRef = useRef(null)
 
@@ -56,7 +57,11 @@ export default function Step1BountyDetails({
         <div className="relative">
           <input
             type="text"
-            className="w-full py-3 px-4 border border-[#dce1e8] rounded-xl font-inter text-sm text-[#1a2a41] bg-white outline-none transition-all placeholder:text-[#a0b0c4] focus:border-[#34A563] focus:ring-2 focus:ring-[#34A563]/20"
+            className={`w-full py-3 px-4 border rounded-xl font-inter text-sm text-[#1a2a41] bg-white outline-none transition-all placeholder:text-[#a0b0c4] focus:ring-2 ${
+              errors.title
+                ? 'border-red-400 focus:border-red-500 focus:ring-red-500/20'
+                : 'border-[#dce1e8] focus:border-[#34A563] focus:ring-[#34A563]/20'
+            }`}
             placeholder="e.g. Design landing page hero"
             value={formData.title}
             onChange={(e) => updateFormData('title', e.target.value)}
@@ -66,6 +71,9 @@ export default function Step1BountyDetails({
             {formData.title.length}/100
           </span>
         </div>
+        {errors.title && (
+          <p className="text-red-500 text-xs mt-1 font-inter">{errors.title}</p>
+        )}
       </div>
 
       {/* Description */}
@@ -76,7 +84,11 @@ export default function Step1BountyDetails({
         <p className="font-inter text-sm text-[#6b7a8f] -mt-0.5">
           Describe your requirements, goals and any specific details.
         </p>
-        <div className="border border-[#dce1e8] rounded-xl overflow-hidden bg-[#fafbfc] focus-within:border-[#34A563] focus-within:ring-2 focus-within:ring-[#34A563]/20 transition-all mt-1">
+        <div className={`border rounded-xl overflow-hidden bg-[#fafbfc] focus-within:ring-2 transition-all mt-1 ${
+          errors.description
+            ? 'border-red-400 focus-within:border-red-500 focus-within:ring-red-500/20'
+            : 'border-[#dce1e8] focus-within:border-[#34A563] focus-within:ring-[#34A563]/20'
+        }`}>
           <textarea
             className="w-full py-4 px-5 font-inter text-sm text-[#1a2a41] bg-transparent outline-none resize-y min-h-[160px] placeholder:text-[#a0b0c4]"
             placeholder="Provide a detailed description of the work to be done..."
@@ -196,6 +208,9 @@ export default function Step1BountyDetails({
             </span>
           </div>
         </div>
+        {errors.description && (
+          <p className="text-red-500 text-xs mt-1 font-inter">{errors.description}</p>
+        )}
       </div>
 
       {/* Attachments */}

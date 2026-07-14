@@ -28,17 +28,62 @@ const CreateBountyModal = () => {
     isPrivate: false,
   })
 
-  const handleNext = () => {
-    if (activeStep < 3) setActiveStep(activeStep + 1)
-  }
-
   const handleBack = () => {
     if (activeStep > 1) setActiveStep(activeStep - 1)
   }
 
   const [isPublishing, setIsPublishing] = useState(false)
+  const [errors, setErrors] = useState({})
+
+  const validateStep = (step) => {
+    const errs = {}
+
+    if (step === 1) {
+      if (!formData.title.trim()) {
+        errs.title = 'Bounty title is required'
+      } else if (formData.title.trim().length < 5) {
+        errs.title = 'Title must be at least 5 characters'
+      }
+      if (formData.description && formData.description.trim().length < 20) {
+        errs.description = 'Description must be at least 20 characters'
+      }
+    }
+
+    if (step === 2) {
+      if (!formData.rewardAmount || formData.rewardAmount <= 0) {
+        errs.rewardAmount = 'Enter a valid reward amount greater than 0'
+      }
+      if (
+        formData.applicationDeadline &&
+        formData.bountyDeadline &&
+        new Date(formData.applicationDeadline) >= new Date(formData.bountyDeadline)
+      ) {
+        errs.bountyDeadline = 'Bounty deadline must be after application deadline'
+      }
+    }
+
+    setErrors(errs)
+    return Object.keys(errs).length === 0
+  }
+
+  const clearError = (key) => {
+    setErrors((prev) => {
+      const next = { ...prev }
+      delete next[key]
+      return next
+    })
+  }
+
+  const handleNext = () => {
+    if (validateStep(activeStep)) {
+      if (activeStep < 3) setActiveStep(activeStep + 1)
+    }
+  }
 
   const handlePublish = async () => {
+    const step1Valid = validateStep(1)
+    const step2Valid = validateStep(2)
+    if (!step1Valid || !step2Valid) return
     setIsPublishing(true)
     try {
       let attachmentUrls = [...formData.attachments]
@@ -88,6 +133,7 @@ const CreateBountyModal = () => {
 
   const updateFormData = (key, value) => {
     setFormData((prev) => ({ ...prev, [key]: value }))
+    clearError(key)
   }
 
   const addDeliverable = () => {
@@ -148,6 +194,7 @@ const CreateBountyModal = () => {
             handleFileUpload={handleFileUpload}
             removeAttachment={removeAttachment}
             onFilesSelect={handleFilesSelect}
+            errors={errors}
           />
         )
       case 2:
@@ -156,6 +203,7 @@ const CreateBountyModal = () => {
             formData={formData}
             updateFormData={updateFormData}
             removeSkill={removeSkill}
+            errors={errors}
           />
         )
       case 3:
