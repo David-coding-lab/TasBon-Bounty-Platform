@@ -30,7 +30,7 @@ const DashBounties = () => {
   useEffect(() => {
     setLoading(true)
     listBounties()
-      .then((res) => setBounties(res.data || []))
+      .then((res) => setBounties(res.bounties || res.data || []))
       .catch((err) => toast.error(err.message || 'Failed to load bounties'))
       .finally(() => setLoading(false))
   }, [])
