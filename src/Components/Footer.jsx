@@ -29,10 +29,19 @@ const footerLinks = {
 export default function Footer() {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  const validateEmail = (value) => {
+    if (!value.trim()) return 'Email is required'
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'Please enter a valid email'
+    return ''
+  }
 
   const handleSubscribe = async (e) => {
     e.preventDefault()
-    if (!email) return
+    const err = validateEmail(email)
+    if (err) { setError(err); return }
+    setError('')
 
     setLoading(true)
     try {
@@ -71,26 +80,29 @@ export default function Footer() {
               Stay up to date with the latest happenings in the ecosystem.
             </p>
           </div>
-          <form
-            onSubmit={handleSubscribe}
-            className="flex w-full md:w-auto gap-2 border rounded-tr-lg rounded-br-lg border-tl-30 border-[#34A563] "
-          >
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-              className="flex-1 md:w-64 px-4 py-2.5 font-sora rounded-sm text-sm outline-none"
-            />
-            <button
-              type="submit"
-              disabled={loading}
-              className="bg-primary font-sora hover:bg-[#139449] cursor-pointer text-white font-semibold px-8 py-2.5 rounded-lg text-sm transition-colors whitespace-nowrap disabled:opacity-50"
+          <div className="flex flex-col w-full md:w-auto">
+            <form
+              onSubmit={handleSubscribe}
+              className="flex gap-2 border rounded-tr-lg rounded-br-lg border-tl-30 border-[#34A563]"
             >
-              {loading ? 'Subscribing...' : 'Subscribe'}
-            </button>
-          </form>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); setError('') }}
+                placeholder="Enter your email"
+                required
+                className="flex-1 md:w-64 px-4 py-2.5 font-sora rounded-sm text-sm outline-none"
+              />
+              <button
+                type="submit"
+                disabled={loading}
+                className="bg-primary font-sora hover:bg-[#139449] cursor-pointer text-white font-semibold px-8 py-2.5 rounded-lg text-sm transition-colors whitespace-nowrap disabled:opacity-50"
+              >
+                {loading ? 'Subscribing...' : 'Subscribe'}
+              </button>
+            </form>
+            {error && <p className="text-red-500 text-xs mt-1 font-sora">{error}</p>}
+          </div>
         </div>
       </div>
 

@@ -4,6 +4,7 @@ export default function Step2RewardLogistics({
   formData,
   updateFormData,
   removeSkill,
+  errors = {},
 }) {
   const [skillInput, setSkillInput] = useState('')
 
@@ -54,7 +55,11 @@ export default function Step2RewardLogistics({
                 </svg>
               </div>
               {/* Amount input */}
-              <div className="flex-1 flex items-center border border-[#dce1e8] rounded-xl bg-white px-4 h-12 focus-within:ring-2 focus-within:ring-[#34A563] focus-within:border-[#34A563]">
+              <div className={`flex-1 flex items-center border rounded-xl bg-white px-4 h-12 focus-within:ring-2 ${
+                errors.rewardAmount
+                  ? 'border-red-400 focus-within:border-red-500 focus-within:ring-red-500/20'
+                  : 'border-[#dce1e8] focus-within:ring-[#34A563] focus-within:border-[#34A563]'
+              }`}>
                 <input
                   type="number"
                   className="w-full border-0 outline-none font-semibold text-[#1a2a41] bg-transparent text-sm"
@@ -68,6 +73,9 @@ export default function Step2RewardLogistics({
                   USDC
                 </span>
               </div>
+              {errors.rewardAmount && (
+                <p className="text-red-500 text-xs mt-1">{errors.rewardAmount}</p>
+              )}
             </div>
           </div>
 
@@ -222,7 +230,11 @@ export default function Step2RewardLogistics({
             <label className="font-bold text-sm text-[#1a2a41]">
               Bounty Deadline
             </label>
-            <div className="flex border border-[#dce1e8] rounded-xl overflow-hidden bg-white focus-within:ring-2 focus-within:ring-[#34A563] focus-within:border-[#34A563] h-12">
+            <div className={`flex border rounded-xl overflow-hidden bg-white focus-within:ring-2 h-12 ${
+              errors.bountyDeadline
+                ? 'border-red-400 focus-within:border-red-500 focus-within:ring-red-500/20'
+                : 'border-[#dce1e8] focus-within:ring-[#34A563] focus-within:border-[#34A563]'
+            }`}>
               <div className="flex items-center gap-2 px-3 flex-1">
                 <svg
                   width="16"
@@ -305,6 +317,9 @@ export default function Step2RewardLogistics({
                 </svg>
               </div>
             </div>
+            {errors.bountyDeadline && (
+              <p className="text-red-500 text-xs mt-1">{errors.bountyDeadline}</p>
+            )}
           </div>
         </div>
       </div>

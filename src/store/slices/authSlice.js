@@ -1,28 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import Cookies from 'js-cookie'
-import { config } from '../../../lib/config'
+import { apiPost } from '../../services/api'
 
 export const hydrateSession = createAsyncThunk(
   'auth/hydrateSession',
   async (_, { rejectWithValue }) => {
-    const token = Cookies.get('session')
-
     try {
-      const res = await fetch(
-        `${config.VITE_API_URL}/api/v1/auth/refresh-token`,
-        {
-          method: 'POST',
-          credentials: 'include',
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-        },
-      )
+      const data = await apiPost('/api/v1/auth/refresh-token')
 
-      if (!res.ok) {
-        Cookies.remove('session')
-        return rejectWithValue('session expired')
-      }
-
-      const data = await res.json()
       const { user, accessToken } = data.data
 
       Cookies.set('session', accessToken, {

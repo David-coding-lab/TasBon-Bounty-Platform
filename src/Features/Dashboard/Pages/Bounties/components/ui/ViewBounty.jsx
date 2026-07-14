@@ -36,7 +36,9 @@ export default function ViewBounty() {
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submissionMessage, setSubmissionMessage] = useState('')
+  const [submitError, setSubmitError] = useState('')
   const [isSubmissionReceivedOpen, setIsSubmissionReceivedOpen] = useState(false)
+  const [submissionResult, setSubmissionResult] = useState(null)
 
   const handleOpen = (state) => state(true)
   const handleClose = (state) => state(false)
@@ -44,8 +46,16 @@ export default function ViewBounty() {
   const handleApply = async (data) => {
     setIsApplying(true)
     try {
-      await applyForBounty(bountyId, data)
+      const res = await applyForBounty(bountyId, data)
       handleClose(setIsModalOpen)
+      if (res.data?.applicationStatus) {
+        setReviewStatus(res.data.applicationStatus)
+      } else {
+        setReviewStatus('pending')
+      }
+      if (res.data) {
+        setBounty((prev) => ({ ...prev, ...res.data }))
+      }
       setIsPendingModalOpen(true)
     } catch (error) {
       toast.error(error.message || 'Failed to apply')
@@ -59,11 +69,21 @@ export default function ViewBounty() {
   }
 
   const handleSubmitBounty = async () => {
+    if (!submissionMessage.trim()) {
+      setSubmitError('Please describe the work you have completed')
+      return
+    }
+    if (submissionMessage.trim().length < 10) {
+      setSubmitError('Description must be at least 10 characters')
+      return
+    }
+    setSubmitError('')
     setIsSubmitting(true)
     try {
-      await submitBountyWork(bountyId, { message: submissionMessage })
+      const res = await submitBountyWork(bountyId, { message: submissionMessage })
       handleClose(setIsSubmitModalOpen)
       setSubmissionMessage('')
+      setSubmissionResult(res.data || res)
       setIsSubmissionReceivedOpen(true)
     } catch (error) {
       toast.error(error.message || 'Failed to submit work')
@@ -76,15 +96,15 @@ export default function ViewBounty() {
     if (!bountyId) return
     setLoading(true)
     fetchBountyById(bountyId)
-      .then((res) => setBounty(res.data))
+      .then((res) => {
+        setBounty(res.data)
+        if (res.data?.applicationStatus) {
+          setReviewStatus(res.data.applicationStatus)
+        }
+      })
       .catch((err) => toast.error(err.message || 'Failed to load bounty'))
       .finally(() => setLoading(false))
   }, [bountyId])
-
-  // temporary debug logging for bounty payload during development
-  useEffect(() => {
-    console.log(bounty)
-  }, [bounty])
 
   // Format the due date for display in the bounty detail card
   const formattedDueDate = bounty?.dueDate
@@ -105,34 +125,42 @@ export default function ViewBounty() {
       })} (UTC)`
     : ''
 
-  // Static task detail blocks shown in the left section; can be replaced with API-driven content later.
   const taskDetails = [
     {
       icon: 'Info',
       title: 'About the project',
-      description:
-        "We're looking for a talented frontend developer to build a modern and responsive analytics dashboard for our DAO. The dashboard will provide real-time insights into treasury, proposals, user activity, and DeFi protocol performance. The goal is to create a clean, intuitive and data-rich interface that helps our community make better decisions.",
+      description: bounty?.description || 'No description provided.',
     },
     {
       icon: 'CheckSquare',
       title: 'Deliverables',
       description:
-        'Responsive analytics dashboard (Desktop & Mobile)\nWallet connection and user authentication\nReal-time data visualization and charts\nSource code with documentation\nDeployed live demo',
+        bounty?.deliverables?.length
+          ? bounty.deliverables.map((d) => `• ${d}`).join('\n')
+          : 'No deliverables listed.',
     },
     {
       icon: 'ClipboardList',
       title: 'Requirements',
       description:
-        'Strong knowledge of web3 and DeFi ecosystems\nExperience with charting libraries (e.g. Recharts, Chart.js)\nClean UI/UX implementation\nPortfolio or previous work is required',
+        bounty?.skills?.length
+          ? `Required skills: ${bounty.skills.join(', ')}`
+          : 'No specific requirements listed.',
     },
   ]
 
   const bountyMeta = {
-    applications: '124 Applications',
-    experience_level: 'Intermediate',
-    category: 'Frontend',
-    posted: 'June 31, 2026, 11:59 PM',
-    bounty_id: '#TAS-2048',
+    applications: `${bounty?.applicationsCount || bounty?.applications?.length || 0} Applications`,
+    experience_level: bounty?.level || 'Intermediate',
+    category: bounty?.category || bounty?.categoryName || 'General',
+    posted: bounty?.createdAt
+      ? new Date(bounty.createdAt).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })
+      : 'Recently',
+    bounty_id: bounty?.bountyId || bounty?.id ? `#TAS-${String(bounty.id).slice(-4).toUpperCase()}` : '',
   }
 
   const metaLabels = {
@@ -143,27 +171,7 @@ export default function ViewBounty() {
     bounty_id: 'Bounty ID',
   }
 
-  // Placeholder similar bounties for related recommendations section.
-  const similarBounties = [
-    {
-      title: 'Build Wallet Connect DApp',
-      price: '1500 USDC',
-      tag: 'Web3',
-      image: GroupPhoto, // imported image
-    },
-    {
-      title: 'Build Wallet Connect DApp',
-      price: '1500 USDC',
-      tag: 'Web3',
-      image: GroupPhoto,
-    },
-    {
-      title: 'Build Wallet Connect DApp',
-      price: '1500 USDC',
-      tag: 'Web3',
-      image: GroupPhoto,
-    },
-  ]
+  const similarBounties = bounty?.similarBounties || []
 
   // show a loading spinner until bounty data is fetched from the API
   if (loading) {
@@ -221,6 +229,7 @@ export default function ViewBounty() {
         >
           <div onClick={(e) => e.stopPropagation()}>
             <ApplicationPendingModal
+              bounty={bounty}
               onContinueExploring={() => handleClose(setIsPendingModalOpen)}
               onViewApplication={handleViewApplication}
             />
@@ -242,12 +251,19 @@ export default function ViewBounty() {
               Add a message describing what you've completed.
             </p>
             <textarea
-              className="w-full border border-slate-200 rounded-xl p-4 text-sm resize-none h-32 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+              className={`w-full border rounded-xl p-4 text-sm resize-none h-32 outline-none focus:ring-1 ${
+                submitError
+                  ? 'border-red-400 focus:border-red-500 focus:ring-red-500'
+                  : 'border-slate-200 focus:border-emerald-500 focus:ring-emerald-500'
+              }`}
               placeholder="Describe the work you've done, any notes for the reviewer..."
               value={submissionMessage}
-              onChange={(e) => setSubmissionMessage(e.target.value)}
+              onChange={(e) => { setSubmissionMessage(e.target.value); setSubmitError('') }}
               disabled={isSubmitting}
             />
+            {submitError && (
+              <p className="text-red-500 text-xs mt-1">{submitError}</p>
+            )}
             <div className="flex gap-3 mt-4">
               <button
                 onClick={() => handleClose(setIsSubmitModalOpen)}
@@ -282,6 +298,8 @@ export default function ViewBounty() {
         >
           <div onClick={(e) => e.stopPropagation()}>
             <SubmissionReceivedModal
+              bounty={bounty}
+              submission={submissionResult}
               onContinueExploring={() => {
                 handleClose(setIsSubmissionReceivedOpen)
                 navigate(-1)
@@ -312,13 +330,13 @@ export default function ViewBounty() {
 
           <div className="flex flex-row space-x-6 items-center">
             <div className="p-1 px-4 bg-[#E6F6E2] border border-[#E5E7EB] text-[#34A563] rounded-xl">
-              Frontend
+              {bounty?.category || bounty?.categoryName || 'General'}
             </div>
             <div className="p-1 px-4 bg-[#E6F6E2] border border-[#E5E7EB] text-[#34A563] rounded-xl">
-              <span className="text-[#383838]">Intermediate</span>
+              <span className="text-[#383838]">{bounty?.level || 'Intermediate'}</span>
             </div>
             <div className="p-1 px-4 bg-[#E6F6E2] border border-[#E5E7EB] text-[#34A563] rounded-xl">
-              <span className="text-[#383838]">30 Days</span>
+              <span className="text-[#383838]">{bounty?.workDuration || '14 Days'}</span>
             </div>
           </div>
         </div>
@@ -352,19 +370,30 @@ export default function ViewBounty() {
                     <p className="text-md font-semibold text-[#616161] ">
                       Application Deadline
                     </p>
-                    {/* real data */}
                     <p className="text-xl font-semibold text-[#000000]">
-                      {formattedDueDate}
+                      {bounty?.applicationDeadline
+                        ? new Date(bounty.applicationDeadline).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                          })
+                        : formattedDueDate || 'N/A'}
                     </p>
                     <p className="text-md font-medium text-[#616161]">
-                      {formattedDueDateTime}
+                      {bounty?.applicationDeadline
+                        ? `${new Date(bounty.applicationDeadline).toLocaleTimeString('en-US', {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: false,
+                            timeZone: 'UTC',
+                          })} (UTC)`
+                        : formattedDueDateTime}
                     </p>
                   </div>
                   <div className="border p-3 border-[#E5E7EB] flex flex-col space-y-2 rounded-xl">
                     <p className="text-lg text-[#616161] ">Work duration</p>
-                    {/* real data */}
                     <p className="text-lg font-medium text-[#000000]">
-                      14 Days
+                      {bounty?.workDuration || '14 Days'}
                     </p>
                   </div>
                 </div>
@@ -432,9 +461,13 @@ export default function ViewBounty() {
               <p className="text-xl font-semibold text-[#353535]">
                 Total Reward
               </p>
-              <h1 className="text-[#34A563] text-3xl font-bold">$750 USDC</h1>
+              <h1 className="text-[#34A563] text-3xl font-bold">
+                {bounty?.reward
+                  ? `$${Number(bounty.reward).toLocaleString()} ${bounty.rewardType === 'milestone' ? '' : 'USDC'}`
+                  : 'N/A'}
+              </h1>
               <p className="text-[#34A563] text-md w-fit bg-[#E6F6E2] rounded-sm p-1">
-                Fixed Price
+                {bounty?.rewardType === 'milestone' ? 'Milestone' : 'Fixed Price'}
               </p>
 
               <div className="w-full mt-5 h-px bg-gray-200" />
@@ -459,7 +492,7 @@ export default function ViewBounty() {
                       About the reward
                     </h2>
                     <p className="text-[#616161] text-lg">
-                      The reward will be paid in USDC once the work is approved
+                      {bounty?.rewardDescription || `The reward will be paid in USDC once the work is approved.`}
                     </p>
                   </div>
 
@@ -468,7 +501,7 @@ export default function ViewBounty() {
                       Who can apply
                     </h2>
                     <p className="text-[#616161] text-lg">
-                      Anyone with the required skills and experience can apply.
+                      {bounty?.eligibility || 'Anyone with the required skills and experience can apply.'}
                     </p>
                   </div>
                 </>
@@ -537,17 +570,33 @@ export default function ViewBounty() {
                 </span>
               </button>
 
-              <div className="flex flex-row space-x-4 items-center border border-gray-200 rounded-2xl p-4">
-                <Clock color="#34A563" className="h-12 w-12" />
-                <div className="flex flex-col space-y-2">
-                  <p className="text-[#000000] text-md font-bold">
-                    5 days left to apply
-                  </p>
-                  <p className="text-[#616161] text-base">
-                    Application closes on May 31, 2025 at 11:59 PM (UTC)
-                  </p>
-                </div>
-              </div>
+              {bounty?.applicationDeadline && (() => {
+                const now = new Date()
+                const deadline = new Date(bounty.applicationDeadline)
+                const daysLeft = Math.ceil((deadline - now) / (1000 * 60 * 60 * 24))
+                return (
+                  <div className="flex flex-row space-x-4 items-center border border-gray-200 rounded-2xl p-4">
+                    <Clock color="#34A563" className="h-12 w-12" />
+                    <div className="flex flex-col space-y-2">
+                      <p className="text-[#000000] text-md font-bold">
+                        {daysLeft > 0 ? `${daysLeft} day${daysLeft > 1 ? 's' : ''} left to apply` : 'Application closed'}
+                      </p>
+                      <p className="text-[#616161] text-base">
+                        Application closes on {deadline.toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                        })} at {deadline.toLocaleTimeString('en-US', {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          hour12: false,
+                          timeZone: 'UTC',
+                        })} (UTC)
+                      </p>
+                    </div>
+                  </div>
+                )
+              })()}
             </div>
 
             <div className="flex flex-col space-y-4 border border-gray-200 rounded-2xl p-4">
@@ -565,27 +614,29 @@ export default function ViewBounty() {
 
               <div className="flex flex-col divide-y gap-2 divide-gray-100">
                 {/* Related bounty cards rendered from static similarBounties data */}
-                {similarBounties.map((bounty, index) => (
+                {similarBounties.length === 0 ? (
+                  <p className="text-gray-400 text-sm py-4">No similar bounties found</p>
+                ) : similarBounties.map((item, index) => (
                   <div
                     key={index}
                     className="flex cursor-pointer flex-row items-center justify-between py-3"
                   >
                     <div className="flex flex-row items-center space-x-3">
                       <img
-                        src={bounty.image}
-                        alt={bounty.title}
+                        src={item.image || item.imageUrl || GroupPhoto}
+                        alt={item.title}
                         className="h-12 w-12 rounded-xl object-cover"
                       />
                       <div className="flex flex-col space-y-1">
                         <p className="text-[#000000] text-md font-medium">
-                          {bounty.title}
+                          {item.title}
                         </p>
                         <div className="flex flex-row items-center space-x-2">
                           <span className="text-[#616161] text-sm font-bold">
-                            {bounty.price}
+                            {item.reward ? `$${Number(item.reward).toLocaleString()} USDC` : item.price}
                           </span>
                           <span className="text-[#9CA3AF] text-base">
-                            {bounty.tag}
+                            {item.category || item.tag}
                           </span>
                         </div>
                       </div>

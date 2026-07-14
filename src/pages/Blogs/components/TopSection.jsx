@@ -1,6 +1,9 @@
+import { useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import { toast } from 'sonner'
+import { config } from '../../../../lib/config'
 import diversityIcon from '../assets/diversity_3.svg'
 import editorChoiceIcon from '../assets/editor_choice (1).svg'
 import mapIcon from '../assets/map.svg'
@@ -18,6 +21,45 @@ const categories = [
 ]
 
 export default function TopSection({ featuredPost }) {
+  const [email, setEmail] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  const validateEmail = (value) => {
+    if (!value.trim()) return 'Email is required'
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'Please enter a valid email'
+    return ''
+  }
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault()
+    const err = validateEmail(email)
+    if (err) { setError(err); return }
+    setError('')
+
+    setLoading(true)
+    try {
+      const res = await fetch(
+        `${config.VITE_API_URL}/api/v1/newsletter/subscribe`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        },
+      )
+      const data = await res.json()
+      if (data.success) {
+        toast.success(data.message || 'Subscribed successfully!')
+        setEmail('')
+      } else {
+        toast.error(data.message || 'Subscription failed')
+      }
+    } catch {
+      toast.error('Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
   return (
     <section className="max-w-7xl mx-auto px-4 pt-7 pb-16 grid lg:grid-cols-3 gap-8">
       {/* Left - Featured Card */}
@@ -132,15 +174,24 @@ export default function TopSection({ featuredPost }) {
             Get the latest stories, updates and opportunities delivered to your
             inbox.
           </p>
-          <form onSubmit={(e) => e.preventDefault()} className="flex">
-            <input
-              type="email"
-              placeholder="Enter your email address"
-              className="bg-white border-gray-200 rounded-l-md px-4 py-2.5 text-black text-sm focus:outline-none focus:ring-2 focus:ring-green-500 flex-1"
-            />
-            <button className="bg-[#34A563] text-white px-5 py-2.5 text-sm rounded-r-md hover:bg-[#2d8f58] font-medium">
-              Subscribe
-            </button>
+          <form onSubmit={handleSubscribe} className="flex flex-col">
+            <div className="flex">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); setError('') }}
+                placeholder="Enter your email address"
+                className="bg-white border-gray-200 rounded-l-md px-4 py-2.5 text-black text-sm focus:outline-none focus:ring-2 focus:ring-green-500 flex-1"
+              />
+              <button
+                type="submit"
+                disabled={loading}
+                className="bg-[#34A563] text-white px-5 py-2.5 text-sm rounded-r-md hover:bg-[#2d8f58] font-medium disabled:opacity-50"
+              >
+                {loading ? 'Subscribing...' : 'Subscribe'}
+              </button>
+            </div>
+            {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
           </form>
         </div>
       </div>

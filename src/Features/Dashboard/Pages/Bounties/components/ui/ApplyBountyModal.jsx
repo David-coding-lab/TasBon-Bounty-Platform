@@ -26,8 +26,22 @@ export default function ApplyBountyModal({
 }) {
   const [coverLetter, setCoverLetter] = useState('')
   const [proposedAmount, setProposedAmount] = useState('')
+  const [errors, setErrors] = useState({})
+
+  const validate = () => {
+    const errs = {}
+    if (coverLetter.trim() && coverLetter.trim().length < 10) {
+      errs.coverLetter = 'Cover letter must be at least 10 characters'
+    }
+    if (proposedAmount && (isNaN(Number(proposedAmount)) || Number(proposedAmount) <= 0)) {
+      errs.proposedAmount = 'Please enter a valid positive amount'
+    }
+    setErrors(errs)
+    return Object.keys(errs).length === 0
+  }
 
   const handleApply = () => {
+    if (!validate()) return
     onApply({
       coverLetter,
       proposedAmount: proposedAmount ? Number(proposedAmount) : undefined,
@@ -37,7 +51,6 @@ export default function ApplyBountyModal({
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4 font-[Inter]">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
-        {/* Icon */}
         <div className="flex justify-center mb-6">
           <div className="relative w-20 h-20 rounded-full bg-[#15803D]/10 flex items-center justify-center">
             <FileText className="w-9 h-9 text-[#15803D]" strokeWidth={1.75} />
@@ -47,7 +60,6 @@ export default function ApplyBountyModal({
           </div>
         </div>
 
-        {/* Heading */}
         <h2 className="text-2xl font-bold text-slate-900 text-center mb-2">
           Apply for this bounty?
         </h2>
@@ -56,7 +68,6 @@ export default function ApplyBountyModal({
           your profile and portfolio are up to date.
         </p>
 
-        {/* Bounty card */}
         <div className="border border-slate-200 rounded-xl p-3 flex items-center gap-3 mb-6">
           <img
             src={bounty.image}
@@ -73,7 +84,6 @@ export default function ApplyBountyModal({
           </div>
         </div>
 
-        {/* Details */}
         <div className="space-y-4 mb-6">
           <DetailRow
             icon={<DollarSign className="w-[18px] h-[18px]" />}
@@ -98,41 +108,52 @@ export default function ApplyBountyModal({
           />
         </div>
 
-        {/* Cover Letter */}
         <div className="mb-4">
           <label className="block text-sm font-semibold text-slate-700 mb-1.5">
             Cover Letter (Optional)
           </label>
           <textarea
-            className="w-full border border-slate-200 rounded-xl p-3 text-sm resize-none h-24 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+            className={`w-full border rounded-xl p-3 text-sm resize-none h-24 outline-none focus:ring-1 ${
+              errors.coverLetter
+                ? 'border-red-400 focus:border-red-500 focus:ring-red-500'
+                : 'border-slate-200 focus:border-emerald-500 focus:ring-emerald-500'
+            }`}
             placeholder="Tell the creator why you're a great fit for this bounty..."
             value={coverLetter}
-            onChange={(e) => setCoverLetter(e.target.value)}
+            onChange={(e) => { setCoverLetter(e.target.value); setErrors((prev) => ({ ...prev, coverLetter: '' })) }}
             disabled={isApplying}
           />
+          {errors.coverLetter && (
+            <p className="text-red-500 text-xs mt-1">{errors.coverLetter}</p>
+          )}
         </div>
 
-        {/* Proposed Amount */}
         <div className="mb-6">
           <label className="block text-sm font-semibold text-slate-700 mb-1.5">
             Proposed Amount (Optional)
           </label>
-          <div className="flex items-center border border-slate-200 rounded-xl px-3 focus-within:border-emerald-500 focus-within:ring-1 focus-within:ring-emerald-500">
+          <div className={`flex items-center border rounded-xl px-3 focus-within:ring-1 ${
+            errors.proposedAmount
+              ? 'border-red-400 focus-within:border-red-500 focus-within:ring-red-500'
+              : 'border-slate-200 focus-within:border-emerald-500 focus-within:ring-emerald-500'
+          }`}>
             <span className="text-slate-500 text-sm font-medium">$</span>
             <input
               type="number"
               className="w-full border-0 outline-none py-3 px-2 text-sm"
               placeholder="Enter your proposed reward"
               value={proposedAmount}
-              onChange={(e) => setProposedAmount(e.target.value)}
+              onChange={(e) => { setProposedAmount(e.target.value); setErrors((prev) => ({ ...prev, proposedAmount: '' })) }}
               disabled={isApplying}
               min={0}
             />
             <span className="text-slate-500 text-sm">USDC</span>
           </div>
+          {errors.proposedAmount && (
+            <p className="text-red-500 text-xs mt-1">{errors.proposedAmount}</p>
+          )}
         </div>
 
-        {/* Info box */}
         <div className="bg-[#15803D]/5 rounded-xl p-4 flex gap-3 mb-8">
           <ShieldCheck className="w-5 h-5 text-[#15803D] flex-shrink-0 mt-0.5" />
           <div>
@@ -146,7 +167,6 @@ export default function ApplyBountyModal({
           </div>
         </div>
 
-        {/* Actions */}
         <div className="flex gap-3">
           <button
             onClick={onCancel}
