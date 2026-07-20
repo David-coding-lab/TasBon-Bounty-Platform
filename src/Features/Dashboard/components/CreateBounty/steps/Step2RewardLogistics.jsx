@@ -41,13 +41,25 @@ export default function Step2RewardLogistics({
               <span className="text-[#e74c3c]">*</span>
             </label>
             <div className="flex gap-2">
-              {/* Currency selector */}
-              <div className="flex items-center gap-1 px-3 border border-[#dce1e8] rounded-xl bg-white h-12 font-semibold text-sm text-[#1a2a41] cursor-pointer hover:border-[#b0c4d8] transition-colors min-w-[90px] justify-between">
-                <span>USDC</span>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              {/* Token selector */}
+              <div className="relative group">
+                <select
+                  value={formData.rewardToken}
+                  onChange={(e) => updateFormData('rewardToken', e.target.value)}
+                  className="appearance-none flex items-center gap-1 px-3 border border-[#dce1e8] rounded-xl bg-white h-12 font-semibold text-sm text-[#1a2a41] cursor-pointer hover:border-[#b0c4d8] transition-colors min-w-[90px] pr-8 outline-none"
+                >
+                  <option value="USDC">USDC</option>
+                  <option value="USDT">USDT</option>
+                  <option value="ETH">ETH</option>
+                  <option value="SOL">SOL</option>
+                  <option value="DAI">DAI</option>
+                  <option value="BTC">BTC</option>
+                  <option value="MATIC">MATIC</option>
+                </select>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#6b7a8f]">
                   <path
                     d="M4 6l4 4 4-4"
-                    stroke="#6b7a8f"
+                    stroke="currentColor"
                     strokeWidth="1.5"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -70,13 +82,13 @@ export default function Step2RewardLogistics({
                   min={0}
                 />
                 <span className="text-sm font-medium text-[#a0b0c4] ml-2 shrink-0">
-                  USDC
+                  {formData.rewardToken || 'USDC'}
                 </span>
               </div>
-              {errors.rewardAmount && (
-                <p className="text-red-500 text-xs mt-1">{errors.rewardAmount}</p>
-              )}
             </div>
+            {errors.rewardAmount && (
+              <p className="text-red-500 text-xs mt-1 col-span-2">{errors.rewardAmount}</p>
+            )}
           </div>
 
           {/* Reward Type */}

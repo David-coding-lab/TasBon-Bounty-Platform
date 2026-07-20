@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { ArrowLeft, Clock } from 'lucide-react'
 import { toast } from 'sonner'
-import { fetchBountyById, submitBountyWork, applyForBounty } from '../../../../../../pages/Bounties/Api/bounties'
+import { fetchBountyById, submitBountyWork, applyForBounty, getSimilarBounties, listBounties } from '../../../../../../pages/Bounties/Api/bounties'
+import { getPublicProfile } from '../../../../../../services/profile'
 import {
   Bookmark,
   Share2,
@@ -21,14 +22,15 @@ import ApplyBountyModal from './ApplyBountyModal'
 import ApplicationPendingModal from './ApplicationPendingModal'
 import SubmissionReceivedModal from './SubmissionReceivedModal'
 
-// ViewBounty page loads a single bounty by ID and displays details,
-// timeline, attachments, creator info, and related bounty cards.
 export default function ViewBounty() {
   const { bountyId } = useParams()
   const navigate = useNavigate()
-  const [reviewStatus, setReviewStatus] = useState(null) // State to track if the application is under review
+  const [reviewStatus, setReviewStatus] = useState(null)
   const [bounty, setBounty] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [similarBounties, setSimilarBounties] = useState([])
+  const [creatorProfile, setCreatorProfile] = useState(null)
+  const [creatorRecentBounties, setCreatorRecentBounties] = useState([])
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isPendingModalOpen, setIsPendingModalOpen] = useState(false)
@@ -95,18 +97,30 @@ export default function ViewBounty() {
   useEffect(() => {
     if (!bountyId) return
     setLoading(true)
-    fetchBountyById(bountyId)
-      .then((res) => {
-        setBounty(res.data)
-        if (res.data?.applicationStatus) {
-          setReviewStatus(res.data.applicationStatus)
+    Promise.all([
+      fetchBountyById(bountyId),
+      getSimilarBounties(bountyId),
+    ])
+      .then(([bountyRes, similarRes]) => {
+        const bountyData = bountyRes.data
+        setBounty(bountyData)
+        setSimilarBounties(similarRes.data || [])
+        if (bountyData?.applicationStatus) {
+          setReviewStatus(bountyData.applicationStatus)
+        }
+        if (bountyData?.creatorId) {
+          getPublicProfile(bountyData.creatorId)
+            .then((profileRes) => setCreatorProfile(profileRes.data))
+            .catch(() => {})
+          listBounties({ creatorId: bountyData.creatorId, status: 'completed', limit: 3 })
+            .then((res) => setCreatorRecentBounties(res.bounties || []))
+            .catch(() => {})
         }
       })
       .catch((err) => toast.error(err.message || 'Failed to load bounty'))
       .finally(() => setLoading(false))
   }, [bountyId])
 
-  // Format the due date for display in the bounty detail card
   const formattedDueDate = bounty?.dueDate
     ? new Date(bounty.dueDate).toLocaleDateString('en-US', {
         year: 'numeric',
@@ -115,7 +129,6 @@ export default function ViewBounty() {
       })
     : ''
 
-  // Format the due time specifically as HH:MM (UTC)
   const formattedDueDateTime = bounty?.dueDate
     ? `${new Date(bounty.dueDate).toLocaleTimeString('en-US', {
         hour: '2-digit',
@@ -124,6 +137,10 @@ export default function ViewBounty() {
         timeZone: 'UTC',
       })} (UTC)`
     : ''
+
+  const workDurationDays = bounty?.dueDate && bounty?.applicationDeadline
+    ? Math.ceil((new Date(bounty.dueDate) - new Date(bounty.applicationDeadline)) / (1000 * 60 * 60 * 24))
+    : null
 
   const taskDetails = [
     {
@@ -151,7 +168,7 @@ export default function ViewBounty() {
 
   const bountyMeta = {
     applications: `${bounty?.applicationsCount || bounty?.applications?.length || 0} Applications`,
-    experience_level: bounty?.level || 'Intermediate',
+    experience_level: bounty?.difficulty || bounty?.level || 'Intermediate',
     category: bounty?.category || bounty?.categoryName || 'General',
     posted: bounty?.createdAt
       ? new Date(bounty.createdAt).toLocaleDateString('en-US', {
@@ -160,7 +177,7 @@ export default function ViewBounty() {
           day: 'numeric',
         })
       : 'Recently',
-    bounty_id: bounty?.bountyId || bounty?.id ? `#TAS-${String(bounty.id).slice(-4).toUpperCase()}` : '',
+    bounty_id: bounty?.id ? `#TAS-${String(bounty.id).slice(-4).toUpperCase()}` : '',
   }
 
   const metaLabels = {
@@ -171,9 +188,6 @@ export default function ViewBounty() {
     bounty_id: 'Bounty ID',
   }
 
-  const similarBounties = bounty?.similarBounties || []
-
-  // show a loading spinner until bounty data is fetched from the API
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
@@ -182,7 +196,6 @@ export default function ViewBounty() {
     )
   }
 
-  // handle cases where the bounty ID is invalid or the API returned no data
   if (!bounty) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
@@ -197,7 +210,6 @@ export default function ViewBounty() {
     )
   }
 
-  // Render the bounty detail page once the API payload is loaded
   return (
     <main className="w-full h-min-screen mx-auto flex flex-col  px-8 pt-12 pb-6 bg-[#ffffff]  ">
       <button
@@ -309,13 +321,9 @@ export default function ViewBounty() {
           </div>
         </div>
       )}
-      {/* Main bounty content: overview, timeline, attachments, creator info, and sidebar */}
-      {/* The main body */}
       <div className="w-full flex flex-col space-y-8">
-        {/* The first child which is the hero section */}
         <div className="flex flex-col space-y-3">
           <div className="flex flex-row space-x-6 items-center">
-            {/* api data  */}
             <h1 className="text-[#101820] text-4xl pr-15 font-bold">
               {bounty.title}
             </h1>
@@ -333,20 +341,17 @@ export default function ViewBounty() {
               {bounty?.category || bounty?.categoryName || 'General'}
             </div>
             <div className="p-1 px-4 bg-[#E6F6E2] border border-[#E5E7EB] text-[#34A563] rounded-xl">
-              <span className="text-[#383838]">{bounty?.level || 'Intermediate'}</span>
+              <span className="text-[#383838]">{bounty?.difficulty || bounty?.level || 'Intermediate'}</span>
             </div>
             <div className="p-1 px-4 bg-[#E6F6E2] border border-[#E5E7EB] text-[#34A563] rounded-xl">
-              <span className="text-[#383838]">{bounty?.workDuration || '14 Days'}</span>
+              <span className="text-[#383838]">{workDurationDays ? `${workDurationDays} Days` : bounty?.workDuration || 'Flexible'}</span>
             </div>
           </div>
         </div>
 
-        {/* The second child that is the two cols that resemble a sidebar */}
         <div className="flex flex-row space-x-8 w-full max-w-7xl">
-          {/* left panel: task details, timeline, attachments, creator info */}
           <div className="flex-2 flex flex-col space-y-8 pr-15">
             <div className="flex flex-col space-y-6">
-              {/* Task detail cards rendered from the static taskDetails array */}
               {taskDetails.map((taskDetail, index) => (
                 <TaskDetails
                   key={index}
@@ -357,7 +362,6 @@ export default function ViewBounty() {
               ))}
             </div>
 
-            {/* timeline */}
             <div className="flex flex-row space-x-8 items-start">
               <div className="pt-2">
                 <Calendar color="#34A563" />
@@ -377,7 +381,7 @@ export default function ViewBounty() {
                             month: 'long',
                             day: 'numeric',
                           })
-                        : formattedDueDate || 'N/A'}
+                        : 'N/A'}
                     </p>
                     <p className="text-md font-medium text-[#616161]">
                       {bounty?.applicationDeadline
@@ -387,83 +391,87 @@ export default function ViewBounty() {
                             hour12: false,
                             timeZone: 'UTC',
                           })} (UTC)`
-                        : formattedDueDateTime}
+                        : ''}
                     </p>
                   </div>
                   <div className="border p-3 border-[#E5E7EB] flex flex-col space-y-2 rounded-xl">
-                    <p className="text-lg text-[#616161] ">Work duration</p>
-                    <p className="text-lg font-medium text-[#000000]">
-                      {bounty?.workDuration || '14 Days'}
+                    <p className="text-md font-semibold text-[#616161]">Bounty Deadline</p>
+                    <p className="text-xl font-semibold text-[#000000]">
+                      {formattedDueDate || 'N/A'}
+                    </p>
+                    <p className="text-md font-medium text-[#616161]">
+                      {formattedDueDateTime}
                     </p>
                   </div>
                 </div>
+
+                {workDurationDays && (
+                  <p className="text-sm text-[#616161]">
+                    Estimated work period: <strong>{workDurationDays} days</strong> (from application deadline to bounty deadline)
+                  </p>
+                )}
               </div>
             </div>
-            {/* Attachments placeholder content; replace with API files when available */}
-            <div className="flex flex-row space-x-8 items-start">
-              <div className="pt-2">
-                <Paperclip color="#34A563" />
-              </div>
-              <div className="flex flex-col space-y-6">
-                <h1 className="text-[#000000] font-bold font-inter text-xl">
-                  Attachments
-                </h1>
 
-                <div className="flex flex-row space-x-8">
-                  <div className="flex flex-col space-y-3">
-                    <div className="flex flex-row items-center space-x-2">
-                      <FileMinus width={20} height={20} color="#616161" />
-                      <div className="flex flex-col space-y-1">
-                        <p className="text-[#616161] text-base">
-                          Brand Guideline.pdf
-                        </p>
-                        <p className="text-[#616161] text-base">12.5MB</p>
-                      </div>
-                    </div>
-                    <div className="flex flex-row items-center space-x-2">
-                      <FileMinus width={20} height={20} color="#616161" />
-                      <div className="flex flex-col space-y-1">
-                        <p className="text-[#616161] text-base">
-                          Data Schema.pdf
-                        </p>
-                        <p className="text-[#616161] text-base">12.5MB</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col space-y-3">
-                    <div className="flex flex-row items-center space-x-2">
-                      <FileMinus width={20} height={20} color="#616161" />
-                      <div className="flex flex-col space-y-1">
-                        <p className="text-[#616161] text-base">
-                          Design Mockups.pdf
-                        </p>
-                        <p className="text-[#616161] text-base">12.5MB</p>
-                      </div>
-                    </div>
-                    <button className="flex flex-row space-x-2 items-center p-3">
-                      <Download width={20} height={20} color="#34A563" />
-                      <p className="text-[#34A563] text-base cursor-pointer">
-                        Download all
-                      </p>
-                    </button>
+            {bounty?.attachments?.length > 0 && (
+              <div className="flex flex-row space-x-8 items-start">
+                <div className="pt-2">
+                  <Paperclip color="#34A563" />
+                </div>
+                <div className="flex flex-col space-y-6">
+                  <h1 className="text-[#000000] font-bold font-inter text-xl">
+                    Attachments
+                  </h1>
+
+                  <div className="flex flex-row flex-wrap gap-6">
+                    {bounty.attachments.map((url, index) => {
+                      const fileName = url.split('/').pop() || `Attachment ${index + 1}`
+                      const ext = fileName.includes('.') ? fileName.split('.').pop().toUpperCase() : 'FILE'
+                      return (
+                        <div key={index} className="flex flex-col space-y-1">
+                          <div className="flex flex-row items-center space-x-2">
+                            <FileMinus width={20} height={20} color="#616161" />
+                            <div className="flex flex-col space-y-1">
+                              <p className="text-[#616161] text-base truncate max-w-[200px]">
+                                {fileName}
+                              </p>
+                              <p className="text-[#616161] text-xs">{ext}</p>
+                            </div>
+                          </div>
+                          <a
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex flex-row space-x-2 items-center text-[#34A563] text-sm hover:underline"
+                          >
+                            <Download width={14} height={14} />
+                            <span>Download</span>
+                          </a>
+                        </div>
+                      )
+                    })}
                   </div>
                 </div>
               </div>
-            </div>
-            {/* Creator info card component */}
-            <AboutCreator />
+            )}
+
+            <AboutCreator
+              creatorName={bounty.clientName}
+              creatorAvatar={bounty.clientAvatar}
+              creatorId={bounty.creatorId}
+              creatorProfile={creatorProfile}
+              recentBounties={creatorRecentBounties}
+            />
           </div>
 
-          {/* right panel: reward summary, bounty metadata, and related bounties */}
           <div className="flex-1 border border-gray-100 rounded-2xl flex flex-col space-y-8 p-6">
-            {/* 1st chiild  */}
             <div className="flex flex-col space-y-4">
               <p className="text-xl font-semibold text-[#353535]">
                 Total Reward
               </p>
               <h1 className="text-[#34A563] text-3xl font-bold">
-                {bounty?.reward
-                  ? `$${Number(bounty.reward).toLocaleString()} ${bounty.rewardType === 'milestone' ? '' : 'USDC'}`
+                {bounty?.rewardAmount || bounty?.reward
+                  ? `$${Number(bounty?.rewardAmount || bounty?.reward).toLocaleString()} ${bounty.rewardToken || 'USDC'}`
                   : 'N/A'}
               </h1>
               <p className="text-[#34A563] text-md w-fit bg-[#E6F6E2] rounded-sm p-1">
@@ -492,7 +500,7 @@ export default function ViewBounty() {
                       About the reward
                     </h2>
                     <p className="text-[#616161] text-lg">
-                      {bounty?.rewardDescription || `The reward will be paid in USDC once the work is approved.`}
+                      {bounty?.rewardDescription || `The reward will be paid in ${bounty.rewardToken || 'USDC'} once the work is approved.`}
                     </p>
                   </div>
 
@@ -533,19 +541,23 @@ export default function ViewBounty() {
                       Selected
                     </h2>
                     <p className="text-[#616161] text-sm">
-                      You’ve been selected to work on this bounty.
+                      You've been selected to work on this bounty.
                     </p>
                   </div>
 
                   <div className="flex h-40 bg-[#F0F0F0] flex-col space-y-2 border border-gray-200 rounded-2xl p-4">
                     <p className="text-[#616161] text-sm">Work Duration</p>
                     <h3 className="text-[#000000] pb-2 text-md font-bold">
-                      14 Days
+                      {workDurationDays ? `${workDurationDays} Days` : '14 Days'}
                     </h3>
 
                     <p className="text-[#616161] text-sm">Started on</p>
                     <h3 className="text-[#000000] text-md font-bold">
-                      May 18, 2026
+                      {new Date().toLocaleDateString('en-US', {
+                        month: 'long',
+                        day: 'numeric',
+                        year: 'numeric',
+                      })}
                     </h3>
                   </div>
                 </>
@@ -599,53 +611,53 @@ export default function ViewBounty() {
               })()}
             </div>
 
-            <div className="flex flex-col space-y-4 border border-gray-200 rounded-2xl p-4">
-              <div className="flex flex-row justify-between items-center">
-                <h2 className="text-[#000000] text-lg font-bold">
-                  Similar bounties
-                </h2>
-                <button className="flex flex-row items-center space-x-1">
-                  <span className="text-[#34A563] cursor-pointer text-base font-medium">
-                    View all
-                  </span>
-                  <ChevronRight color="#34A563" className="h-4 w-4" />
-                </button>
-              </div>
+            {similarBounties.length > 0 && (
+              <div className="flex flex-col space-y-4 border border-gray-200 rounded-2xl p-4">
+                <div className="flex flex-row justify-between items-center">
+                  <h2 className="text-[#000000] text-lg font-bold">
+                    Similar bounties
+                  </h2>
+                  <button className="flex flex-row items-center space-x-1">
+                    <span className="text-[#34A563] cursor-pointer text-base font-medium">
+                      View all
+                    </span>
+                    <ChevronRight color="#34A563" className="h-4 w-4" />
+                  </button>
+                </div>
 
-              <div className="flex flex-col divide-y gap-2 divide-gray-100">
-                {/* Related bounty cards rendered from static similarBounties data */}
-                {similarBounties.length === 0 ? (
-                  <p className="text-gray-400 text-sm py-4">No similar bounties found</p>
-                ) : similarBounties.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex cursor-pointer flex-row items-center justify-between py-3"
-                  >
-                    <div className="flex flex-row items-center space-x-3">
-                      <img
-                        src={item.image || item.imageUrl || GroupPhoto}
-                        alt={item.title}
-                        className="h-12 w-12 rounded-xl object-cover"
-                      />
-                      <div className="flex flex-col space-y-1">
-                        <p className="text-[#000000] text-md font-medium">
-                          {item.title}
-                        </p>
-                        <div className="flex flex-row items-center space-x-2">
-                          <span className="text-[#616161] text-sm font-bold">
-                            {item.reward ? `$${Number(item.reward).toLocaleString()} USDC` : item.price}
-                          </span>
-                          <span className="text-[#9CA3AF] text-base">
-                            {item.category || item.tag}
-                          </span>
+                <div className="flex flex-col divide-y gap-2 divide-gray-100">
+                  {similarBounties.map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex cursor-pointer flex-row items-center justify-between py-3 hover:bg-gray-50 rounded-lg transition-colors"
+                      onClick={() => navigate(`/dashboard/bounties/${item.id}`)}
+                    >
+                      <div className="flex flex-row items-center space-x-3">
+                        <img
+                          src={item.image || item.imageUrl || GroupPhoto}
+                          alt={item.title}
+                          className="h-12 w-12 rounded-xl object-cover"
+                        />
+                        <div className="flex flex-col space-y-1">
+                          <p className="text-[#000000] text-md font-medium">
+                            {item.title}
+                          </p>
+                          <div className="flex flex-row items-center space-x-2">
+                            <span className="text-[#616161] text-sm font-bold">
+                              {item.price}
+                            </span>
+                            <span className="text-[#9CA3AF] text-base">
+                              {item.category || item.tag}
+                            </span>
+                          </div>
                         </div>
                       </div>
+                      <ChevronRight color="#9CA3AF" className="h-5 w-5" />
                     </div>
-                    <ChevronRight color="#9CA3AF" className="h-5 w-5" />
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

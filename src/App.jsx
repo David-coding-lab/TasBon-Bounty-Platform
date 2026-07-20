@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-dom'
 import { Toaster } from 'sonner'
 import { PrivyProvider, usePrivy } from '@privy-io/react-auth'
 import { useDispatch, useSelector } from 'react-redux'
-import { hydrateSession, loginSuccess } from './store/slices/authSlice'
+import { hydrateSession, loginSuccess, logout } from './store/slices/authSlice'
 import { loginWithPrivy } from './Features/SignIn/Api/privy'
 import SignIn from './Features/SignIn/Index'
 import SignUp from './Features/SignUp/Index'
@@ -62,6 +62,14 @@ function AppRoutes() {
 
   useEffect(() => {
     dispatch(hydrateSession())
+  }, [dispatch])
+
+  useEffect(() => {
+    const handleSessionExpired = () => {
+      dispatch(logout())
+    }
+    window.addEventListener('session-expired', handleSessionExpired)
+    return () => window.removeEventListener('session-expired', handleSessionExpired)
   }, [dispatch])
 
   // Sync Privy's restored session into Redux

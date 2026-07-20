@@ -26,6 +26,9 @@ const CreateBountyModal = () => {
     bountyDeadline: '',
     skills: ['Solidity', 'Smart Contract', 'DeFi', 'Security'],
     isPrivate: false,
+    difficulty: 'Intermediate',
+    category: '',
+    rewardToken: 'USDC',
   })
 
   const handleBack = () => {
@@ -44,8 +47,16 @@ const CreateBountyModal = () => {
       } else if (formData.title.trim().length < 5) {
         errs.title = 'Title must be at least 5 characters'
       }
-      if (formData.description && formData.description.trim().length < 20) {
+      if (!formData.description || !formData.description.trim()) {
+        errs.description = 'Description is required'
+      } else if (formData.description.trim().length < 20) {
         errs.description = 'Description must be at least 20 characters'
+      }
+      if (!formData.category) {
+        errs.category = 'Please select a category'
+      }
+      if (!formData.difficulty) {
+        errs.difficulty = 'Please select an experience level'
       }
     }
 
@@ -110,6 +121,9 @@ const CreateBountyModal = () => {
         skills: formData.skills,
         rewardAmount: formData.rewardAmount,
         rewardType: formData.rewardType,
+        rewardToken: formData.rewardToken,
+        difficulty: formData.difficulty,
+        category: formData.category,
         isPrivate: formData.isPrivate,
         applicationDeadline: formData.applicationDeadline || null,
         bountyDeadline: formData.bountyDeadline || null,

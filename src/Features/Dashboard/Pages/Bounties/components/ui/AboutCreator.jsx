@@ -1,30 +1,11 @@
-import React from 'react'
 import { BadgeCheck, ArrowRight } from 'lucide-react'
-import Logo from '../../../../Assets/logo.png'
-import Bountycardmini from './Bountycardmini'
 import { Link } from 'react-router-dom'
+import Bountycardmini from './Bountycardmini'
 
-const AboutCreator = () => {
-  const recentlyPaidBounty = [
-    {
-      title: 'Build Wallet Connect DApp',
-      price: '1500 USDC',
-      tag: 'Web3',
-      image_description: 'Group photo of people',
-    },
-    {
-      title: 'Build Wallet Connect DApp',
-      price: '1500 USDC',
-      tag: 'Web3',
-      image_description: 'Group photo of people',
-    },
-    {
-      title: 'Build Wallet Connect DApp',
-      price: '1500 USDC',
-      tag: 'Web3',
-      image_description: 'Group photo of people',
-    },
-  ]
+const AboutCreator = ({ creatorName, creatorAvatar, creatorId, creatorProfile, recentBounties }) => {
+  const displayName = creatorName || 'Unknown Creator'
+  const avatarUrl = creatorAvatar || `https://avatar.vercel.sh/${encodeURIComponent(displayName)}`
+
   return (
     <div className="flex flex-col space-y-8 pt-12">
       <h1 className="text-[#000000] font-bold font-inter text-lg ">
@@ -32,66 +13,73 @@ const AboutCreator = () => {
       </h1>
 
       <div className="rounded-lg w-full">
-        <div className="flex flex-row  space-x-3 p-3">
-          <img src={Logo} alt="Creator logo" className="h-12 w-auto" />
+        <div className="flex flex-row space-x-3 p-3">
+          <img
+            src={avatarUrl}
+            alt={displayName}
+            className="h-12 w-12 rounded-full object-cover"
+          />
 
           <div className="flex flex-col space-y-3">
             <div className="flex space-x-3 items-center">
               <p className="text-base font-bold text-[#000000]">
-                Nexus Protocol
+                {displayName}
               </p>
 
               <BadgeCheck color="#34A563" className="h-6 w-6" />
             </div>
 
             <p className="text-[#616161] text-base">
-              Building the next generation of DeFi infrastructure.
+              {creatorProfile?.bio || 'Building innovative solutions in the Web3 space.'}
             </p>
           </div>
         </div>
 
-        <div className="flex flex-col w-full justify-end items-end">
-          <div className="flex space-x-24">
-            <div className="flex flex-col space-y-3">
-              <p className="text-[#000000] text-lg font-bold">18</p>
-              <p className="text-[#616161] text-lg">Bounties Posted</p>
-            </div>
-            <div className="flex flex-col space-y-3">
-              <p className="text-[#000000] text-lg font-bold">12</p>
-              <p className="text-[#616161] text-lg">Active</p>
-            </div>
-            <div className="flex flex-col space-y-3">
-              <p className="text-[#000000] text-lg font-bold">$35,000+</p>
-              <p className="text-[#616161] text-lg">Total Paid</p>
+        {creatorProfile && (
+          <div className="flex flex-col w-full justify-end items-end">
+            <div className="flex space-x-24">
+              <div className="flex flex-col space-y-3">
+                <p className="text-[#000000] text-lg font-bold">{creatorProfile.bountiesPosted}</p>
+                <p className="text-[#616161] text-lg">Bounties Posted</p>
+              </div>
+              <div className="flex flex-col space-y-3">
+                <p className="text-[#000000] text-lg font-bold">{creatorProfile.activeBounties}</p>
+                <p className="text-[#616161] text-lg">Active</p>
+              </div>
+              <div className="flex flex-col space-y-3">
+                <p className="text-[#000000] text-lg font-bold">${(creatorProfile.totalPaid / 1000).toFixed(1)}k+</p>
+                <p className="text-[#616161] text-lg">Total Paid</p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
-        <div className="flex flex-col space-y-3 w-full mt-10">
-          <h2 className="text-[#000000] text-lg font-medium">
-            Recently paid bounties
-          </h2>
-          {/* here is where i want to buid the card struture  */}
-          <div className="flex gap-4 justify-between w-full ">
-            {recentlyPaidBounty.map((bounty, index) => (
-              <Bountycardmini
-                key={index}
-                title={bounty.title}
-                price={bounty.price}
-                tag={bounty.tag}
-                image_description={bounty.image_description}
-              />
-            ))}
+        {recentBounties?.length > 0 && (
+          <div className="flex flex-col space-y-3 w-full mt-10">
+            <h2 className="text-[#000000] text-lg font-medium">
+              Recently paid bounties
+            </h2>
+            <div className="flex gap-4 justify-between w-full">
+              {recentBounties.slice(0, 3).map((bounty, index) => (
+                <Bountycardmini
+                  key={bounty.id || index}
+                  title={bounty.title}
+                  price={`${bounty.rewardAmount} ${bounty.rewardToken}`}
+                  tag={bounty.category || bounty.tag}
+                  image_description={bounty.title}
+                />
+              ))}
+            </div>
+
+            <Link
+              to={`/dashboard/bounties?creatorId=${creatorId}`}
+              className="text-[#34A563] font-bold text-md flex space-x-2 items-center"
+            >
+              <span>View all </span>
+              <ArrowRight color="#34A563" />
+            </Link>
           </div>
-
-          <Link
-            to="/"
-            className="text-[#34A563] font-bold text-md flex space-x-2 items-center"
-          >
-            <span>View all </span>
-            <ArrowRight color="#34A563" />
-          </Link>
-        </div>
+        )}
       </div>
     </div>
   )

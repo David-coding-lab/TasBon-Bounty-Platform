@@ -1,4 +1,7 @@
+import { useSelector } from 'react-redux'
+
 export default function Step3ReviewPublish({ formData }) {
+  const user = useSelector((state) => state.auth.user)
   const formatDate = (dateStr) => {
     if (!dateStr) return 'Not set'
     const d = new Date(dateStr)
@@ -53,19 +56,6 @@ export default function Step3ReviewPublish({ formData }) {
     </svg>
   )
 
-  const TashubIcon = () => (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-      <circle cx="14" cy="14" r="14" fill="#34A563" />
-      <path
-        d="M9 14l3.5 3.5L19 11"
-        stroke="white"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-
   const VerifiedIcon = () => (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
       <circle cx="8" cy="8" r="7" fill="#34A563" />
@@ -109,17 +99,23 @@ export default function Step3ReviewPublish({ formData }) {
           {/* Left: badge + title + org + description + skills */}
           <div className="flex-1 min-w-0">
             <span className="inline-block rounded-md bg-[#e6f5ed] px-2.5 py-0.5 text-xs font-semibold text-[#34A563]">
-              Smart Contracts
+              {formData.category || 'Smart Contracts'}
             </span>
             <h4 className="mt-2 text-lg font-bold text-[#0b1a33]">
               {formData.title || 'Audit DeFi Protocol Smart Contracts'}
             </h4>
 
-            {/* TASHUB row */}
+            {/* Creator row */}
             <div className="mt-3 flex items-center gap-2">
-              <TashubIcon />
+              {user?.avatarUrl ? (
+                <img src={user.avatarUrl} alt={user.fullName} className="w-7 h-7 rounded-full object-cover" />
+              ) : (
+                <div className="w-7 h-7 rounded-full bg-[#34A563] flex items-center justify-center text-white text-xs font-bold">
+                  {user?.fullName?.charAt(0) || '?'}
+                </div>
+              )}
               <span className="font-bold text-sm text-[#1a2a41] tracking-wide">
-                TASHUB
+                {user?.fullName || 'TASHUB'}
               </span>
               <VerifiedIcon />
             </div>
@@ -149,7 +145,7 @@ export default function Step3ReviewPublish({ formData }) {
           {/* Right: reward box */}
           <div className="shrink-0 rounded-xl border border-[#dce1e8] bg-white px-5 py-3 text-right min-w-[130px]">
             <div className="text-lg font-bold text-[#0b1a33]">
-              ${formData.rewardAmount || '1200'} USDC
+              ${formData.rewardAmount || '1200'} {formData.rewardToken || 'USDC'}
             </div>
             <div className="mt-1.5 flex items-center justify-end gap-1.5">
               <span className="w-2 h-2 rounded-full bg-[#34A563] shrink-0" />
@@ -218,7 +214,7 @@ export default function Step3ReviewPublish({ formData }) {
           {[
             {
               label: 'Reward',
-              value: `$${formData.rewardAmount || '1200'} USDC`,
+              value: `$${formData.rewardAmount || '1200'} ${formData.rewardToken || 'USDC'}`,
             },
             {
               label: 'Reward Type',
@@ -226,6 +222,14 @@ export default function Step3ReviewPublish({ formData }) {
                 formData.rewardType === 'milestone'
                   ? 'Milestone'
                   : 'Fixed Price',
+            },
+            {
+              label: 'Difficulty',
+              value: formData.difficulty || 'Intermediate',
+            },
+            {
+              label: 'Category',
+              value: formData.category || 'General',
             },
             {
               label: 'Application Deadline',

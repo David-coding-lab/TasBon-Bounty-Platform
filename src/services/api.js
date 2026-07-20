@@ -51,6 +51,7 @@ async function handleResponse(response, url, options) {
           const err = new Error('Session expired')
           processQueue(err)
           Cookies.remove('session')
+          window.dispatchEvent(new CustomEvent('session-expired'))
           throw err
         }
 
@@ -69,6 +70,7 @@ async function handleResponse(response, url, options) {
       } catch (err) {
         if (err.message === 'Session expired') throw err
         Cookies.remove('session')
+        window.dispatchEvent(new CustomEvent('session-expired'))
         throw err
       } finally {
         isRefreshing = false
