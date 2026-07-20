@@ -266,6 +266,67 @@ export default function Step1BountyDetails({
           </div>
         )}
       </div>
+
+      {/* Category */}
+      <div className="flex flex-col gap-1.5">
+        <label className="font-inter font-semibold text-sm text-[#1a2a41] flex items-center gap-1">
+          Category
+          <span className="text-[#e74c3c]">*</span>
+        </label>
+        <div className="flex flex-wrap gap-2">
+          {['Design', 'Development', 'Content', 'Marketing', 'Security', 'Data', 'Research', 'Other'].map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              onClick={() => updateFormData('category', cat)}
+              className={`px-4 py-2 rounded-xl text-sm font-medium border transition-all ${
+                formData.category === cat
+                  ? 'border-[#34A563] bg-[#f0faf5] text-[#34A563] shadow-[0_0_0_1px_#34A563]'
+                  : 'border-[#dce1e8] bg-white text-[#1a2a41] hover:border-[#b0c4d8]'
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+        {errors.category && (
+          <p className="text-red-500 text-xs mt-1 font-inter">{errors.category}</p>
+        )}
+      </div>
+
+      {/* Experience Level */}
+      <div className="flex flex-col gap-1.5">
+        <label className="font-inter font-semibold text-sm text-[#1a2a41] flex items-center gap-1">
+          Experience Level
+          <span className="text-[#e74c3c]">*</span>
+        </label>
+        <div className="grid grid-cols-3 gap-3">
+          {[
+            { value: 'Beginner', label: 'Beginner', desc: 'Entry-level, guided tasks' },
+            { value: 'Intermediate', label: 'Intermediate', desc: 'Some experience needed' },
+            { value: 'Advanced', label: 'Advanced', desc: 'Expert-level challenges' },
+          ].map((level) => (
+            <button
+              key={level.value}
+              type="button"
+              onClick={() => updateFormData('difficulty', level.value)}
+              className={`flex flex-col items-start gap-1 p-4 rounded-xl border text-left transition-all ${
+                formData.difficulty === level.value
+                  ? 'border-[#34A563] bg-[#f0faf5] shadow-[0_0_0_1px_#34A563]'
+                  : 'border-[#dce1e8] bg-white hover:border-[#b0c4d8]'
+              }`}
+            >
+              <span className={`font-semibold text-sm ${
+                formData.difficulty === level.value ? 'text-[#34A563]' : 'text-[#1a2a41]'
+              }`}>{level.label}</span>
+              <span className="text-xs text-[#6b7a8f]">{level.desc}</span>
+            </button>
+          ))}
+        </div>
+        {errors.difficulty && (
+          <p className="text-red-500 text-xs mt-1 font-inter">{errors.difficulty}</p>
+        )}
+      </div>
     </div>
   )
 }

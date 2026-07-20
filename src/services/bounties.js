@@ -7,6 +7,7 @@ export function listBounties(params = {}) {
   if (params.status) query.set('status', params.status)
   if (params.category) query.set('category', params.category)
   if (params.search) query.set('search', params.search)
+  if (params.creatorId) query.set('creatorId', params.creatorId)
   const qs = query.toString()
   return apiGet(`/api/v1/bounties${qs ? `?${qs}` : ''}`)
 }

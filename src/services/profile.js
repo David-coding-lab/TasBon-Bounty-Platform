@@ -15,3 +15,7 @@ export function getDashboardStats() {
 export function getActivities() {
   return apiGet('/api/v1/users/me/activities')
 }
+
+export function getPublicProfile(userId) {
+  return apiGet(`/api/v1/users/${userId}/public-profile`)
+}
