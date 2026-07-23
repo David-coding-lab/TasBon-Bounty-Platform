@@ -35,7 +35,7 @@ const navItems = [
 const secondaryNavItems = [
   { icon: MessageSquare, label: 'Messages', path: '/messages', badge: 3 },
   { icon: Bookmark, label: 'Bookmark', path: '/bookmark' },
-  { icon: Settings, label: 'Settings', path: '/settings' },
+  { icon: Settings, label: 'Settings', path: '/dashboard/settings' },
 ]
 
 /**
