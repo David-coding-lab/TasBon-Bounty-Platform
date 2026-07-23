@@ -24,22 +24,6 @@ export default function ApplyBountyModal({
     deadline: 'May 31, 2025',
   },
 }) {
-  const [coverLetter, setCoverLetter] = useState('')
-  const [proposedAmount, setProposedAmount] = useState('')
-  const [errors, setErrors] = useState({})
-
-  const validate = () => {
-    const errs = {}
-    if (coverLetter.trim() && coverLetter.trim().length < 10) {
-      errs.coverLetter = 'Cover letter must be at least 10 characters'
-    }
-    if (proposedAmount && (isNaN(Number(proposedAmount)) || Number(proposedAmount) <= 0)) {
-      errs.proposedAmount = 'Please enter a valid positive amount'
-    }
-    setErrors(errs)
-    return Object.keys(errs).length === 0
-  }
-
   const handleApply = () => {
     if (!validate()) return
     onApply({
@@ -72,7 +56,7 @@ export default function ApplyBountyModal({
           <img
             src={bounty.image}
             alt={bounty.title}
-            className="w-16 h-16 rounded-lg object-cover flex-shrink-0"
+            className="w-16 h-16 rounded-lg object-cover shrink-0"
           />
           <div>
             <h3 className="font-bold text-slate-900 text-base leading-snug">
@@ -106,52 +90,6 @@ export default function ApplyBountyModal({
             label="Application Deadline"
             value={bounty.deadline}
           />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-sm font-semibold text-slate-700 mb-1.5">
-            Cover Letter (Optional)
-          </label>
-          <textarea
-            className={`w-full border rounded-xl p-3 text-sm resize-none h-24 outline-none focus:ring-1 ${
-              errors.coverLetter
-                ? 'border-red-400 focus:border-red-500 focus:ring-red-500'
-                : 'border-slate-200 focus:border-emerald-500 focus:ring-emerald-500'
-            }`}
-            placeholder="Tell the creator why you're a great fit for this bounty..."
-            value={coverLetter}
-            onChange={(e) => { setCoverLetter(e.target.value); setErrors((prev) => ({ ...prev, coverLetter: '' })) }}
-            disabled={isApplying}
-          />
-          {errors.coverLetter && (
-            <p className="text-red-500 text-xs mt-1">{errors.coverLetter}</p>
-          )}
-        </div>
-
-        <div className="mb-6">
-          <label className="block text-sm font-semibold text-slate-700 mb-1.5">
-            Proposed Amount (Optional)
-          </label>
-          <div className={`flex items-center border rounded-xl px-3 focus-within:ring-1 ${
-            errors.proposedAmount
-              ? 'border-red-400 focus-within:border-red-500 focus-within:ring-red-500'
-              : 'border-slate-200 focus-within:border-emerald-500 focus-within:ring-emerald-500'
-          }`}>
-            <span className="text-slate-500 text-sm font-medium">$</span>
-            <input
-              type="number"
-              className="w-full border-0 outline-none py-3 px-2 text-sm"
-              placeholder="Enter your proposed reward"
-              value={proposedAmount}
-              onChange={(e) => { setProposedAmount(e.target.value); setErrors((prev) => ({ ...prev, proposedAmount: '' })) }}
-              disabled={isApplying}
-              min={0}
-            />
-            <span className="text-slate-500 text-sm">USDC</span>
-          </div>
-          {errors.proposedAmount && (
-            <p className="text-red-500 text-xs mt-1">{errors.proposedAmount}</p>
-          )}
         </div>
 
         <div className="bg-[#15803D]/5 rounded-xl p-4 flex gap-3 mb-8">

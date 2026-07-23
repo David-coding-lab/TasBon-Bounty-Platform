@@ -84,11 +84,13 @@ export default function Step1BountyDetails({
         <p className="font-inter text-sm text-[#6b7a8f] -mt-0.5">
           Describe your requirements, goals and any specific details.
         </p>
-        <div className={`border rounded-xl overflow-hidden bg-[#fafbfc] focus-within:ring-2 transition-all mt-1 ${
-          errors.description
-            ? 'border-red-400 focus-within:border-red-500 focus-within:ring-red-500/20'
-            : 'border-[#dce1e8] focus-within:border-[#34A563] focus-within:ring-[#34A563]/20'
-        }`}>
+        <div
+          className={`border rounded-xl overflow-hidden bg-[#fafbfc] focus-within:ring-2 transition-all mt-1 ${
+            errors.description
+              ? 'border-red-400 focus-within:border-red-500 focus-within:ring-red-500/20'
+              : 'border-[#dce1e8] focus-within:border-[#34A563] focus-within:ring-[#34A563]/20'
+          }`}
+        >
           <textarea
             className="w-full py-4 px-5 font-inter text-sm text-[#1a2a41] bg-transparent outline-none resize-y min-h-[160px] placeholder:text-[#a0b0c4]"
             placeholder="Provide a detailed description of the work to be done..."
@@ -97,7 +99,7 @@ export default function Step1BountyDetails({
             maxLength={3000}
             rows={6}
           />
-          <div className="flex items-center justify-between px-3 py-2 border-t border-[#dce1e8] bg-white">
+          {/* <div className="flex items-center justify-between px-3 py-2 border-t border-[#dce1e8] bg-white">
             <div className="flex items-center gap-1">
               <button
                 type="button"
@@ -206,10 +208,12 @@ export default function Step1BountyDetails({
             <span className="font-inter text-xs text-[#a0b0c4]">
               {formData.description.length}/3000
             </span>
-          </div>
+          </div> */}
         </div>
         {errors.description && (
-          <p className="text-red-500 text-xs mt-1 font-inter">{errors.description}</p>
+          <p className="text-red-500 text-xs mt-1 font-inter">
+            {errors.description}
+          </p>
         )}
       </div>
 
@@ -274,7 +278,16 @@ export default function Step1BountyDetails({
           <span className="text-[#e74c3c]">*</span>
         </label>
         <div className="flex flex-wrap gap-2">
-          {['Design', 'Development', 'Content', 'Marketing', 'Security', 'Data', 'Research', 'Other'].map((cat) => (
+          {[
+            'Design',
+            'Development',
+            'Content',
+            'Marketing',
+            'Security',
+            'Data',
+            'Research',
+            'Other',
+          ].map((cat) => (
             <button
               key={cat}
               type="button"
@@ -290,7 +303,9 @@ export default function Step1BountyDetails({
           ))}
         </div>
         {errors.category && (
-          <p className="text-red-500 text-xs mt-1 font-inter">{errors.category}</p>
+          <p className="text-red-500 text-xs mt-1 font-inter">
+            {errors.category}
+          </p>
         )}
       </div>
 
@@ -302,9 +317,21 @@ export default function Step1BountyDetails({
         </label>
         <div className="grid grid-cols-3 gap-3">
           {[
-            { value: 'Beginner', label: 'Beginner', desc: 'Entry-level, guided tasks' },
-            { value: 'Intermediate', label: 'Intermediate', desc: 'Some experience needed' },
-            { value: 'Advanced', label: 'Advanced', desc: 'Expert-level challenges' },
+            {
+              value: 'Beginner',
+              label: 'Beginner',
+              desc: 'Entry-level, guided tasks',
+            },
+            {
+              value: 'Intermediate',
+              label: 'Intermediate',
+              desc: 'Some experience needed',
+            },
+            {
+              value: 'Advanced',
+              label: 'Advanced',
+              desc: 'Expert-level challenges',
+            },
           ].map((level) => (
             <button
               key={level.value}
@@ -316,15 +343,23 @@ export default function Step1BountyDetails({
                   : 'border-[#dce1e8] bg-white hover:border-[#b0c4d8]'
               }`}
             >
-              <span className={`font-semibold text-sm ${
-                formData.difficulty === level.value ? 'text-[#34A563]' : 'text-[#1a2a41]'
-              }`}>{level.label}</span>
+              <span
+                className={`font-semibold text-sm ${
+                  formData.difficulty === level.value
+                    ? 'text-[#34A563]'
+                    : 'text-[#1a2a41]'
+                }`}
+              >
+                {level.label}
+              </span>
               <span className="text-xs text-[#6b7a8f]">{level.desc}</span>
             </button>
           ))}
         </div>
         {errors.difficulty && (
-          <p className="text-red-500 text-xs mt-1 font-inter">{errors.difficulty}</p>
+          <p className="text-red-500 text-xs mt-1 font-inter">
+            {errors.difficulty}
+          </p>
         )}
       </div>
     </div>

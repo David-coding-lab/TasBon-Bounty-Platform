@@ -45,7 +45,9 @@ export default function Step2RewardLogistics({
               <div className="relative group">
                 <select
                   value={formData.rewardToken}
-                  onChange={(e) => updateFormData('rewardToken', e.target.value)}
+                  onChange={(e) =>
+                    updateFormData('rewardToken', e.target.value)
+                  }
                   className="appearance-none flex items-center gap-1 px-3 border border-[#dce1e8] rounded-xl bg-white h-12 font-semibold text-sm text-[#1a2a41] cursor-pointer hover:border-[#b0c4d8] transition-colors min-w-[90px] pr-8 outline-none"
                 >
                   <option value="USDC">USDC</option>
@@ -56,7 +58,13 @@ export default function Step2RewardLogistics({
                   <option value="BTC">BTC</option>
                   <option value="MATIC">MATIC</option>
                 </select>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#6b7a8f]">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#6b7a8f]"
+                >
                   <path
                     d="M4 6l4 4 4-4"
                     stroke="currentColor"
@@ -67,11 +75,13 @@ export default function Step2RewardLogistics({
                 </svg>
               </div>
               {/* Amount input */}
-              <div className={`flex-1 flex items-center border rounded-xl bg-white px-4 h-12 focus-within:ring-2 ${
-                errors.rewardAmount
-                  ? 'border-red-400 focus-within:border-red-500 focus-within:ring-red-500/20'
-                  : 'border-[#dce1e8] focus-within:ring-[#34A563] focus-within:border-[#34A563]'
-              }`}>
+              <div
+                className={`flex-1 flex items-center border rounded-xl bg-white px-4 h-12 focus-within:ring-2 ${
+                  errors.rewardAmount
+                    ? 'border-red-400 focus-within:border-red-500 focus-within:ring-red-500/20'
+                    : 'border-[#dce1e8] focus-within:ring-[#34A563] focus-within:border-[#34A563]'
+                }`}
+              >
                 <input
                   type="number"
                   className="w-full border-0 outline-none font-semibold text-[#1a2a41] bg-transparent text-sm"
@@ -87,7 +97,9 @@ export default function Step2RewardLogistics({
               </div>
             </div>
             {errors.rewardAmount && (
-              <p className="text-red-500 text-xs mt-1 col-span-2">{errors.rewardAmount}</p>
+              <p className="text-red-500 text-xs mt-1 col-span-2">
+                {errors.rewardAmount}
+              </p>
             )}
           </div>
 
@@ -185,9 +197,11 @@ export default function Step2RewardLogistics({
                   type="date"
                   className="border-0 outline-none bg-transparent text-sm text-[#1a2a41] font-medium w-full"
                   value={formData.applicationDeadline?.split('T')[0] || ''}
-                    onChange={(e) => {
+                  onChange={(e) => {
                     const time =
-                      formData.applicationDeadline?.split('T')[1]?.slice(0, 5) || '23:59'
+                      formData.applicationDeadline
+                        ?.split('T')[1]
+                        ?.slice(0, 5) || '23:59'
                     updateFormData(
                       'applicationDeadline',
                       `${e.target.value}T${time}:00.000Z`,
@@ -203,7 +217,7 @@ export default function Step2RewardLogistics({
                     formData.applicationDeadline?.split('T')[1]?.slice(0, 5) ||
                     '23:59'
                   }
-                   onChange={(e) => {
+                  onChange={(e) => {
                     const date =
                       formData.applicationDeadline?.split('T')[0] || ''
                     updateFormData(
@@ -242,11 +256,13 @@ export default function Step2RewardLogistics({
             <label className="font-bold text-sm text-[#1a2a41]">
               Bounty Deadline
             </label>
-            <div className={`flex border rounded-xl overflow-hidden bg-white focus-within:ring-2 h-12 ${
-              errors.bountyDeadline
-                ? 'border-red-400 focus-within:border-red-500 focus-within:ring-red-500/20'
-                : 'border-[#dce1e8] focus-within:ring-[#34A563] focus-within:border-[#34A563]'
-            }`}>
+            <div
+              className={`flex border rounded-xl overflow-hidden bg-white focus-within:ring-2 h-12 ${
+                errors.bountyDeadline
+                  ? 'border-red-400 focus-within:border-red-500 focus-within:ring-red-500/20'
+                  : 'border-[#dce1e8] focus-within:ring-[#34A563] focus-within:border-[#34A563]'
+              }`}
+            >
               <div className="flex items-center gap-2 px-3 flex-1">
                 <svg
                   width="16"
@@ -282,7 +298,8 @@ export default function Step2RewardLogistics({
                   value={formData.bountyDeadline?.split('T')[0] || ''}
                   onChange={(e) => {
                     const time =
-                      formData.bountyDeadline?.split('T')[1]?.slice(0, 5) || '23:59'
+                      formData.bountyDeadline?.split('T')[1]?.slice(0, 5) ||
+                      '23:59'
                     updateFormData(
                       'bountyDeadline',
                       `${e.target.value}T${time}:00.000Z`,
@@ -298,8 +315,10 @@ export default function Step2RewardLogistics({
                     formData.bountyDeadline?.split('T')[1]?.slice(0, 5) ||
                     '23:59'
                   }
-                    onChange={(e) => {
-                    const time = formData.bountyDeadline?.split('T')[1]?.slice(0, 5) || '23:59'
+                  onChange={(e) => {
+                    const time =
+                      formData.bountyDeadline?.split('T')[1]?.slice(0, 5) ||
+                      '23:59'
                     updateFormData(
                       'bountyDeadline',
                       `${e.target.value}T${time}:00.000Z`,
@@ -330,7 +349,9 @@ export default function Step2RewardLogistics({
               </div>
             </div>
             {errors.bountyDeadline && (
-              <p className="text-red-500 text-xs mt-1">{errors.bountyDeadline}</p>
+              <p className="text-red-500 text-xs mt-1">
+                {errors.bountyDeadline}
+              </p>
             )}
           </div>
         </div>
@@ -356,14 +377,19 @@ export default function Step2RewardLogistics({
                 className="flex items-center gap-1 bg-white border border-[#dce1e8] py-1 px-3 rounded-full text-sm text-[#1a2a41]"
               >
                 <span>{skill}</span>
-                {/* <button
+                <button
                   onClick={() => removeSkill(skill)}
                   className="bg-transparent border-0 cursor-pointer flex items-center justify-center ml-1 text-[#6b7a8f] hover:text-[#e74c3c] transition-colors"
                 >
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                    <path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                    <path
+                      d="M2 2l8 8M10 2l-8 8"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                    />
                   </svg>
-                </button> */}
+                </button>
               </div>
             ))}
             <input

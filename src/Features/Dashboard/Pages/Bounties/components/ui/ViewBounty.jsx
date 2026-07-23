@@ -1,8 +1,14 @@
 import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import { ArrowLeft, Clock } from 'lucide-react'
 import { toast } from 'sonner'
-import { fetchBountyById, submitBountyWork, applyForBounty, getSimilarBounties, listBounties } from '../../../../../../pages/Bounties/Api/bounties'
+import {
+  fetchBountyById,
+  submitBountyWork,
+  applyForBounty,
+  getSimilarBounties,
+  listBounties,
+} from '../../../../../../pages/Bounties/Api/bounties'
 import { getPublicProfile } from '../../../../../../services/profile'
 import {
   Bookmark,
@@ -39,7 +45,8 @@ export default function ViewBounty() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submissionMessage, setSubmissionMessage] = useState('')
   const [submitError, setSubmitError] = useState('')
-  const [isSubmissionReceivedOpen, setIsSubmissionReceivedOpen] = useState(false)
+  const [isSubmissionReceivedOpen, setIsSubmissionReceivedOpen] =
+    useState(false)
   const [submissionResult, setSubmissionResult] = useState(null)
 
   const handleOpen = (state) => state(true)
@@ -82,7 +89,9 @@ export default function ViewBounty() {
     setSubmitError('')
     setIsSubmitting(true)
     try {
-      const res = await submitBountyWork(bountyId, { message: submissionMessage })
+      const res = await submitBountyWork(bountyId, {
+        message: submissionMessage,
+      })
       handleClose(setIsSubmitModalOpen)
       setSubmissionMessage('')
       setSubmissionResult(res.data || res)
@@ -97,10 +106,7 @@ export default function ViewBounty() {
   useEffect(() => {
     if (!bountyId) return
     setLoading(true)
-    Promise.all([
-      fetchBountyById(bountyId),
-      getSimilarBounties(bountyId),
-    ])
+    Promise.all([fetchBountyById(bountyId), getSimilarBounties(bountyId)])
       .then(([bountyRes, similarRes]) => {
         const bountyData = bountyRes.data
         setBounty(bountyData)
@@ -112,7 +118,11 @@ export default function ViewBounty() {
           getPublicProfile(bountyData.creatorId)
             .then((profileRes) => setCreatorProfile(profileRes.data))
             .catch(() => {})
-          listBounties({ creatorId: bountyData.creatorId, status: 'completed', limit: 3 })
+          listBounties({
+            creatorId: bountyData.creatorId,
+            status: 'completed',
+            limit: 3,
+          })
             .then((res) => setCreatorRecentBounties(res.bounties || []))
             .catch(() => {})
         }
@@ -138,9 +148,13 @@ export default function ViewBounty() {
       })} (UTC)`
     : ''
 
-  const workDurationDays = bounty?.dueDate && bounty?.applicationDeadline
-    ? Math.ceil((new Date(bounty.dueDate) - new Date(bounty.applicationDeadline)) / (1000 * 60 * 60 * 24))
-    : null
+  const workDurationDays =
+    bounty?.dueDate && bounty?.applicationDeadline
+      ? Math.ceil(
+          (new Date(bounty.dueDate) - new Date(bounty.applicationDeadline)) /
+            (1000 * 60 * 60 * 24),
+        )
+      : null
 
   const taskDetails = [
     {
@@ -151,18 +165,16 @@ export default function ViewBounty() {
     {
       icon: 'CheckSquare',
       title: 'Deliverables',
-      description:
-        bounty?.deliverables?.length
-          ? bounty.deliverables.map((d) => `• ${d}`).join('\n')
-          : 'No deliverables listed.',
+      description: bounty?.deliverables?.length
+        ? bounty.deliverables.map((d) => `• ${d}`).join('\n')
+        : 'No deliverables listed.',
     },
     {
       icon: 'ClipboardList',
       title: 'Requirements',
-      description:
-        bounty?.skills?.length
-          ? `Required skills: ${bounty.skills.join(', ')}`
-          : 'No specific requirements listed.',
+      description: bounty?.skills?.length
+        ? `Required skills: ${bounty.skills.join(', ')}`
+        : 'No specific requirements listed.',
     },
   ]
 
@@ -177,7 +189,9 @@ export default function ViewBounty() {
           day: 'numeric',
         })
       : 'Recently',
-    bounty_id: bounty?.id ? `#TAS-${String(bounty.id).slice(-4).toUpperCase()}` : '',
+    bounty_id: bounty?.id
+      ? `#TAS-${String(bounty.id).slice(-4).toUpperCase()}`
+      : '',
   }
 
   const metaLabels = {
@@ -258,7 +272,9 @@ export default function ViewBounty() {
             onClick={(e) => e.stopPropagation()}
             className="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl"
           >
-            <h2 className="text-xl font-bold text-slate-900 mb-2">Submit Your Work</h2>
+            <h2 className="text-xl font-bold text-slate-900 mb-2">
+              Submit Your Work
+            </h2>
             <p className="text-sm text-slate-600 mb-4">
               Add a message describing what you've completed.
             </p>
@@ -270,7 +286,10 @@ export default function ViewBounty() {
               }`}
               placeholder="Describe the work you've done, any notes for the reviewer..."
               value={submissionMessage}
-              onChange={(e) => { setSubmissionMessage(e.target.value); setSubmitError('') }}
+              onChange={(e) => {
+                setSubmissionMessage(e.target.value)
+                setSubmitError('')
+              }}
               disabled={isSubmitting}
             />
             {submitError && (
@@ -294,9 +313,9 @@ export default function ViewBounty() {
                     <Loader2 className="w-4 h-4 animate-spin" />
                     Submitting...
                   </>
-                  ) : (
-                    'Submit Work'
-                  )}
+                ) : (
+                  'Submit Work'
+                )}
               </button>
             </div>
           </div>
@@ -341,10 +360,16 @@ export default function ViewBounty() {
               {bounty?.category || bounty?.categoryName || 'General'}
             </div>
             <div className="p-1 px-4 bg-[#E6F6E2] border border-[#E5E7EB] text-[#34A563] rounded-xl">
-              <span className="text-[#383838]">{bounty?.difficulty || bounty?.level || 'Intermediate'}</span>
+              <span className="text-[#383838]">
+                {bounty?.difficulty || bounty?.level || 'Intermediate'}
+              </span>
             </div>
             <div className="p-1 px-4 bg-[#E6F6E2] border border-[#E5E7EB] text-[#34A563] rounded-xl">
-              <span className="text-[#383838]">{workDurationDays ? `${workDurationDays} Days` : bounty?.workDuration || 'Flexible'}</span>
+              <span className="text-[#383838]">
+                {workDurationDays
+                  ? `${workDurationDays} Days`
+                  : bounty?.workDuration || 'Flexible'}
+              </span>
             </div>
           </div>
         </div>
@@ -376,7 +401,9 @@ export default function ViewBounty() {
                     </p>
                     <p className="text-xl font-semibold text-[#000000]">
                       {bounty?.applicationDeadline
-                        ? new Date(bounty.applicationDeadline).toLocaleDateString('en-US', {
+                        ? new Date(
+                            bounty.applicationDeadline,
+                          ).toLocaleDateString('en-US', {
                             year: 'numeric',
                             month: 'long',
                             day: 'numeric',
@@ -385,7 +412,9 @@ export default function ViewBounty() {
                     </p>
                     <p className="text-md font-medium text-[#616161]">
                       {bounty?.applicationDeadline
-                        ? `${new Date(bounty.applicationDeadline).toLocaleTimeString('en-US', {
+                        ? `${new Date(
+                            bounty.applicationDeadline,
+                          ).toLocaleTimeString('en-US', {
                             hour: '2-digit',
                             minute: '2-digit',
                             hour12: false,
@@ -395,7 +424,9 @@ export default function ViewBounty() {
                     </p>
                   </div>
                   <div className="border p-3 border-[#E5E7EB] flex flex-col space-y-2 rounded-xl">
-                    <p className="text-md font-semibold text-[#616161]">Bounty Deadline</p>
+                    <p className="text-md font-semibold text-[#616161]">
+                      Bounty Deadline
+                    </p>
                     <p className="text-xl font-semibold text-[#000000]">
                       {formattedDueDate || 'N/A'}
                     </p>
@@ -407,7 +438,9 @@ export default function ViewBounty() {
 
                 {workDurationDays && (
                   <p className="text-sm text-[#616161]">
-                    Estimated work period: <strong>{workDurationDays} days</strong> (from application deadline to bounty deadline)
+                    Estimated work period:{' '}
+                    <strong>{workDurationDays} days</strong> (from application
+                    deadline to bounty deadline)
                   </p>
                 )}
               </div>
@@ -425,8 +458,11 @@ export default function ViewBounty() {
 
                   <div className="flex flex-row flex-wrap gap-6">
                     {bounty.attachments.map((url, index) => {
-                      const fileName = url.split('/').pop() || `Attachment ${index + 1}`
-                      const ext = fileName.includes('.') ? fileName.split('.').pop().toUpperCase() : 'FILE'
+                      const fileName =
+                        url.split('/').pop() || `Attachment ${index + 1}`
+                      const ext = fileName.includes('.')
+                        ? fileName.split('.').pop().toUpperCase()
+                        : 'FILE'
                       return (
                         <div key={index} className="flex flex-col space-y-1">
                           <div className="flex flex-row items-center space-x-2">
@@ -475,7 +511,9 @@ export default function ViewBounty() {
                   : 'N/A'}
               </h1>
               <p className="text-[#34A563] text-md w-fit bg-[#E6F6E2] rounded-sm p-1">
-                {bounty?.rewardType === 'milestone' ? 'Milestone' : 'Fixed Price'}
+                {bounty?.rewardType === 'milestone'
+                  ? 'Milestone'
+                  : 'Fixed Price'}
               </p>
 
               <div className="w-full mt-5 h-px bg-gray-200" />
@@ -500,7 +538,8 @@ export default function ViewBounty() {
                       About the reward
                     </h2>
                     <p className="text-[#616161] text-lg">
-                      {bounty?.rewardDescription || `The reward will be paid in ${bounty.rewardToken || 'USDC'} once the work is approved.`}
+                      {bounty?.rewardDescription ||
+                        `The reward will be paid in ${bounty.rewardToken || 'USDC'} once the work is approved.`}
                     </p>
                   </div>
 
@@ -509,7 +548,8 @@ export default function ViewBounty() {
                       Who can apply
                     </h2>
                     <p className="text-[#616161] text-lg">
-                      {bounty?.eligibility || 'Anyone with the required skills and experience can apply.'}
+                      {bounty?.eligibility ||
+                        'Anyone with the required skills and experience can apply.'}
                     </p>
                   </div>
                 </>
@@ -548,7 +588,9 @@ export default function ViewBounty() {
                   <div className="flex h-40 bg-[#F0F0F0] flex-col space-y-2 border border-gray-200 rounded-2xl p-4">
                     <p className="text-[#616161] text-sm">Work Duration</p>
                     <h3 className="text-[#000000] pb-2 text-md font-bold">
-                      {workDurationDays ? `${workDurationDays} Days` : '14 Days'}
+                      {workDurationDays
+                        ? `${workDurationDays} Days`
+                        : '14 Days'}
                     </h3>
 
                     <p className="text-[#616161] text-sm">Started on</p>
@@ -564,7 +606,11 @@ export default function ViewBounty() {
               )}
 
               <button
-                onClick={() => reviewStatus === 'selected' ? handleOpen(setIsSubmitModalOpen) : handleOpen(setIsModalOpen)}
+                onClick={() =>
+                  reviewStatus === 'selected'
+                    ? handleOpen(setIsSubmitModalOpen)
+                    : handleOpen(setIsModalOpen)
+                }
                 disabled={reviewStatus === 'pending' || isSubmitting}
                 className={`flex flex-row ${reviewStatus === 'pending' || isSubmitting ? 'cursor-not-allowed' : 'cursor-pointer'} items-center justify-center space-x-3 ${reviewStatus === 'pending' ? 'bg-[#C5C9C7]' : 'bg-[#34A563]'} rounded-2xl py-4 w-full`}
               >
@@ -577,38 +623,49 @@ export default function ViewBounty() {
                   {reviewStatus === 'pending'
                     ? 'Application Pending'
                     : reviewStatus === 'selected'
-                      ? isSubmitting ? 'Submitting...' : 'Submit Bounty'
+                      ? isSubmitting
+                        ? 'Submitting...'
+                        : 'Submit Bounty'
                       : 'Apply for Bounty'}
                 </span>
               </button>
 
-              {bounty?.applicationDeadline && (() => {
-                const now = new Date()
-                const deadline = new Date(bounty.applicationDeadline)
-                const daysLeft = Math.ceil((deadline - now) / (1000 * 60 * 60 * 24))
-                return (
-                  <div className="flex flex-row space-x-4 items-center border border-gray-200 rounded-2xl p-4">
-                    <Clock color="#34A563" className="h-12 w-12" />
-                    <div className="flex flex-col space-y-2">
-                      <p className="text-[#000000] text-md font-bold">
-                        {daysLeft > 0 ? `${daysLeft} day${daysLeft > 1 ? 's' : ''} left to apply` : 'Application closed'}
-                      </p>
-                      <p className="text-[#616161] text-base">
-                        Application closes on {deadline.toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                        })} at {deadline.toLocaleTimeString('en-US', {
-                          hour: '2-digit',
-                          minute: '2-digit',
-                          hour12: false,
-                          timeZone: 'UTC',
-                        })} (UTC)
-                      </p>
+              {bounty?.applicationDeadline &&
+                (() => {
+                  const now = new Date()
+                  const deadline = new Date(bounty.applicationDeadline)
+                  const daysLeft = Math.ceil(
+                    (deadline - now) / (1000 * 60 * 60 * 24),
+                  )
+                  return (
+                    <div className="flex flex-row space-x-4 items-center border border-gray-200 rounded-2xl p-4">
+                      <Clock color="#34A563" className="h-12 w-12" />
+                      <div className="flex flex-col space-y-2">
+                        <p className="text-[#000000] text-md font-bold">
+                          {daysLeft > 0
+                            ? `${daysLeft} day${daysLeft > 1 ? 's' : ''} left to apply`
+                            : 'Application closed'}
+                        </p>
+                        <p className="text-[#616161] text-base">
+                          Application closes on{' '}
+                          {deadline.toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                          })}{' '}
+                          at{' '}
+                          {deadline.toLocaleTimeString('en-US', {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: false,
+                            timeZone: 'UTC',
+                          })}{' '}
+                          (UTC)
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                )
-              })()}
+                  )
+                })()}
             </div>
 
             {similarBounties.length > 0 && (
@@ -618,9 +675,14 @@ export default function ViewBounty() {
                     Similar bounties
                   </h2>
                   <button className="flex flex-row items-center space-x-1">
-                    <span className="text-[#34A563] cursor-pointer text-base font-medium">
-                      View all
-                    </span>
+                    <Link
+                      to="/dashboard/bounties"
+                      className="text-primary cursor-pointer text-base font-medium"
+                    >
+                      <span className="text-primary cursor-pointer text-base font-medium">
+                        View all
+                      </span>
+                    </Link>
                     <ChevronRight color="#34A563" className="h-4 w-4" />
                   </button>
                 </div>
@@ -636,7 +698,7 @@ export default function ViewBounty() {
                         <img
                           src={item.image || item.imageUrl || GroupPhoto}
                           alt={item.title}
-                          className="h-12 w-12 rounded-xl object-cover"
+                          className="h-12 w-12 rounded-xl object-cover shrink-0"
                         />
                         <div className="flex flex-col space-y-1">
                           <p className="text-[#000000] text-md font-medium">

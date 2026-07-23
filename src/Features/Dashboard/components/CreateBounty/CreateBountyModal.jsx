@@ -20,11 +20,11 @@ const CreateBountyModal = () => {
     description: '',
     deliverables: [],
     attachments: [],
-    rewardAmount: 500,
+    rewardAmount: 0,
     rewardType: 'fixed',
     applicationDeadline: '',
     bountyDeadline: '',
-    skills: ['Solidity', 'Smart Contract', 'DeFi', 'Security'],
+    skills: [],
     isPrivate: false,
     difficulty: 'Intermediate',
     category: '',
@@ -67,9 +67,11 @@ const CreateBountyModal = () => {
       if (
         formData.applicationDeadline &&
         formData.bountyDeadline &&
-        new Date(formData.applicationDeadline) >= new Date(formData.bountyDeadline)
+        new Date(formData.applicationDeadline) >=
+          new Date(formData.bountyDeadline)
       ) {
-        errs.bountyDeadline = 'Bounty deadline must be after application deadline'
+        errs.bountyDeadline =
+          'Bounty deadline must be after application deadline'
       }
     }
 
@@ -169,14 +171,18 @@ const CreateBountyModal = () => {
   const handleFileUpload = (e) => {
     const files = Array.from(e.target.files)
     if (files.length) {
-      files.forEach((f) => { filesRef.current[f.name] = f })
+      files.forEach((f) => {
+        filesRef.current[f.name] = f
+      })
       const fileNames = files.map((f) => f.name)
       updateFormData('attachments', [...formData.attachments, ...fileNames])
     }
   }
 
   const handleFilesSelect = (files) => {
-    files.forEach((f) => { filesRef.current[f.name] = f })
+    files.forEach((f) => {
+      filesRef.current[f.name] = f
+    })
     const fileNames = files.map((f) => f.name)
     updateFormData('attachments', [...formData.attachments, ...fileNames])
   }
@@ -232,7 +238,7 @@ const CreateBountyModal = () => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs">
       <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm w-[100vw] h-[100vh] flex items-center justify-center z-1000 p-5"
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm w-screen h-screen flex items-center justify-center z-1000 p-5"
         onClick={handleOverlayClick}
       >
         <div className="bg-white rounded-3xl max-w-205 w-full max-h-[90vh] flex flex-col shadow-2xl animate-[modalFadeIn_0.25s_ease-out] overflow-hidden">

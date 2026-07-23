@@ -30,10 +30,16 @@ const Hero = () => {
             <span className="text-sm text-[#4A5565]">Total Earnings</span>
             <TrendingUp className="w-5 h-5 text-[#4A5565]" />
           </div>
-          <p className="text-[#0A0A0A] text-2xl font-bold">
-            {loading ? <div className="h-8 w-24 bg-gray-100 rounded animate-pulse" /> : `$${(stats?.totalEarnings || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`}
+          <div className="text-[#0A0A0A] text-2xl font-bold">
+            {loading ? (
+              <div className="h-8 w-24 bg-gray-100 rounded animate-pulse" />
+            ) : (
+              `$${(stats?.totalEarnings || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`
+            )}
+          </div>
+          <p className="text-sm text-[#009966]">
+            +{stats?.earningsChangePercent || 0}% this month
           </p>
-          <p className="text-sm text-[#009966]">+{stats?.earningsChangePercent || 0}% this month</p>
         </div>
 
         <div className="border border-[#E5E7EB] rounded-2xl p-6 flex flex-col flex-1 space-y-2">
@@ -41,9 +47,13 @@ const Hero = () => {
             <span className="text-sm text-[#4A5565]">Active Bounties</span>
             <MoreHorizontal className="w-5 h-5 text-[#4A5565]" />
           </div>
-          <p className="text-[#0A0A0A] text-2xl font-bold">
-            {loading ? <div className="h-8 w-12 bg-gray-100 rounded animate-pulse" /> : stats?.activeBountiesCount || 0}
-          </p>
+          <div className="text-[#0A0A0A] text-2xl font-bold">
+            {loading ? (
+              <div className="h-8 w-12 bg-gray-100 rounded animate-pulse" />
+            ) : (
+              stats?.activeBountiesCount || 0
+            )}
+          </div>
           <p className="text-sm text-[#4A5565]">In progress</p>
         </div>
 
@@ -51,20 +61,32 @@ const Hero = () => {
           <div className="flex flex-row justify-between items-center">
             <span className="text-sm text-[#4A5565]">Applications</span>
           </div>
-          <p className="text-[#0A0A0A] text-2xl font-bold">
-            {loading ? <div className="h-8 w-12 bg-gray-100 rounded animate-pulse" /> : stats?.applicationsCount || 0}
+          <div className="text-[#0A0A0A] text-2xl font-bold">
+            {loading ? (
+              <div className="h-8 w-12 bg-gray-100 rounded animate-pulse" />
+            ) : (
+              stats?.applicationsCount || 0
+            )}
+          </div>
+          <p className="text-sm text-[#E17100]">
+            {stats?.newApplicationsUpdates || 0} new updates
           </p>
-          <p className="text-sm text-[#E17100]">{stats?.newApplicationsUpdates || 0} new updates</p>
         </div>
 
         <div className="border border-[#E5E7EB] rounded-2xl p-6 flex flex-col flex-1 space-y-2">
           <div className="flex flex-row justify-between items-center">
             <span className="text-sm text-[#4A5565]">Success Rate</span>
           </div>
-          <p className="text-[#0A0A0A] text-2xl font-bold">
-            {loading ? <div className="h-8 w-16 bg-gray-100 rounded animate-pulse" /> : `${stats?.successRate || 0}%`}
+          <div className="text-[#0A0A0A] text-2xl font-bold">
+            {loading ? (
+              <div className="h-8 w-16 bg-gray-100 rounded animate-pulse" />
+            ) : (
+              `${stats?.successRate || 0}%`
+            )}
+          </div>
+          <p className="text-sm text-[#009966]">
+            +{stats?.successRateChangePercent || 0}% this month
           </p>
-          <p className="text-sm text-[#009966]">+{stats?.successRateChangePercent || 0}% this month</p>
         </div>
       </div>
     </div>
