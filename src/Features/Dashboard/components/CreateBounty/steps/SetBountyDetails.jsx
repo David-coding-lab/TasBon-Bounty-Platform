@@ -60,7 +60,7 @@ export default function Step1BountyDetails({
             className={`w-full py-3 px-4 border rounded-xl font-inter text-sm text-[#1a2a41] bg-white outline-none transition-all placeholder:text-[#a0b0c4] focus:ring-2 ${
               errors.title
                 ? 'border-red-400 focus:border-red-500 focus:ring-red-500/20'
-                : 'border-[#dce1e8] focus:border-[#34A563] focus:ring-[#34A563]/20'
+                : 'border-[#dce1e8] focus:border-primary focus:ring-[#34A563]/20'
             }`}
             placeholder="e.g. Design landing page hero"
             value={formData.title}
@@ -88,7 +88,7 @@ export default function Step1BountyDetails({
           className={`border rounded-xl overflow-hidden bg-[#fafbfc] focus-within:ring-2 transition-all mt-1 ${
             errors.description
               ? 'border-red-400 focus-within:border-red-500 focus-within:ring-red-500/20'
-              : 'border-[#dce1e8] focus-within:border-[#34A563] focus-within:ring-[#34A563]/20'
+              : 'border-[#dce1e8] focus-within:border-primary focus-within:ring-[#34A563]/20'
           }`}
         >
           <textarea
@@ -99,116 +99,6 @@ export default function Step1BountyDetails({
             maxLength={3000}
             rows={6}
           />
-          {/* <div className="flex items-center justify-between px-3 py-2 border-t border-[#dce1e8] bg-white">
-            <div className="flex items-center gap-1">
-              <button
-                type="button"
-                className="p-1.5 rounded hover:bg-[#f0f3f7] text-[#6b7a8f] transition-colors"
-              >
-                <span className="material-symbols-outlined text-lg">undo</span>
-              </button>
-              <button
-                type="button"
-                className="p-1.5 rounded hover:bg-[#f0f3f7] text-[#6b7a8f] transition-colors"
-              >
-                <span className="material-symbols-outlined text-lg">redo</span>
-              </button>
-              <div className="w-px h-5 bg-[#dce1e8] mx-1" />
-              <button
-                type="button"
-                className="p-1.5 rounded hover:bg-[#f0f3f7] text-[#6b7a8f] transition-colors"
-              >
-                <span className="material-symbols-outlined text-lg">title</span>
-              </button>
-              <span className="font-inter text-xs text-[#6b7a8f] px-1">
-                Inter
-              </span>
-              <span className="material-symbols-outlined text-sm text-[#6b7a8f]">
-                expand_more
-              </span>
-              <span className="font-inter text-xs text-[#6b7a8f] px-1">24</span>
-              <span className="material-symbols-outlined text-sm text-[#6b7a8f]">
-                expand_more
-              </span>
-              <div className="w-px h-5 bg-[#dce1e8] mx-1" />
-              <button
-                type="button"
-                className="p-1.5 rounded hover:bg-[#f0f3f7] text-[#6b7a8f] transition-colors"
-              >
-                <span className="material-symbols-outlined text-lg">
-                  format_bold
-                </span>
-              </button>
-              <button
-                type="button"
-                className="p-1.5 rounded hover:bg-[#f0f3f7] text-[#6b7a8f] transition-colors"
-              >
-                <span className="material-symbols-outlined text-lg">
-                  format_italic
-                </span>
-              </button>
-              <button
-                type="button"
-                className="p-1.5 rounded hover:bg-[#f0f3f7] text-[#6b7a8f] transition-colors"
-              >
-                <span className="material-symbols-outlined text-lg">
-                  format_underlined
-                </span>
-              </button>
-              <div className="w-px h-5 bg-[#dce1e8] mx-1" />
-              <button
-                type="button"
-                className="p-1.5 rounded hover:bg-[#f0f3f7] text-[#6b7a8f] transition-colors"
-              >
-                <span className="material-symbols-outlined text-lg">
-                  format_align_left
-                </span>
-              </button>
-              <button
-                type="button"
-                className="p-1.5 rounded hover:bg-[#f0f3f7] text-[#6b7a8f] transition-colors"
-              >
-                <span className="material-symbols-outlined text-lg">
-                  format_align_center
-                </span>
-              </button>
-              <button
-                type="button"
-                className="p-1.5 rounded hover:bg-[#f0f3f7] text-[#6b7a8f] transition-colors"
-              >
-                <span className="material-symbols-outlined text-lg">
-                  format_align_right
-                </span>
-              </button>
-              <span className="material-symbols-outlined text-sm text-[#6b7a8f]">
-                expand_more
-              </span>
-              <div className="w-px h-5 bg-[#dce1e8] mx-1" />
-              <button
-                type="button"
-                className="p-1.5 rounded hover:bg-[#f0f3f7] text-[#6b7a8f] transition-colors"
-              >
-                <span className="material-symbols-outlined text-lg">
-                  format_list_bulleted
-                </span>
-              </button>
-              <span className="material-symbols-outlined text-sm text-[#6b7a8f]">
-                expand_more
-              </span>
-              <div className="w-px h-5 bg-[#dce1e8] mx-1" />
-              <button
-                type="button"
-                className="p-1.5 rounded hover:bg-[#f0f3f7] text-[#6b7a8f] transition-colors"
-              >
-                <span className="material-symbols-outlined text-lg">
-                  expand_more
-                </span>
-              </button>
-            </div>
-            <span className="font-inter text-xs text-[#a0b0c4]">
-              {formData.description.length}/3000
-            </span>
-          </div> */}
         </div>
         {errors.description && (
           <p className="text-red-500 text-xs mt-1 font-inter">

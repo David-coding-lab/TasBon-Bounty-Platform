@@ -15,6 +15,7 @@ export default function ApplyBountyModal({
   isApplying = false,
   bounty = {
     title: 'Build DeFi Analytics Dashboard',
+    description: 'Create a modern analytics dashboard for a DeFi platform.',
     project: 'Nexus Protocol',
     image:
       'https://images.unsplash.com/photo-1642104704074-907c0698cbd9?q=80&w=400&auto=format&fit=crop',
@@ -70,30 +71,30 @@ export default function ApplyBountyModal({
 
         <div className="space-y-4 mb-6">
           <DetailRow
-            icon={<DollarSign className="w-[18px] h-[18px]" />}
+            icon={<DollarSign className="`w-4.5 h-4.5" />}
             label="Reward"
             value={bounty.reward}
             valueClass="text-[#15803D] font-bold"
           />
           <DetailRow
-            icon={<Briefcase className="w-[18px] h-[18px]" />}
+            icon={<Briefcase className="`w-4.5 h-4.5" />}
             label="Experience Level"
             value={bounty.experience}
           />
           <DetailRow
-            icon={<Folder className="w-[18px] h-[18px]" />}
+            icon={<Folder className="`w-4.5 h-4.5" />}
             label="Category"
             value={bounty.category}
           />
           <DetailRow
-            icon={<Calendar className="w-[18px] h-[18px]" />}
+            icon={<Calendar className="`w-4.5 h-4.5" />}
             label="Application Deadline"
             value={bounty.deadline}
           />
         </div>
 
         <div className="bg-[#15803D]/5 rounded-xl p-4 flex gap-3 mb-8">
-          <ShieldCheck className="w-5 h-5 text-[#15803D] flex-shrink-0 mt-0.5" />
+          <ShieldCheck className="w-5 h-5 text-[#15803D] shrink-0 mt-0.5" />
           <div>
             <p className="font-bold text-[#15803D] text-sm mb-1">
               What happens next?

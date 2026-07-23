@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { fetchRecommendedBounties } from '../../../../../../pages/Bounties/Api/bounties'
 import BountiesCard from '../../../../../../Components/Bounties/BountiesCard'
+import { Link } from 'react-router-dom'
 
 const CATEGORY_IMAGES = {
   Design: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400',
@@ -47,7 +48,9 @@ const Bounties = () => {
           </p>
         </div>
         <div className="flex flex-row items-center gap-1 cursor-pointer">
-          <span className="text-base text-[#009966]">View all</span>
+          <Link to="/dashboard/bounties" className="flex items-center gap-1">
+            <span className="text-base text-[#009966]">View all</span>
+          </Link>
           <ArrowRight className="w-4 h-4 text-[#009966]" />
         </div>
       </div>

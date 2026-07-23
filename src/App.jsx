@@ -31,6 +31,8 @@ import Blogs from './pages/Blogs'
 import BlogSlug from './pages/Blogs/Slug'
 import Hackathons from './pages/Hackathons/Index'
 import Grants from './pages/Grants'
+import SettingsPage from './pages/Settings/Index'
+import BookmarkPage from './pages/Bookmark/Index'
 import NotFound from './pages/NotFound'
 import ErrorBoundary from './Components/Ui/ErrorBoundary'
 import ProtectedRoute from './Components/auth/ProtectedRoute'
@@ -69,7 +71,8 @@ function AppRoutes() {
       dispatch(logout())
     }
     window.addEventListener('session-expired', handleSessionExpired)
-    return () => window.removeEventListener('session-expired', handleSessionExpired)
+    return () =>
+      window.removeEventListener('session-expired', handleSessionExpired)
   }, [dispatch])
 
   // Sync Privy's restored session into Redux
@@ -107,6 +110,8 @@ function AppRoutes() {
       <Route path="/blogs/:slug" element={<BlogSlug />} />
       <Route path="/hackathons" element={<Hackathons />} />
       <Route path="/grants" element={<Grants />} />
+      <Route path="/settings" element={<SettingsPage />} />
+      <Route path="/bookmark" element={<BookmarkPage />} />
       <Route path="/verify-email" element={<VerifyEmail />} />
       <Route path="/reset-password/:token" element={<SignUp />} />
 
