@@ -21,6 +21,17 @@ const ApplicationsPage = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [actionLoading, setActionLoading] = useState(null)
   const [selectedAppId, setSelectedAppId] = useState(null)
+  const [sentCount, setSentCount] = useState(0)
+  const [receivedCount, setReceivedCount] = useState(0)
+
+  const fetchCounts = () => {
+    getApplications().then((res) => setSentCount(res.total ?? res.applications?.length ?? 0)).catch(() => {})
+    getReceivedApplications().then((res) => setReceivedCount(res.total ?? res.applications?.length ?? 0)).catch(() => {})
+  }
+
+  useEffect(() => {
+    fetchCounts()
+  }, [])
 
   useEffect(() => {
     setLoading(true)
@@ -60,6 +71,10 @@ const ApplicationsPage = () => {
         { label: 'Not Selected', count: tabCounts['Not Selected'] || 0 },
       ]
 
+  const refreshCountsAfterAction = () => {
+    getReceivedApplications().then((res) => setReceivedCount(res.total ?? res.applications?.length ?? 0)).catch(() => {})
+  }
+
   const handleAccept = async (appId) => {
     setActionLoading(appId)
     try {
@@ -68,6 +83,7 @@ const ApplicationsPage = () => {
       setApplications((prev) =>
         prev.map((a) => (a.id === appId ? { ...a, status: 'In Progress' } : a)),
       )
+      refreshCountsAfterAction()
     } catch (err) {
       toast.error(err.message || 'Failed to update status')
     } finally {
@@ -83,6 +99,7 @@ const ApplicationsPage = () => {
       setApplications((prev) =>
         prev.map((a) => (a.id === appId ? { ...a, status: 'Not Selected' } : a)),
       )
+      refreshCountsAfterAction()
     } catch (err) {
       toast.error(err.message || 'Failed to update status')
     } finally {
@@ -98,6 +115,7 @@ const ApplicationsPage = () => {
       setApplications((prev) =>
         prev.map((a) => (a.id === appId ? { ...a, status: 'Shortlisted' } : a)),
       )
+      refreshCountsAfterAction()
     } catch (err) {
       toast.error(err.message || 'Failed to update status')
     } finally {
@@ -146,7 +164,7 @@ const ApplicationsPage = () => {
               : 'border-transparent text-[#4A5565] hover:text-[#0A0A0A]'
           }`}
         >
-          Received ({tabCounts['All'] || 0})
+          Received ({receivedCount})
         </button>
       </div>
 
