@@ -127,12 +127,12 @@ export default function Step2RewardLogistics({
                 </span>
               </button>
               <button
-                className={`flex-1 px-3 border rounded-xl bg-white text-left transition-colors hover:border-[#b0c4d8] ${
+                disabled
+                className={`flex-1 px-3 border rounded-xl bg-white text-left transition-colors opacity-50 cursor-not-allowed ${
                   formData.rewardType === 'milestone'
                     ? 'border-[#34A563] bg-[#f0faf5] shadow-[0_0_0_1px_#34A563]'
                     : 'border-[#dce1e8]'
                 }`}
-                onClick={() => updateFormData('rewardType', 'milestone')}
               >
                 <span
                   className={`font-semibold text-sm block ${formData.rewardType === 'milestone' ? 'text-[#34A563]' : 'text-[#1a2a41]'}`}
@@ -434,32 +434,29 @@ export default function Step2RewardLogistics({
 
         <button
           className={`flex items-center gap-4 px-4 py-3.5 border rounded-xl bg-white text-left transition-all w-full max-w-sm hover:border-[#b0c4d8] ${
-            formData.isPrivate ? 'border-[#34A563]' : 'border-[#dce1e8]'
+            formData.isPrivate ? 'border-[#34A563] bg-[#f0faf5]' : 'border-[#dce1e8]'
           }`}
           onClick={() => updateFormData('isPrivate', !formData.isPrivate)}
         >
-          {/* Checkbox icon */}
-          <div
-            className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0`}
-          >
+          <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0">
             {formData.isPrivate ? (
-              <span className="material-symbols-outlined text-[#34A563] text">
-                public
-              </span>
+              <span className="material-symbols-outlined text-[#34A563] text-[20px]">link</span>
             ) : (
-              <span className="material-symbols-outlined">lock</span>
+              <span className="material-symbols-outlined text-[20px]">lock</span>
             )}
           </div>
           <div>
             <span
-              className={`font-semibold text-sm block
-              ${formData.isPrivate ? 'text-[#34A563]' : 'text-[#1a2a41]'}
-            `}
+              className={`font-semibold text-sm block ${
+                formData.isPrivate ? 'text-[#34A563]' : 'text-[#1a2a41]'
+              }`}
             >
               Make bounty private
             </span>
             <span className="text-xs text-[#6b7a8f]">
-              Only invited builders can view this bounty
+              {formData.isPrivate
+                ? 'A unique invite link will be generated. Only invited builders with the link can view and apply.'
+                : 'Bounty will be publicly visible to everyone.'}
             </span>
           </div>
         </button>

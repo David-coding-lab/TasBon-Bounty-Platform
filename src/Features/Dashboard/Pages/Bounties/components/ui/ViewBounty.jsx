@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { ArrowLeft, Clock } from 'lucide-react'
+import { ArrowLeft, Clock, Copy, Check, RefreshCw, Users } from 'lucide-react'
 import { toast } from 'sonner'
 import {
   fetchBountyById,
@@ -48,6 +48,9 @@ export default function ViewBounty() {
   const [isSubmissionReceivedOpen, setIsSubmissionReceivedOpen] =
     useState(false)
   const [submissionResult, setSubmissionResult] = useState(null)
+  const [copied, setCopied] = useState(false)
+  const [regenerating, setRegenerating] = useState(false)
+  const [inviteCode, setInviteCode] = useState(null)
 
   const handleOpen = (state) => state(true)
   const handleClose = (state) => state(false)
@@ -110,6 +113,7 @@ export default function ViewBounty() {
       .then(([bountyRes, similarRes]) => {
         const bountyData = bountyRes.data
         setBounty(bountyData)
+        setInviteCode(bountyData.inviteCode || null)
         setSimilarBounties(similarRes.data || [])
         if (bountyData?.applicationStatus) {
           setReviewStatus(bountyData.applicationStatus)
@@ -530,6 +534,52 @@ export default function ViewBounty() {
                 </div>
               ))}
             </div>
+
+            {inviteCode && (
+              <div className="flex flex-col space-y-3 p-4 bg-[#f0faf5] border border-[#34A563]/30 rounded-xl">
+                <div className="flex items-center gap-2">
+                  <Users size={16} className="text-[#34A563]" />
+                  <span className="text-sm font-semibold text-[#0A0A0A]">Invite-only bounty</span>
+                </div>
+                <p className="text-xs text-[#4A5565]">Share this invite link to grant access:</p>
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 flex items-center gap-2 px-3 py-2 bg-white border border-[#dce1e8] rounded-lg text-sm text-[#1a2a41] font-mono truncate">
+                    <span className="truncate">{`${window.location.origin}/dashboard/bounties/invite/${inviteCode}`}</span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(`${window.location.origin}/dashboard/bounties/invite/${inviteCode}`)
+                      setCopied(true)
+                      setTimeout(() => setCopied(false), 2000)
+                    }}
+                    className="flex items-center gap-1 px-3 py-2 bg-[#34A563] text-white text-xs font-medium rounded-lg hover:bg-[#007A55] transition-colors cursor-pointer shrink-0"
+                  >
+                    {copied ? <Check size={14} /> : <Copy size={14} />}
+                    {copied ? 'Copied' : 'Copy'}
+                  </button>
+                  <button
+                    onClick={async () => {
+                      setRegenerating(true)
+                      try {
+                        const { apiPost } = await import('../../../../../../services/api')
+                        const res = await apiPost(`/api/v1/bounties/${bounty.id}/regenerate-invite`)
+                        setInviteCode(res.data.inviteCode)
+                        toast.success('New invite link generated')
+                      } catch {
+                        toast.error('Failed to regenerate invite link')
+                      } finally {
+                        setRegenerating(false)
+                      }
+                    }}
+                    disabled={regenerating}
+                    className="flex items-center gap-1 px-3 py-2 border border-[#dce1e8] text-[#4A5565] text-xs font-medium rounded-lg hover:bg-gray-50 transition-colors cursor-pointer shrink-0"
+                  >
+                    <RefreshCw size={14} className={regenerating ? 'animate-spin' : ''} />
+                  </button>
+                </div>
+              </div>
+            )}
+
             <div className="flex flex-col space-y-8">
               {!reviewStatus && (
                 <>

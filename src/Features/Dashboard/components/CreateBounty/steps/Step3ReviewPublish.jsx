@@ -277,13 +277,19 @@ export default function Step3ReviewPublish({ formData }) {
             </div>
           </div>
 
-          {/* Make Bounty Private */}
           <div className="flex items-center justify-between py-2.5">
             <span className="text-sm text-[#1a2a41]">Make Bounty Private</span>
             <div className="flex items-center gap-1.5">
-              <CircleCheckIcon />
+              {formData.isPrivate ? (
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <rect x="3.5" y="7" width="11" height="8" rx="2" stroke="#34A563" strokeWidth="1.3" />
+                  <path d="M6 7V5a3 3 0 016 0v2" stroke="#34A563" strokeWidth="1.3" strokeLinecap="round" />
+                </svg>
+              ) : (
+                <CircleCheckIcon />
+              )}
               <span className="text-sm font-medium text-[#1a2a41]">
-                {formData.isPrivate ? 'Yes' : 'No'}
+                {formData.isPrivate ? 'Yes — invite only' : 'No'}
               </span>
             </div>
           </div>
