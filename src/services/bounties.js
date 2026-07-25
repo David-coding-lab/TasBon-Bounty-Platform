@@ -43,3 +43,7 @@ export function submitBountyWork(bountyId, data) {
 export function getSimilarBounties(bountyId) {
   return apiGet(`/api/v1/bounties/${bountyId}/similar`)
 }
+
+export function getTopCreators() {
+  return apiGet('/api/v1/bounties/top-creators')
+}

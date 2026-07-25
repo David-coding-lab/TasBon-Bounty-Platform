@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import {
   ArrowRight,
@@ -5,82 +6,24 @@ import {
   FileText,
   Target,
   MessageCircle,
+  Trophy,
 } from 'lucide-react'
-import NexusProtocolIcon from '../../Assets/Image (Nexus Protocol).svg'
-import LayerOneIcon from '../../Assets/Image (LayerOne).svg'
-import DAOCollectiveIcon from '../../Assets/Image (DAO Collective).svg'
-import Web3LabsIcon from '../../Assets/Image (Web3Labs).svg'
-import ChainGuardIcon from '../../Assets/Image (ChainGuard).svg'
+import { getDashboardStats, getActivities } from '../../../services/profile'
+import { getTopCreators } from '../../../services/bounties'
+import { toast } from 'sonner'
 
-/* Top bounty creators data */
-const topProtocols = [
-  {
-    rank: 1,
-    name: 'Nexus Protocol',
-    bounties: 24,
-    paid: '$535k+',
-    icon: NexusProtocolIcon,
-  },
-  {
-    rank: 2,
-    name: 'LayerOne',
-    bounties: 18,
-    paid: '$90k+',
-    icon: LayerOneIcon,
-  },
-  {
-    rank: 3,
-    name: 'DAO Collective',
-    bounties: 15,
-    paid: '$60k+',
-    icon: DAOCollectiveIcon,
-  },
-  {
-    rank: 4,
-    name: 'Web3Labs',
-    bounties: 12,
-    paid: '$385k+',
-    icon: Web3LabsIcon,
-  },
-  {
-    rank: 5,
-    name: 'ChainGuard',
-    bounties: 10,
-    paid: '$30k+',
-    icon: ChainGuardIcon,
-  },
-]
+const activityIcons = {
+  'bounty.created': { icon: Target, color: 'text-[#155DFC]' },
+  'bounty.applied': { icon: FileText, color: 'text-[#E17100]' },
+  'bounty.completed': { icon: DollarSign, color: 'text-[#009966]' },
+  'application.status': { icon: MessageCircle, color: 'text-[#9810FA]' },
+}
 
-/* Recent activity notifications data */
-const notifications = [
-  {
-    id: 1,
-    icon: DollarSign,
-    color: 'text-[#009966]',
-    message: 'You earned $180 USDC from completing a bounty',
-    time: '3h ago',
-  },
-  {
-    id: 2,
-    icon: FileText,
-    color: 'text-[#E17100]',
-    message: 'Your application for Web3 Social Grant was shortlisted',
-    time: '2d ago',
-  },
-  {
-    id: 3,
-    icon: Target,
-    color: 'text-[#155DFC]',
-    message: 'New bounty match for your skills',
-    time: '2d ago',
-  },
-  {
-    id: 4,
-    icon: MessageCircle,
-    color: 'text-[#9810FA]',
-    message: 'Alex from LayerOne replied to your submission',
-    time: '3d ago',
-  },
+const fallbackIcons = [
+  { icon: DollarSign, color: 'text-[#009966]' },
+  { icon: FileText, color: 'text-[#E17100]' },
+  { icon: Target, color: 'text-[#155DFC]' },
+  { icon: MessageCircle, color: 'text-[#9810FA]' },
 ]
 
 const roleLabels = {
@@ -92,10 +35,36 @@ const roleLabels = {
 
 const Information = () => {
   const user = useSelector((state) => state.auth.user)
+  const [stats, setStats] = useState(null)
+  const [creators, setCreators] = useState([])
+  const [activities, setActivities] = useState([])
 
   const initials = user?.fullName
     ? user.fullName.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2)
     : '?'
+
+  useEffect(() => {
+    getDashboardStats()
+      .then((res) => setStats(res.data || res))
+      .catch(() => {})
+    getTopCreators()
+      .then((res) => setCreators(res.data || []))
+      .catch(() => toast.error('Failed to load top creators'))
+    getActivities()
+      .then((res) => setActivities(res.data || []))
+      .catch(() => {})
+  }, [])
+
+  const level = stats?.level || 5
+  const xp = stats?.xp || 0
+  const xpNext = stats?.xpNextLevel || 2500
+  const progress = xpNext > 0 ? Math.min((xp / xpNext) * 100, 100) : 0
+
+  const getActivityIcon = (description, index) => {
+    const matched = activityIcons[description]
+    if (matched) return matched
+    return fallbackIcons[index % fallbackIcons.length]
+  }
 
   return (
     <div className="flex flex-col space-y-6">
@@ -110,105 +79,82 @@ const Information = () => {
           </div>
         </div>
 
-        {/* Level progress section */}
         <div className="flex flex-col space-y-2">
-          {/* Level label and XP count */}
           <div className="flex flex-row justify-between">
-            <span className="text-sm text-[#FFFFFF]">Level 5 Builder</span>
-            <span className="text-sm text-[#FFFFFF]">L250 / 2,500 XP</span>
+            <span className="text-sm text-[#FFFFFF]">Level {level}</span>
+            <span className="text-sm text-[#FFFFFF]">{xp} / {xpNext} XP</span>
           </div>
-          {/* Progress bar */}
           <div className="w-full h-2 rounded-full bg-[#007A55]">
             <div
-              className="h-full rounded-full bg-[#FFFFFF]"
-              style={{ width: '10%' }}
+              className="h-full rounded-full bg-[#FFFFFF] transition-all duration-300"
+              style={{ width: `${progress}%` }}
             ></div>
           </div>
         </div>
       </div>
 
-      {/* Second child — Top bounty creators */}
       <div className="flex flex-col border border-[#E5E7EB] rounded-2xl space-y-3 p-3">
-        {/* Header row */}
         <div className="flex flex-row justify-between items-center">
-          <span className="text-base text-[#0A0A0A] font-semibold">
+          <span className="text-base text-[#0A0A0A] font-semibold flex items-center gap-1.5">
+            <Trophy size={16} className="text-[#009966]" />
             Top bounty creators
           </span>
-          <div className="flex flex-row items-center gap-1 cursor-pointer">
+        </div>
+
+        {creators.length === 0 ? (
+          <div className="py-4 text-center text-xs text-[#9CA3AF]">No data yet</div>
+        ) : (
+          <ul className="flex flex-col space-y-3">
+            {creators.slice(0, 5).map((creator, i) => (
+              <li key={creator.id} className="flex flex-row space-x-2 items-center">
+                <span className="text-sm text-[#4A5565] w-4 shrink-0">{i + 1}.</span>
+                <div className="w-8 h-8 rounded-full bg-[#009966] flex items-center justify-center text-white text-xs font-bold shrink-0">
+                  {creator.name?.charAt(0) || '?'}
+                </div>
+                <div className="flex flex-col min-w-0">
+                  <span className="text-base text-[#0A0A0A] hover:cursor-pointer hover:underline hover:text-[#009966] truncate">
+                    {creator.name}
+                  </span>
+                  <span className="text-xs text-[#4A5565]">
+                    {creator.bountyCount} bounties · {creator.totalPaid} paid
+                  </span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      <div className="flex flex-col border border-[#E5E7EB] rounded-2xl space-y-3 p-3">
+        <span className="text-lg text-[#0A0A0A] font-semibold">Recent Activity</span>
+
+        {activities.length === 0 ? (
+          <div className="py-4 text-center text-xs text-[#9CA3AF]">No recent activity</div>
+        ) : (
+          <ul className="flex flex-col space-y-3">
+            {activities.slice(0, 5).map((item, index) => {
+              const { icon: Icon, color } = getActivityIcon(item.description, index)
+              return (
+                <li key={item.id} className="flex flex-row gap-2 justify-between items-start">
+                  <div className="flex flex-row gap-2 items-start">
+                    <Icon size={18} className={`${color} shrink-0 mt-0.5`} />
+                    <span className="text-sm text-[#0A0A0A] hover:cursor-pointer hover:underline hover:text-[#009966]">
+                      {item.description}
+                    </span>
+                  </div>
+                  <span className="text-xs text-[#4A5565] shrink-0">{item.timestamp}</span>
+                </li>
+              )
+            })}
+          </ul>
+        )}
+
+        {activities.length > 5 && (
+          <div className="flex flex-row items-center justify-center gap-1 cursor-pointer">
             <span className="text-sm text-[#009966]">View all</span>
             <ArrowRight size={14} className="text-[#009966]" />
           </div>
-        </div>
-
-        {/* Protocol list */}
-        <ul className="flex flex-col space-y-3">
-          {topProtocols.map((protocol) => (
-            <li
-              key={protocol.rank}
-              className="flex flex-row space-x-2 items-center"
-            >
-              {/* Rank number */}
-              <span className="text-sm text-[#4A5565] w-4">
-                {protocol.rank}.
-              </span>
-              <img
-                src={protocol.icon}
-                alt={protocol.name}
-                className="w-8 h-8 rounded-full"
-              />
-              <div className="flex flex-col">
-                <span className="text-base text-[#0A0A0A] hover:cursor-pointer hover:underline hover:text-[#009966]">
-                  {protocol.name}
-                </span>
-                <span className="text-xs text-[#4A5565]">
-                  {protocol.bounties} bounties · {protocol.paid} paid
-                </span>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Third child — Recent Activity */}
-      <div className="flex flex-col border border-[#E5E7EB] rounded-2xl space-y-3 p-3">
-        {/* Heading */}
-        <span className="text-lg text-[#0A0A0A] font-semibold">
-          Recent Activity
-        </span>
-
-        {/* Notification list */}
-        <ul className="flex flex-col space-y-3">
-          {notifications.map((notification) => {
-            const Icon = notification.icon
-            return (
-              <li
-                key={notification.id}
-                className="flex flex-row gap-2 justify-between items-start "
-              >
-                {/* Icon and message */}
-                <div className="flex flex-row gap-2 items-start">
-                  <Icon
-                    size={18}
-                    className={`${notification.color} shrink-0 mt-0.5`}
-                  />
-                  <span className="text-sm text-[#0A0A0A] hover:cursor-pointer hover:underline hover:text-[#009966]">
-                    {notification.message}
-                  </span>
-                </div>
-                {/* Time */}
-                <span className="text-xs text-[#4A5565] shrink-0">
-                  {notification.time}
-                </span>
-              </li>
-            )
-          })}
-        </ul>
-
-        {/* View all link — centered */}
-        <div className="flex flex-row items-center justify-center gap-1 cursor-pointer">
-          <span className="text-sm text-[#009966]">View all</span>
-          <ArrowRight size={14} className="text-[#009966]" />
-        </div>
+        )}
       </div>
     </div>
   )
