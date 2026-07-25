@@ -202,6 +202,32 @@ export default function Step3ReviewPublish({ formData }) {
               </p>
             </div>
           </div>
+
+          {/* Deliverables */}
+          {formData.deliverables?.length > 0 && (
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 rounded-lg bg-[#f0faf5] flex items-center justify-center shrink-0">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <rect x="1" y="1" width="14" height="14" rx="2" stroke="#34A563" strokeWidth="1.5" />
+                  <path d="M5 8l2 2 4-4" stroke="#34A563" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+              <div className="pb-3">
+                <p className="text-sm font-bold text-[#1a2a41]">Deliverables</p>
+                <div className="mt-1 flex flex-col gap-1">
+                  {formData.deliverables.map((item, idx) => {
+                    let del
+                    try { del = JSON.parse(item) } catch { del = { type: 'link', description: item } }
+                    return (
+                      <span key={idx} className="text-sm text-[#4a5568]">
+                        • <span className="font-medium text-[#34A563]">{del.type}</span>: {del.description}
+                      </span>
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Right card: Bounty Details (reward/logistics) */}

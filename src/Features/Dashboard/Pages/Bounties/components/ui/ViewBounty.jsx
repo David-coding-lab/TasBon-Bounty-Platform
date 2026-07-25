@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { ArrowLeft, Clock, Copy, Check, RefreshCw, Users } from 'lucide-react'
+import { ArrowLeft, Clock, Copy, Check, RefreshCw, Users, Image, FileArchive, Music, Link as LinkIcon } from 'lucide-react'
 import { toast } from 'sonner'
 import {
   fetchBountyById,
@@ -160,6 +160,20 @@ export default function ViewBounty() {
         )
       : null
 
+  const parseDeliverable = (item) => {
+    try { return JSON.parse(item) } catch { return { type: 'link', description: item } }
+  }
+
+  const deliverableTypeIcon = (type) => {
+    switch (type) {
+      case 'image': return <Image size={18} className="text-[#34A563] shrink-0" />
+      case 'zip': return <FileArchive size={18} className="text-[#E17100] shrink-0" />
+      case 'audio': return <Music size={18} className="text-[#6D28D9] shrink-0" />
+      case 'link': return <LinkIcon size={18} className="text-[#155DFC] shrink-0" />
+      default: return <LinkIcon size={18} className="text-[#155DFC] shrink-0" />
+    }
+  }
+
   const taskDetails = [
     {
       icon: 'Info',
@@ -169,9 +183,24 @@ export default function ViewBounty() {
     {
       icon: 'CheckSquare',
       title: 'Deliverables',
-      description: bounty?.deliverables?.length
-        ? bounty.deliverables.map((d) => `• ${d}`).join('\n')
-        : 'No deliverables listed.',
+      component: bounty?.deliverables?.length ? (
+        <div className="flex flex-col gap-2">
+          {bounty.deliverables.map((item, idx) => {
+            const del = parseDeliverable(item)
+            return (
+              <div key={idx} className="flex items-start gap-3 p-3 bg-[#f8fafc] rounded-lg border border-[#e8ecf1]">
+                {deliverableTypeIcon(del.type)}
+                <div className="flex-1 min-w-0">
+                  <span className="text-xs font-semibold text-[#34A563] uppercase tracking-wide">{del.type}</span>
+                  <p className="text-sm text-[#1a2a41] mt-0.5">{del.description}</p>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      ) : (
+        <p className="text-sm text-[#4A5565]">No deliverables listed.</p>
+      ),
     },
     {
       icon: 'ClipboardList',
@@ -387,6 +416,7 @@ export default function ViewBounty() {
                   icon={taskDetail.icon}
                   title={taskDetail.title}
                   description={taskDetail.description}
+                  component={taskDetail.component}
                 />
               ))}
             </div>

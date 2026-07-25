@@ -8,8 +8,8 @@ import {
   MessageCircle,
   Trophy,
 } from 'lucide-react'
-import { getDashboardStats, getActivities } from '../../../services/profile'
-import { getTopCreators } from '../../../services/bounties'
+import { getDashboardStats, getActivities } from '../../../../services/profile'
+import { getTopCreators } from '../../../../services/bounties'
 import { toast } from 'sonner'
 
 const activityIcons = {
