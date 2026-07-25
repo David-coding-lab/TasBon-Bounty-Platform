@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { X, Calendar, User, DollarSign, Tag, Clock, ArrowUpRight } from 'lucide-react'
+import { X, Calendar, User, DollarSign, Tag, ArrowUpRight } from 'lucide-react'
 import { getApplicationById } from '../../../../services/applications'
 import { toast } from 'sonner'
 
@@ -69,7 +69,7 @@ const ApplicationDetailModal = ({ applicationId, onClose }) => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
                 <div className="w-9 h-9 rounded-full bg-[#D0FAE5] flex items-center justify-center shrink-0">
                   <DollarSign size={16} className="text-[#009966]" />
@@ -95,15 +95,6 @@ const ApplicationDetailModal = ({ applicationId, onClose }) => {
                 <div>
                   <p className="text-xs text-[#6B7280]">Applied On</p>
                   <p className="text-sm font-semibold text-[#0A0A0A]">{detail.createdAt ? new Date(detail.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'N/A'}</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                <div className="w-9 h-9 rounded-full bg-[#FEF3C6] flex items-center justify-center shrink-0">
-                  <Clock size={16} className="text-[#BB4D00]" />
-                </div>
-                <div>
-                  <p className="text-xs text-[#6B7280]">Proposed Amount</p>
-                  <p className="text-sm font-semibold text-[#0A0A0A]">{detail.proposedAmount ? `$${detail.proposedAmount}` : 'Not specified'}</p>
                 </div>
               </div>
             </div>

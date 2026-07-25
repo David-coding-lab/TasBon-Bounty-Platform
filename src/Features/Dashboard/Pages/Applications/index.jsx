@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { Search, MoreVertical, ArrowRight, Check, X, Eye } from 'lucide-react'
 import { getApplications, getReceivedApplications, updateApplicationStatus } from '../../../../services/applications'
 import { toast } from 'sonner'
@@ -229,7 +230,16 @@ const ApplicationsPage = () => {
                 <div className="flex flex-row gap-3 items-start min-w-0">
                   <img src={app.thumbnail} alt={app.title} className="w-14 h-14 rounded-lg object-cover shrink-0" />
                   <div className="flex flex-col gap-1 min-w-0">
-                    <span className="text-sm font-semibold text-[#0A0A0A] leading-snug">{app.title}</span>
+                    {app.bountyId ? (
+                      <Link
+                        to={`/dashboard/bounties/${app.bountyId}`}
+                        className="text-sm font-semibold text-[#0A0A0A] leading-snug hover:text-[#009966]"
+                      >
+                        {app.title}
+                      </Link>
+                    ) : (
+                      <span className="text-sm font-semibold text-[#0A0A0A] leading-snug">{app.title}</span>
+                    )}
                     <div className="flex flex-row flex-wrap gap-1">
                       {(app.tags || []).slice(0, 3).map((tag) => (
                         <span key={tag} className="text-xs text-[#4A5565] bg-[#F3F4F6] px-2 py-0.5 rounded-full">{tag}</span>
@@ -256,7 +266,16 @@ const ApplicationsPage = () => {
                 </div>
                 <div className="flex flex-row items-center gap-3 justify-end">
                   <span className="text-sm font-bold text-[#009966] whitespace-nowrap">{app.reward}</span>
-                  <button onClick={() => setSelectedAppId(app.id)} className="text-sm text-[#0A0A0A] font-medium hover:text-[#009966] cursor-pointer whitespace-nowrap">View details</button>
+                  {app.bountyId ? (
+                    <Link
+                      to={`/dashboard/bounties/${app.bountyId}`}
+                      className="text-sm text-[#0A0A0A] font-medium hover:text-[#009966] whitespace-nowrap"
+                    >
+                      View details
+                    </Link>
+                  ) : (
+                    <button onClick={() => setSelectedAppId(app.id)} className="text-sm text-[#0A0A0A] font-medium hover:text-[#009966] cursor-pointer whitespace-nowrap">View details</button>
+                  )}
                   <button className="text-[#9CA3AF] hover:text-[#4A5565] cursor-pointer"><MoreVertical size={16} /></button>
                 </div>
               </div>
@@ -271,7 +290,16 @@ const ApplicationsPage = () => {
                 <div className="flex flex-row gap-3 items-start min-w-0">
                   <img src={app.thumbnail} alt={app.title} className="w-14 h-14 rounded-lg object-cover shrink-0" />
                   <div className="flex flex-col gap-1 min-w-0">
-                    <span className="text-sm font-semibold text-[#0A0A0A] leading-snug">{app.title}</span>
+                    {app.bountyId ? (
+                      <Link
+                        to={`/dashboard/bounties/${app.bountyId}`}
+                        className="text-sm font-semibold text-[#0A0A0A] leading-snug hover:text-[#009966]"
+                      >
+                        {app.title}
+                      </Link>
+                    ) : (
+                      <span className="text-sm font-semibold text-[#0A0A0A] leading-snug">{app.title}</span>
+                    )}
                     <div className="flex flex-row flex-wrap gap-1">
                       {(app.tags || []).slice(0, 3).map((tag) => (
                         <span key={tag} className="text-xs text-[#4A5565] bg-[#F3F4F6] px-2 py-0.5 rounded-full">{tag}</span>
