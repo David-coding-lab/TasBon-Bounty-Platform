@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Search, MoreVertical, ArrowRight, Check, X, Eye } from 'lucide-react'
 import { getApplications, getReceivedApplications, updateApplicationStatus } from '../../../../services/applications'
 import { toast } from 'sonner'
+import ApplicationDetailModal from './ApplicationDetailModal'
 
 const statusConfig = {
   'Pending Review': { bg: 'bg-[#FEF3C6]', text: 'text-[#BB4D00]', dot: 'bg-[#F59E0B]' },
@@ -19,6 +20,7 @@ const ApplicationsPage = () => {
   const [activeTab, setActiveTab] = useState('All')
   const [searchQuery, setSearchQuery] = useState('')
   const [actionLoading, setActionLoading] = useState(null)
+  const [selectedAppId, setSelectedAppId] = useState(null)
 
   useEffect(() => {
     setLoading(true)
@@ -236,7 +238,7 @@ const ApplicationsPage = () => {
                 </div>
                 <div className="flex flex-row items-center gap-3 justify-end">
                   <span className="text-sm font-bold text-[#009966] whitespace-nowrap">{app.reward}</span>
-                  <button className="text-sm text-[#0A0A0A] font-medium hover:text-[#009966] cursor-pointer whitespace-nowrap">View details</button>
+                  <button onClick={() => setSelectedAppId(app.id)} className="text-sm text-[#0A0A0A] font-medium hover:text-[#009966] cursor-pointer whitespace-nowrap">View details</button>
                   <button className="text-[#9CA3AF] hover:text-[#4A5565] cursor-pointer"><MoreVertical size={16} /></button>
                 </div>
               </div>
@@ -280,6 +282,10 @@ const ApplicationsPage = () => {
                   )}
                 </div>
                 <div className="flex flex-row items-center gap-2 justify-end">
+                  <button onClick={() => setSelectedAppId(app.id)} className="text-xs text-[#0A0A0A] font-medium hover:text-[#009966] cursor-pointer whitespace-nowrap">
+                    <Eye size={14} className="inline mr-1" />
+                    View
+                  </button>
                   {isPending ? (
                     <>
                       <button
@@ -341,6 +347,7 @@ const ApplicationsPage = () => {
           </button>
         </div>
       </div>
+      <ApplicationDetailModal applicationId={selectedAppId} onClose={() => setSelectedAppId(null)} />
     </div>
   )
 }
