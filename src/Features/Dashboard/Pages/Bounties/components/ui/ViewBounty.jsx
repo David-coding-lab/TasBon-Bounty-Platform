@@ -160,6 +160,10 @@ export default function ViewBounty() {
         )
       : null
 
+  const isBountyDeadlinePassed = bounty?.dueDate
+    ? new Date(bounty.dueDate) < new Date()
+    : false
+
   const parseDeliverable = (item) => {
     try { return JSON.parse(item) } catch { return { type: 'link', description: item } }
   }
@@ -691,8 +695,8 @@ export default function ViewBounty() {
                     ? handleOpen(setIsSubmitModalOpen)
                     : handleOpen(setIsModalOpen)
                 }
-                disabled={reviewStatus === 'pending' || isSubmitting}
-                className={`flex flex-row ${reviewStatus === 'pending' || isSubmitting ? 'cursor-not-allowed' : 'cursor-pointer'} items-center justify-center space-x-3 ${reviewStatus === 'pending' ? 'bg-[#C5C9C7]' : 'bg-[#34A563]'} rounded-2xl py-4 w-full`}
+                disabled={reviewStatus === 'pending' || isSubmitting || isBountyDeadlinePassed}
+                className={`flex flex-row ${reviewStatus === 'pending' || isSubmitting || isBountyDeadlinePassed ? 'cursor-not-allowed' : 'cursor-pointer'} items-center justify-center space-x-3 ${reviewStatus === 'pending' || isBountyDeadlinePassed ? 'bg-[#C5C9C7]' : 'bg-[#34A563]'} rounded-2xl py-4 w-full`}
               >
                 {isSubmitting ? (
                   <Loader2 className="animate-spin" />
@@ -706,7 +710,9 @@ export default function ViewBounty() {
                       ? isSubmitting
                         ? 'Submitting...'
                         : 'Submit Bounty'
-                      : 'Apply for Bounty'}
+                      : isBountyDeadlinePassed
+                        ? 'Deadline Passed'
+                        : 'Apply for Bounty'}
                 </span>
               </button>
 
