@@ -1,4 +1,4 @@
-import React from 'react'
+import { useSelector } from 'react-redux'
 import {
   ArrowRight,
   DollarSign,
@@ -6,7 +6,6 @@ import {
   Target,
   MessageCircle,
 } from 'lucide-react'
-import profileImage from '../../Assets/Profile (Alex Rivera).svg'
 import NexusProtocolIcon from '../../Assets/Image (Nexus Protocol).svg'
 import LayerOneIcon from '../../Assets/Image (LayerOne).svg'
 import DAOCollectiveIcon from '../../Assets/Image (DAO Collective).svg'
@@ -84,23 +83,30 @@ const notifications = [
   },
 ]
 
-/* Information — right sidebar content with three sections */
+const roleLabels = {
+  USER: 'User',
+  BOUNTY_HUNTER: 'Builder',
+  ADMIN: 'Admin',
+  SUPER_ADMIN: 'Super Admin',
+}
+
 const Information = () => {
+  const user = useSelector((state) => state.auth.user)
+
+  const initials = user?.fullName
+    ? user.fullName.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2)
+    : '?'
+
   return (
-    /* Main container: vertical stack with spacing */
     <div className="flex flex-col space-y-6">
-      {/* First child — Profile card */}
       <div className="w-full rounded-2xl bg-[#006045] flex flex-col space-y-4 p-4">
-        {/* Profile info: avatar, name and role */}
         <div className="flex flex-row space-x-3 items-center">
-          {/* Profile image */}
-          <div className="w-10 h-10 rounded-full bg-[#007A55]">
-            <img src={profileImage} alt="Profile" />
+          <div className="w-10 h-10 rounded-full bg-[#007A55] flex items-center justify-center text-white text-sm font-semibold">
+            {initials}
           </div>
-          {/* Name and role */}
           <div className="flex flex-col hover:cursor-pointer hover:underline hover:text-[#009966]">
-            <span className="text-lg text-[#FFFFFF]">Alex Rivera</span>
-            <span className="text-sm text-[#A4F4CF]">Builder</span>
+            <span className="text-lg text-[#FFFFFF]">{user?.fullName || 'User'}</span>
+            <span className="text-sm text-[#A4F4CF]">{roleLabels[user?.type] || 'User'}</span>
           </div>
         </div>
 
