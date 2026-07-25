@@ -7,7 +7,7 @@ const iconMap = {
   ClipboardList,
 }
 
-const TaskDetails = ({ icon, title, description }) => {
+const TaskDetails = ({ icon, title, description, component }) => {
   const IconComponent = typeof icon === 'string' ? iconMap[icon] : icon
 
   return (
@@ -15,10 +15,9 @@ const TaskDetails = ({ icon, title, description }) => {
       <div className="pt-2">
         {IconComponent ? <IconComponent color="#34A563" /> : null}
       </div>
-      <div className="flex flex-col space-y-4 ">
+      <div className="flex flex-col space-y-4 flex-1">
         <h1 className="text-[#101820] text-lg font-inter font-bold">{title}</h1>
-
-        <p className="text-md text-[#616161] max-w-3xl">{description}</p>
+        {component || <p className="text-md text-[#616161] max-w-3xl">{description}</p>}
       </div>
     </div>
   )

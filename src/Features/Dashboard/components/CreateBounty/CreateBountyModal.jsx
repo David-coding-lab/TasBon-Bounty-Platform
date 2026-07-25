@@ -152,22 +152,6 @@ const CreateBountyModal = () => {
     clearError(key)
   }
 
-  const addDeliverable = () => {
-    const newDeliverable = prompt('Enter deliverable description:')
-    if (newDeliverable && newDeliverable.trim()) {
-      updateFormData('deliverables', [
-        ...formData.deliverables,
-        newDeliverable.trim(),
-      ])
-    }
-  }
-
-  const removeDeliverable = (index) => {
-    const updated = [...formData.deliverables]
-    updated.splice(index, 1)
-    updateFormData('deliverables', updated)
-  }
-
   const handleFileUpload = (e) => {
     const files = Array.from(e.target.files)
     if (files.length) {
@@ -209,8 +193,6 @@ const CreateBountyModal = () => {
           <Step1BountyDetails
             formData={formData}
             updateFormData={updateFormData}
-            addDeliverable={addDeliverable}
-            removeDeliverable={removeDeliverable}
             handleFileUpload={handleFileUpload}
             removeAttachment={removeAttachment}
             onFilesSelect={handleFilesSelect}

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
-import { listBanners } from '../../../services/banners'
+import { listBanners } from '../../../../services/banners'
 
 const placeholders = [
   'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&q=80',

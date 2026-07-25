@@ -1,16 +1,52 @@
-import { useRef } from 'react'
+import { useState, useRef } from 'react'
+
+const DELIVERABLE_TYPES = [
+  { value: 'image', label: 'Image', icon: 'image', desc: 'PNG, JPG, SVG, GIF, WebP' },
+  { value: 'zip', label: 'Zip File', icon: 'folder_zip', desc: 'ZIP, RAR, 7z archives' },
+  { value: 'audio', label: 'Audio', icon: 'audio_file', desc: 'MP3, WAV, AAC, FLAC' },
+  { value: 'link', label: 'Link', icon: 'link', desc: 'URL to deployed work' },
+]
+
+const deliverableIcons = {
+  image: 'image',
+  zip: 'folder_zip',
+  audio: 'audio_file',
+  link: 'link',
+}
 
 export default function Step1BountyDetails({
   formData,
   updateFormData,
-  addDeliverable,
-  removeDeliverable,
   handleFileUpload,
   removeAttachment,
   onFilesSelect,
   errors = {},
 }) {
   const fileInputRef = useRef(null)
+  const [newDelType, setNewDelType] = useState('image')
+  const [newDelDesc, setNewDelDesc] = useState('')
+
+  const addDeliverable = () => {
+    const desc = newDelDesc.trim()
+    if (!desc) return
+    const item = JSON.stringify({ type: newDelType, description: desc })
+    updateFormData('deliverables', [...formData.deliverables, item])
+    setNewDelDesc('')
+  }
+
+  const removeDeliverable = (index) => {
+    const updated = [...formData.deliverables]
+    updated.splice(index, 1)
+    updateFormData('deliverables', updated)
+  }
+
+  const parseDel = (str) => {
+    try {
+      return JSON.parse(str)
+    } catch {
+      return { type: 'link', description: str }
+    }
+  }
 
   const handleDragOver = (e) => {
     e.preventDefault()
@@ -105,6 +141,80 @@ export default function Step1BountyDetails({
             {errors.description}
           </p>
         )}
+      </div>
+
+      {/* Deliverables */}
+      <div className="flex flex-col gap-3">
+        <div>
+          <label className="font-inter font-semibold text-sm text-[#1a2a41] flex items-center gap-1">
+            Deliverables
+          </label>
+          <p className="font-inter text-xs text-[#6b7a8f] mt-0.5">
+            Specify what the builder needs to deliver. Choose the type that matches each deliverable.
+          </p>
+        </div>
+
+        {formData.deliverables.length > 0 && (
+          <div className="flex flex-col gap-2">
+            {formData.deliverables.map((item, idx) => {
+              const del = parseDel(item)
+              return (
+                <div
+                  key={idx}
+                  className="flex items-center gap-3 bg-[#f8fafc] border border-[#e8ecf1] rounded-xl px-4 py-3"
+                >
+                  <span className="material-symbols-outlined text-xl text-[#34A563]">
+                    {deliverableIcons[del.type] || 'description'}
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <span className="text-xs font-medium text-[#34A563] uppercase tracking-wide">
+                      {del.type}
+                    </span>
+                    <p className="text-sm text-[#1a2a41] truncate">{del.description}</p>
+                  </div>
+                  <button
+                    onClick={() => removeDeliverable(idx)}
+                    className="bg-transparent border-none cursor-pointer text-[#a0b0c4] p-1 rounded transition-colors hover:text-[#e74c3c] hover:bg-red-50"
+                  >
+                    <span className="material-symbols-outlined text-lg">delete</span>
+                  </button>
+                </div>
+              )
+            })}
+          </div>
+        )}
+
+        <div className="flex flex-col gap-2 p-4 border border-dashed border-[#dce1e8] rounded-xl bg-[#fafbfc]">
+          <div className="flex flex-row gap-2">
+            <select
+              value={newDelType}
+              onChange={(e) => setNewDelType(e.target.value)}
+              className="px-3 py-2 border border-[#dce1e8] rounded-lg bg-white text-sm text-[#1a2a41] outline-none focus:border-[#34A563] cursor-pointer"
+            >
+              {DELIVERABLE_TYPES.map((t) => (
+                <option key={t.value} value={t.value}>{t.label}</option>
+              ))}
+            </select>
+            <input
+              type="text"
+              value={newDelDesc}
+              onChange={(e) => setNewDelDesc(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addDeliverable() } }}
+              placeholder="Describe this deliverable..."
+              className="flex-1 px-3 py-2 border border-[#dce1e8] rounded-lg bg-white text-sm text-[#1a2a41] outline-none focus:border-[#34A563] placeholder:text-[#a0b0c4]"
+            />
+            <button
+              onClick={addDeliverable}
+              disabled={!newDelDesc.trim()}
+              className="px-4 py-2 bg-[#34A563] text-white text-sm font-medium rounded-lg hover:bg-[#007A55] transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            >
+              Add
+            </button>
+          </div>
+          <p className="text-xs text-[#a0b0c4]">
+            {DELIVERABLE_TYPES.find((t) => t.value === newDelType)?.desc}
+          </p>
+        </div>
       </div>
 
       {/* Attachments */}
@@ -207,21 +317,9 @@ export default function Step1BountyDetails({
         </label>
         <div className="grid grid-cols-3 gap-3">
           {[
-            {
-              value: 'Beginner',
-              label: 'Beginner',
-              desc: 'Entry-level, guided tasks',
-            },
-            {
-              value: 'Intermediate',
-              label: 'Intermediate',
-              desc: 'Some experience needed',
-            },
-            {
-              value: 'Advanced',
-              label: 'Advanced',
-              desc: 'Expert-level challenges',
-            },
+            { value: 'Beginner', label: 'Beginner', desc: 'Entry-level, guided tasks' },
+            { value: 'Intermediate', label: 'Intermediate', desc: 'Some experience needed' },
+            { value: 'Advanced', label: 'Advanced', desc: 'Expert-level challenges' },
           ].map((level) => (
             <button
               key={level.value}
@@ -233,13 +331,7 @@ export default function Step1BountyDetails({
                   : 'border-[#dce1e8] bg-white hover:border-[#b0c4d8]'
               }`}
             >
-              <span
-                className={`font-semibold text-sm ${
-                  formData.difficulty === level.value
-                    ? 'text-[#34A563]'
-                    : 'text-[#1a2a41]'
-                }`}
-              >
+              <span className={`font-semibold text-sm ${formData.difficulty === level.value ? 'text-[#34A563]' : 'text-[#1a2a41]'}`}>
                 {level.label}
               </span>
               <span className="text-xs text-[#6b7a8f]">{level.desc}</span>
@@ -247,9 +339,7 @@ export default function Step1BountyDetails({
           ))}
         </div>
         {errors.difficulty && (
-          <p className="text-red-500 text-xs mt-1 font-inter">
-            {errors.difficulty}
-          </p>
+          <p className="text-red-500 text-xs mt-1 font-inter">{errors.difficulty}</p>
         )}
       </div>
     </div>
