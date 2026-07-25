@@ -781,27 +781,27 @@ export default function ViewBounty() {
                       className="flex cursor-pointer flex-row items-center justify-between py-3 hover:bg-gray-50 rounded-lg transition-colors"
                       onClick={() => navigate(`/dashboard/bounties/${item.id}`)}
                     >
-                      <div className="flex flex-row items-center space-x-3">
+                      <div className="flex flex-row items-center space-x-3 min-w-0">
                         <img
-                          src={item.image || item.imageUrl || GroupPhoto}
+                          src={item.imageUrl || GroupPhoto}
                           alt={item.title}
                           className="h-12 w-12 rounded-xl object-cover shrink-0"
                         />
-                        <div className="flex flex-col space-y-1">
-                          <p className="text-[#000000] text-md font-medium">
+                        <div className="flex flex-col space-y-1 min-w-0">
+                          <p className="text-[#000000] text-md font-medium truncate">
                             {item.title}
                           </p>
-                          <div className="flex flex-row items-center space-x-2">
-                            <span className="text-[#616161] text-sm font-bold">
-                              {item.price}
+                          <div className="flex flex-row items-center gap-2">
+                            <span className="text-[#616161] text-sm font-bold whitespace-nowrap">
+                              {item.rewardAmount ? `$${Number(item.rewardAmount).toLocaleString()} ${item.rewardToken || 'USDC'}` : item.price}
                             </span>
-                            <span className="text-[#9CA3AF] text-base">
-                              {item.category || item.tag}
+                            <span className="text-[#9CA3AF] text-sm truncate">
+                              {item.tag}
                             </span>
                           </div>
                         </div>
                       </div>
-                      <ChevronRight color="#9CA3AF" className="h-5 w-5" />
+                      <ChevronRight color="#9CA3AF" className="h-5 w-5 shrink-0" />
                     </div>
                   ))}
                 </div>
