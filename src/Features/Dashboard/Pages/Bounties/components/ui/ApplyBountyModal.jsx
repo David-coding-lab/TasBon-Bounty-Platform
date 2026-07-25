@@ -7,93 +7,133 @@ import {
   Calendar,
   ShieldCheck,
   Loader2,
+  Send,
 } from 'lucide-react'
 
 export default function ApplyBountyModal({
   onCancel = () => {},
   onApply = () => {},
   isApplying = false,
-  bounty = {
-    title: 'Build DeFi Analytics Dashboard',
-    description: 'Create a modern analytics dashboard for a DeFi platform.',
-    project: 'Nexus Protocol',
-    image:
-      'https://images.unsplash.com/photo-1642104704074-907c0698cbd9?q=80&w=400&auto=format&fit=crop',
-    reward: '$750 USDC',
-    experience: 'Intermediate',
-    category: 'Frontend',
-    deadline: 'May 31, 2025',
-  },
+  bounty = null,
 }) {
+  const [coverLetter, setCoverLetter] = useState('')
+  const [proposedAmount, setProposedAmount] = useState('')
+  const [charCount, setCharCount] = useState(0)
+
+  const validate = () => {
+    if (!coverLetter.trim()) return false
+    if (coverLetter.trim().length < 20) return false
+    return true
+  }
+
   const handleApply = () => {
     if (!validate()) return
     onApply({
-      coverLetter,
+      coverLetter: coverLetter.trim(),
       proposedAmount: proposedAmount ? Number(proposedAmount) : undefined,
     })
   }
 
+  const rewardDisplay = bounty?.rewardAmount || bounty?.reward
+    ? `$${Number(bounty?.rewardAmount || bounty?.reward).toLocaleString()} ${bounty?.rewardToken || 'USDC'}`
+    : 'N/A'
+
+  const deadlineDisplay = bounty?.applicationDeadline
+    ? new Date(bounty.applicationDeadline).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    : 'N/A'
+
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4 font-[Inter]">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
-        <div className="flex justify-center mb-6">
-          <div className="relative w-20 h-20 rounded-full bg-[#15803D]/10 flex items-center justify-center">
-            <FileText className="w-9 h-9 text-[#15803D]" strokeWidth={1.75} />
-            <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-[#15803D] flex items-center justify-center text-white text-sm font-bold">
-              ?
-            </div>
+        <div className="flex items-center gap-4 mb-6">
+          <div className="relative w-14 h-14 rounded-full bg-[#15803D]/10 flex items-center justify-center shrink-0">
+            <FileText className="w-6 h-6 text-[#15803D]" strokeWidth={1.75} />
+          </div>
+          <div className="min-w-0">
+            <h2 className="text-xl font-bold text-slate-900 leading-tight">
+              {bounty?.title || 'Apply for Bounty'}
+            </h2>
+            <p className="text-[#64748B] text-sm mt-0.5">
+              Submit your application below
+            </p>
           </div>
         </div>
 
-        <h2 className="text-2xl font-bold text-slate-900 text-center mb-2">
-          Apply for this bounty?
-        </h2>
-        <p className="text-[#64748B] text-center text-[15px] leading-relaxed mb-6">
-          You're about to submit your application for this bounty. Make sure
-          your profile and portfolio are up to date.
-        </p>
-
-        <div className="border border-slate-200 rounded-xl p-3 flex items-center gap-3 mb-6">
-          <img
-            src={bounty.image}
-            alt={bounty.title}
-            className="w-16 h-16 rounded-lg object-cover shrink-0"
-          />
-          <div>
-            <h3 className="font-bold text-slate-900 text-base leading-snug">
-              {bounty.title}
-            </h3>
-            <div className="flex items-center gap-1 text-[#64748B] text-sm mt-0.5">
-              <span>{bounty.project}</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="space-y-4 mb-6">
+        <div className="border border-slate-200 rounded-xl p-3 flex flex-wrap gap-x-6 gap-y-2 mb-6">
           <DetailRow
-            icon={<DollarSign className="`w-4.5 h-4.5" />}
+            icon={<DollarSign className="w-4 h-4" />}
             label="Reward"
-            value={bounty.reward}
+            value={rewardDisplay}
             valueClass="text-[#15803D] font-bold"
           />
           <DetailRow
-            icon={<Briefcase className="`w-4.5 h-4.5" />}
-            label="Experience Level"
-            value={bounty.experience}
+            icon={<Briefcase className="w-4 h-4" />}
+            label="Level"
+            value={bounty?.difficulty || bounty?.level || 'N/A'}
           />
           <DetailRow
-            icon={<Folder className="`w-4.5 h-4.5" />}
+            icon={<Folder className="w-4 h-4" />}
             label="Category"
-            value={bounty.category}
+            value={bounty?.category || 'N/A'}
           />
           <DetailRow
-            icon={<Calendar className="`w-4.5 h-4.5" />}
-            label="Application Deadline"
-            value={bounty.deadline}
+            icon={<Calendar className="w-4 h-4" />}
+            label="Deadline"
+            value={deadlineDisplay}
           />
         </div>
 
-        <div className="bg-[#15803D]/5 rounded-xl p-4 flex gap-3 mb-8">
+        <div className="mb-5">
+          <label className="block text-sm font-semibold text-slate-900 mb-1.5">
+            Cover Letter <span className="text-red-500">*</span>
+          </label>
+          <textarea
+            value={coverLetter}
+            onChange={(e) => {
+              setCoverLetter(e.target.value)
+              setCharCount(e.target.value.length)
+            }}
+            placeholder="Tell the bounty creator why you're a good fit for this project..."
+            className="w-full border border-slate-200 rounded-xl p-4 text-sm resize-none h-32 outline-none focus:ring-2 focus:ring-[#34A563]/20 focus:border-[#34A563] transition-all placeholder:text-slate-400"
+            maxLength={1000}
+          />
+          <div className="flex justify-between mt-1">
+            {!coverLetter.trim() ? (
+              <span className="text-xs text-red-500">Required</span>
+            ) : coverLetter.trim().length < 20 ? (
+              <span className="text-xs text-amber-500">Minimum 20 characters</span>
+            ) : (
+              <span />
+            )}
+            <span className="text-xs text-slate-400">{charCount}/1000</span>
+          </div>
+        </div>
+
+        <div className="mb-6">
+          <label className="block text-sm font-semibold text-slate-900 mb-1.5">
+            Proposed Amount <span className="text-slate-400 text-xs font-normal">(optional)</span>
+          </label>
+          <div className="relative">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm font-medium">
+              $
+            </span>
+            <input
+              type="number"
+              value={proposedAmount}
+              onChange={(e) => setProposedAmount(e.target.value)}
+              placeholder="0.00"
+              min="0"
+              step="0.01"
+              className="w-full border border-slate-200 rounded-xl py-3 pl-7 pr-4 text-sm outline-none focus:ring-2 focus:ring-[#34A563]/20 focus:border-[#34A563] transition-all placeholder:text-slate-400"
+            />
+          </div>
+        </div>
+
+        <div className="bg-[#15803D]/5 rounded-xl p-4 flex gap-3 mb-6">
           <ShieldCheck className="w-5 h-5 text-[#15803D] shrink-0 mt-0.5" />
           <div>
             <p className="font-bold text-[#15803D] text-sm mb-1">
@@ -116,7 +156,7 @@ export default function ApplyBountyModal({
           </button>
           <button
             onClick={handleApply}
-            disabled={isApplying}
+            disabled={isApplying || !coverLetter.trim() || coverLetter.trim().length < 20}
             className="cursor-pointer flex-1 py-3 rounded-xl bg-[#34A853] text-white font-bold text-[15px] hover:bg-[#2c8f47] transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
           >
             {isApplying ? (
@@ -125,7 +165,10 @@ export default function ApplyBountyModal({
                 Applying...
               </>
             ) : (
-              'Apply Now'
+              <>
+                <Send className="w-4 h-4" />
+                Apply Now
+              </>
             )}
           </button>
         </div>
@@ -141,12 +184,10 @@ function DetailRow({
   valueClass = 'text-slate-900 font-medium',
 }) {
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex items-center gap-2.5 text-[#64748B]">
-        {icon}
-        <span className="text-[15px]">{label}</span>
-      </div>
-      <span className={`text-[15px] ${valueClass}`}>{value}</span>
+    <div className="flex items-center gap-2 text-[#64748B] min-w-0">
+      {icon}
+      <span className="text-[13px] shrink-0">{label}:</span>
+      <span className={`text-[13px] truncate ${valueClass}`}>{value}</span>
     </div>
   )
 }

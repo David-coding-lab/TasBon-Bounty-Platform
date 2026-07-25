@@ -277,6 +277,7 @@ export default function ViewBounty() {
         >
           <div onClick={(e) => e.stopPropagation()}>
             <ApplyBountyModal
+              bounty={bounty}
               onCancel={() => handleClose(setIsModalOpen)}
               onApply={handleApply}
               isApplying={isApplying}
