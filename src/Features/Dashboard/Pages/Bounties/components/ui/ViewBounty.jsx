@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { ArrowLeft, Clock, Copy, Check, RefreshCw, Users, Image, FileArchive, Music, Link as LinkIcon } from 'lucide-react'
 import { toast } from 'sonner'
 import {
@@ -28,10 +29,12 @@ import GroupPhoto from '../../../../Assets/bountyIconLarge.png'
 import ApplyBountyModal from './ApplyBountyModal'
 import ApplicationPendingModal from './ApplicationPendingModal'
 import SubmissionReceivedModal from './SubmissionReceivedModal'
+import ShareBountyModal from './ShareBountyModal'
 
 export default function ViewBounty() {
   const { bountyId } = useParams()
   const navigate = useNavigate()
+  const user = useSelector((state) => state.auth.user)
   const [reviewStatus, setReviewStatus] = useState(null)
   const [bounty, setBounty] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -55,6 +58,7 @@ export default function ViewBounty() {
   const [isBookmarked, setIsBookmarked] = useState(false)
   const [bookmarkId, setBookmarkId] = useState(null)
   const [bookmarkLoading, setBookmarkLoading] = useState(false)
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false)
 
   const handleOpen = (state) => state(true)
   const handleClose = (state) => state(false)
@@ -135,6 +139,51 @@ export default function ViewBounty() {
       .catch((err) => toast.error(err.message || 'Failed to load bounty'))
       .finally(() => setLoading(false))
   }, [bountyId])
+
+  useEffect(() => {
+    if (!user || !bountyId) return
+    getBookmarks(1, 100)
+      .then((res) => {
+        const items = res.bookmarks || []
+        const found = items.find(
+          (b) => b.entityType === 'bounty' && b.entityId === bountyId,
+        )
+        if (found) {
+          setIsBookmarked(true)
+          setBookmarkId(found.id)
+        }
+      })
+      .catch(() => {})
+  }, [user, bountyId])
+
+  const handleBookmarkToggle = async () => {
+    if (!user) {
+      toast.error('Please sign in to bookmark')
+      return
+    }
+    setBookmarkLoading(true)
+    try {
+      if (isBookmarked && bookmarkId) {
+        await deleteBookmark(bookmarkId)
+        setIsBookmarked(false)
+        setBookmarkId(null)
+        toast.success('Bookmark removed')
+      } else {
+        const res = await createBookmark({
+          entityType: 'bounty',
+          entityId: bountyId,
+        })
+        const data = res.data?.data || res.data
+        setIsBookmarked(true)
+        setBookmarkId(data.id)
+        toast.success('Bounty bookmarked')
+      }
+    } catch (error) {
+      toast.error(error.message || 'Failed to update bookmark')
+    } finally {
+      setBookmarkLoading(false)
+    }
+  }
 
   const formattedDueDate = bounty?.dueDate
     ? new Date(bounty.dueDate).toLocaleDateString('en-US', {
@@ -389,10 +438,23 @@ export default function ViewBounty() {
               {bounty.title}
             </h1>
 
-            <Bookmark cursor={'pointer'} width={20} />
+            <button
+              onClick={handleBookmarkToggle}
+              disabled={bookmarkLoading}
+              className="cursor-pointer disabled:opacity-50"
+            >
+              <Bookmark
+                width={20}
+                fill={isBookmarked ? '#34A563' : 'none'}
+                stroke={isBookmarked ? '#34A563' : 'currentColor'}
+              />
+            </button>
 
-            <div className="flex flex-row space-x-2">
-              <Share2 width={20} cursor={'pointer'} />
+            <div
+              className="flex flex-row space-x-2 cursor-pointer"
+              onClick={() => setIsShareModalOpen(true)}
+            >
+              <Share2 width={20} />
               <p className="text-lg font-bold">share</p>
             </div>
           </div>
@@ -829,6 +891,13 @@ export default function ViewBounty() {
           </div>
         </div>
       </div>
+
+      {isShareModalOpen && (
+        <ShareBountyModal
+          bounty={bounty}
+          onClose={() => setIsShareModalOpen(false)}
+        />
+      )}
     </main>
   )
 }
