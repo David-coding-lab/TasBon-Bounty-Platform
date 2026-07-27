@@ -13,21 +13,27 @@ export default function ApplyBountyModal({
   onCancel = () => {},
   onApply = () => {},
   isApplying = false,
-  bounty = {
-    title: 'Build DeFi Analytics Dashboard',
-    description: 'Create a modern analytics dashboard for a DeFi platform.',
-    project: 'Nexus Protocol',
-    image:
-      'https://images.unsplash.com/photo-1642104704074-907c0698cbd9?q=80&w=400&auto=format&fit=crop',
-    reward: '$750 USDC',
-    experience: 'Intermediate',
-    category: 'Frontend',
-    deadline: 'May 31, 2025',
-  },
+  bounty = {},
 }) {
   const [coverLetter, setCoverLetter] = useState('')
   const [proposedAmount, setProposedAmount] = useState('')
   const [errors, setErrors] = useState({})
+
+  const displayTitle = bounty.title || 'Build DeFi Analytics Dashboard'
+  const displayProject = bounty.clientName || 'Nexus Protocol'
+  const displayImage = bounty.imageUrl || 'https://images.unsplash.com/photo-1642104704074-907c0698cbd9?q=80&w=400&auto=format&fit=crop'
+  const displayReward = bounty.rewardAmount
+    ? `$${Number(bounty.rewardAmount).toLocaleString()} ${bounty.rewardToken || 'USDC'}`
+    : '$750 USDC'
+  const displayExperience = bounty.difficulty || 'Intermediate'
+  const displayCategory = bounty.category || 'Frontend'
+  const displayDeadline = bounty.applicationDeadline
+    ? new Date(bounty.applicationDeadline).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    : 'May 31, 2025'
 
   const validate = () => {
     const newErrors = {}
@@ -73,16 +79,16 @@ export default function ApplyBountyModal({
 
         <div className="border border-slate-200 rounded-xl p-3 flex items-center gap-3 mb-6">
           <img
-            src={bounty.image}
-            alt={bounty.title}
+            src={displayImage}
+            alt={displayTitle}
             className="w-16 h-16 rounded-lg object-cover shrink-0"
           />
           <div>
             <h3 className="font-bold text-slate-900 text-base leading-snug">
-              {bounty.title}
+              {displayTitle}
             </h3>
             <div className="flex items-center gap-1 text-[#64748B] text-sm mt-0.5">
-              <span>{bounty.project}</span>
+              <span>{displayProject}</span>
             </div>
           </div>
         </div>
@@ -91,23 +97,23 @@ export default function ApplyBountyModal({
           <DetailRow
             icon={<DollarSign className="w-4.5 h-4.5" />}
             label="Reward"
-            value={bounty.reward}
+            value={displayReward}
             valueClass="text-[#15803D] font-bold"
           />
           <DetailRow
             icon={<Briefcase className="w-4.5 h-4.5" />}
             label="Experience Level"
-            value={bounty.experience}
+            value={displayExperience}
           />
           <DetailRow
             icon={<Folder className="w-4.5 h-4.5" />}
             label="Category"
-            value={bounty.category}
+            value={displayCategory}
           />
           <DetailRow
             icon={<Calendar className="w-4.5 h-4.5" />}
             label="Application Deadline"
-            value={bounty.deadline}
+            value={displayDeadline}
           />
         </div>
 
