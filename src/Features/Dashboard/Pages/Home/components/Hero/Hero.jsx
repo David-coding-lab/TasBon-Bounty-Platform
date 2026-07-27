@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { TrendingUp, MoreHorizontal } from 'lucide-react'
 import { getDashboardStats } from '../../../../../../services/profile'
 
 const Hero = () => {
+  const user = useSelector((state) => state.auth.user)
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -17,7 +19,7 @@ const Hero = () => {
     <div className="flex flex-col space-y-4">
       <div className="flex flex-col space-y-2">
         <h1 className="font-[Inter] text-3xl font-semibold text-[#0A0A0A]">
-          Welcome back, <span className="text-[#009966]">Alex</span>
+          Welcome back, <span className="text-[#009966]">{user?.fullName || 'there'}</span>
         </h1>
         <p className="text-base text-[#4A5565]">
           Discover opportunities, build solutions, and earn rewards

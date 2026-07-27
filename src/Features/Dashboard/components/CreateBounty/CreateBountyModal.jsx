@@ -18,6 +18,7 @@ const CreateBountyModal = () => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
+    imageUrl: '',
     deliverables: [],
     attachments: [],
     rewardAmount: 0,
@@ -118,6 +119,7 @@ const CreateBountyModal = () => {
       await createBounty({
         title: formData.title,
         description: formData.description,
+        imageUrl: formData.imageUrl || null,
         deliverables: formData.deliverables,
         attachments: attachmentUrls,
         skills: formData.skills,

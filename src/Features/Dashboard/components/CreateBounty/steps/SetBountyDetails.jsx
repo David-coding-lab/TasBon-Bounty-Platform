@@ -271,6 +271,35 @@ export default function Step1BountyDetails({
         )}
       </div>
 
+      {/* Image URL */}
+      <div className="flex flex-col gap-1.5">
+        <label className="font-inter font-semibold text-sm text-[#1a2a41] flex items-center gap-1">
+          Cover Image URL <span className="text-[#94A3B8] text-xs font-normal">(optional)</span>
+        </label>
+        <p className="font-inter text-xs text-[#6b7a8f] -mt-0.5">
+          Provide a URL to an image that represents your bounty.
+        </p>
+        <input
+          type="url"
+          className="w-full py-3 px-4 border border-[#dce1e8] rounded-xl font-inter text-sm text-[#1a2a41] bg-white outline-none transition-all placeholder:text-[#a0b0c4] focus:ring-2 focus:border-primary focus:ring-[#34A563]/20"
+          placeholder="https://example.com/bounty-image.jpg"
+          value={formData.imageUrl}
+          onChange={(e) => updateFormData('imageUrl', e.target.value)}
+        />
+        {formData.imageUrl && (
+          <div className="mt-1 rounded-xl overflow-hidden border border-[#dce1e8]">
+            <img
+              src={formData.imageUrl}
+              alt="Preview"
+              className="w-full h-32 object-cover"
+              onError={(e) => {
+                e.target.style.display = 'none'
+              }}
+            />
+          </div>
+        )}
+      </div>
+
       {/* Category */}
       <div className="flex flex-col gap-1.5">
         <label className="font-inter font-semibold text-sm text-[#1a2a41] flex items-center gap-1">

@@ -212,7 +212,7 @@ export default function Bounties() {
                   <BountiesCard
                     key={bounty.id}
                     bountyId={bounty.id}
-                    headerImg={bounty.clientAvatar}
+                    headerImg={bounty.imageUrl || bounty.clientAvatar}
                     categoryName={bounty.category || ''}
                     title={bounty.title}
                     description={bounty.description}

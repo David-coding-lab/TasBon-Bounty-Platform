@@ -25,10 +25,28 @@ export default function ApplyBountyModal({
     deadline: 'May 31, 2025',
   },
 }) {
+  const [coverLetter, setCoverLetter] = useState('')
+  const [proposedAmount, setProposedAmount] = useState('')
+  const [errors, setErrors] = useState({})
+
+  const validate = () => {
+    const newErrors = {}
+    if (!coverLetter.trim()) {
+      newErrors.coverLetter = 'Please provide a cover letter'
+    } else if (coverLetter.trim().length < 20) {
+      newErrors.coverLetter = 'Cover letter must be at least 20 characters'
+    }
+    if (proposedAmount && (isNaN(proposedAmount) || Number(proposedAmount) <= 0)) {
+      newErrors.proposedAmount = 'Enter a valid positive amount'
+    }
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
   const handleApply = () => {
     if (!validate()) return
     onApply({
-      coverLetter,
+      coverLetter: coverLetter.trim(),
       proposedAmount: proposedAmount ? Number(proposedAmount) : undefined,
     })
   }
@@ -71,26 +89,84 @@ export default function ApplyBountyModal({
 
         <div className="space-y-4 mb-6">
           <DetailRow
-            icon={<DollarSign className="`w-4.5 h-4.5" />}
+            icon={<DollarSign className="w-4.5 h-4.5" />}
             label="Reward"
             value={bounty.reward}
             valueClass="text-[#15803D] font-bold"
           />
           <DetailRow
-            icon={<Briefcase className="`w-4.5 h-4.5" />}
+            icon={<Briefcase className="w-4.5 h-4.5" />}
             label="Experience Level"
             value={bounty.experience}
           />
           <DetailRow
-            icon={<Folder className="`w-4.5 h-4.5" />}
+            icon={<Folder className="w-4.5 h-4.5" />}
             label="Category"
             value={bounty.category}
           />
           <DetailRow
-            icon={<Calendar className="`w-4.5 h-4.5" />}
+            icon={<Calendar className="w-4.5 h-4.5" />}
             label="Application Deadline"
             value={bounty.deadline}
           />
+        </div>
+
+        <div className="space-y-4 mb-6">
+          <div>
+            <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+              Cover Letter <span className="text-[#15803D]">*</span>
+            </label>
+            <textarea
+              value={coverLetter}
+              onChange={(e) => {
+                setCoverLetter(e.target.value)
+                if (errors.coverLetter) setErrors((prev) => ({ ...prev, coverLetter: '' }))
+              }}
+              placeholder="Tell the creator why you're a great fit for this bounty..."
+              rows={4}
+              className={`w-full rounded-xl border px-4 py-3 text-sm resize-none outline-none transition-colors ${
+                errors.coverLetter
+                  ? 'border-red-400 focus:border-red-500 focus:ring-1 focus:ring-red-500'
+                  : 'border-slate-200 focus:border-[#15803D] focus:ring-1 focus:ring-[#15803D]/30'
+              }`}
+            />
+            {errors.coverLetter && (
+              <p className="text-red-500 text-xs mt-1">{errors.coverLetter}</p>
+            )}
+            <p className="text-[#94A3B8] text-xs mt-1 text-right">
+              {coverLetter.length} character{coverLetter.length !== 1 ? 's' : ''}
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+              Proposed Amount <span className="text-[#94A3B8] text-xs">(optional)</span>
+            </label>
+            <div className="relative">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#64748B] text-sm font-medium">
+                $
+              </span>
+              <input
+                type="number"
+                value={proposedAmount}
+                onChange={(e) => {
+                  setProposedAmount(e.target.value)
+                  if (errors.proposedAmount) setErrors((prev) => ({ ...prev, proposedAmount: '' }))
+                }}
+                placeholder="0.00"
+                min="0"
+                step="0.01"
+                className={`w-full rounded-xl border px-8 py-3 text-sm outline-none transition-colors ${
+                  errors.proposedAmount
+                    ? 'border-red-400 focus:border-red-500 focus:ring-1 focus:ring-red-500'
+                    : 'border-slate-200 focus:border-[#15803D] focus:ring-1 focus:ring-[#15803D]/30'
+                }`}
+              />
+            </div>
+            {errors.proposedAmount && (
+              <p className="text-red-500 text-xs mt-1">{errors.proposedAmount}</p>
+            )}
+          </div>
         </div>
 
         <div className="bg-[#15803D]/5 rounded-xl p-4 flex gap-3 mb-8">

@@ -10,6 +10,7 @@ import {
   listBounties,
 } from '../../../../../../pages/Bounties/Api/bounties'
 import { getPublicProfile } from '../../../../../../services/profile'
+import { getBookmarks, createBookmark, deleteBookmark } from '../../../../../../services/bookmarks'
 import {
   Bookmark,
   Share2,
@@ -51,6 +52,9 @@ export default function ViewBounty() {
   const [copied, setCopied] = useState(false)
   const [regenerating, setRegenerating] = useState(false)
   const [inviteCode, setInviteCode] = useState(null)
+  const [isBookmarked, setIsBookmarked] = useState(false)
+  const [bookmarkId, setBookmarkId] = useState(null)
+  const [bookmarkLoading, setBookmarkLoading] = useState(false)
 
   const handleOpen = (state) => state(true)
   const handleClose = (state) => state(false)
@@ -60,11 +64,8 @@ export default function ViewBounty() {
     try {
       const res = await applyForBounty(bountyId, data)
       handleClose(setIsModalOpen)
-      if (res.data?.applicationStatus) {
-        setReviewStatus(res.data.applicationStatus)
-      } else {
-        setReviewStatus('pending')
-      }
+      const appStatus = res.data?.status || res.data?.applicationStatus || 'pending'
+      setReviewStatus(appStatus)
       if (res.data) {
         setBounty((prev) => ({ ...prev, ...res.data }))
       }
@@ -162,6 +163,9 @@ export default function ViewBounty() {
 
   const isBountyDeadlinePassed = bounty?.dueDate
     ? new Date(bounty.dueDate) < new Date()
+    : false
+  const isApplyDeadlinePassed = bounty?.applicationDeadline
+    ? new Date(bounty.applicationDeadline) < new Date()
     : false
 
   const parseDeliverable = (item) => {
@@ -696,8 +700,23 @@ export default function ViewBounty() {
                     ? handleOpen(setIsSubmitModalOpen)
                     : handleOpen(setIsModalOpen)
                 }
-                disabled={reviewStatus === 'pending' || isSubmitting || isBountyDeadlinePassed}
-                className={`flex flex-row ${reviewStatus === 'pending' || isSubmitting || isBountyDeadlinePassed ? 'cursor-not-allowed' : 'cursor-pointer'} items-center justify-center space-x-3 ${reviewStatus === 'pending' || isBountyDeadlinePassed ? 'bg-[#C5C9C7]' : 'bg-[#34A563]'} rounded-2xl py-4 w-full`}
+                disabled={
+                  reviewStatus === 'pending' ||
+                  isSubmitting ||
+                  (reviewStatus === 'selected' ? isBountyDeadlinePassed : isApplyDeadlinePassed)
+                }
+                className={`flex flex-row ${
+                  reviewStatus === 'pending' ||
+                  isSubmitting ||
+                  (reviewStatus === 'selected' ? isBountyDeadlinePassed : isApplyDeadlinePassed)
+                    ? 'cursor-not-allowed'
+                    : 'cursor-pointer'
+                } items-center justify-center space-x-3 ${
+                  reviewStatus === 'pending' ||
+                  (reviewStatus === 'selected' ? isBountyDeadlinePassed : isApplyDeadlinePassed)
+                    ? 'bg-[#C5C9C7]'
+                    : 'bg-[#34A563]'
+                } rounded-2xl py-4 w-full`}
               >
                 {isSubmitting ? (
                   <Loader2 className="animate-spin" />
@@ -711,7 +730,7 @@ export default function ViewBounty() {
                       ? isSubmitting
                         ? 'Submitting...'
                         : 'Submit Bounty'
-                      : isBountyDeadlinePassed
+                      : isApplyDeadlinePassed
                         ? 'Deadline Passed'
                         : 'Apply for Bounty'}
                 </span>
