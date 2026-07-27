@@ -94,7 +94,17 @@ export default function Step3ReviewPublish({ formData }) {
       </div>
 
       {/* Top preview card */}
-      <div className="rounded-2xl border border-[#e2e8f0] bg-white p-5">
+      <div className="rounded-2xl border border-[#e2e8f0] bg-white overflow-hidden">
+        {formData.imageUrl && (
+          <div className="w-full h-44 overflow-hidden">
+            <img
+              src={formData.imageUrl}
+              alt="Cover"
+              className="w-full h-full object-cover"
+            />
+          </div>
+        )}
+        <div className="p-5">
         <div className="flex items-start justify-between gap-4">
           {/* Left: badge + title + org + description + skills */}
           <div className="flex-1 min-w-0">
@@ -156,6 +166,7 @@ export default function Step3ReviewPublish({ formData }) {
               </span>
             </div>
           </div>
+        </div>
         </div>
       </div>
 

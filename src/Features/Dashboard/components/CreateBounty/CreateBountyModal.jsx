@@ -165,6 +165,18 @@ const CreateBountyModal = () => {
     }
   }
 
+  const handleImageUpload = async (file) => {
+    try {
+      const result = await uploadFile(file)
+      const url = result.data?.url || result.url
+      updateFormData('imageUrl', url)
+      return url
+    } catch (error) {
+      toast.error('Failed to upload image')
+      throw error
+    }
+  }
+
   const handleFilesSelect = (files) => {
     files.forEach((f) => {
       filesRef.current[f.name] = f
@@ -198,6 +210,7 @@ const CreateBountyModal = () => {
             handleFileUpload={handleFileUpload}
             removeAttachment={removeAttachment}
             onFilesSelect={handleFilesSelect}
+            onImageUpload={handleImageUpload}
             errors={errors}
           />
         )

@@ -20,11 +20,14 @@ export default function Step1BountyDetails({
   handleFileUpload,
   removeAttachment,
   onFilesSelect,
+  onImageUpload,
   errors = {},
 }) {
   const fileInputRef = useRef(null)
+  const imageInputRef = useRef(null)
   const [newDelType, setNewDelType] = useState('image')
   const [newDelDesc, setNewDelDesc] = useState('')
+  const [uploadingImage, setUploadingImage] = useState(false)
 
   const addDeliverable = () => {
     const desc = newDelDesc.trim()
@@ -271,29 +274,59 @@ export default function Step1BountyDetails({
         )}
       </div>
 
-      {/* Image URL */}
+      {/* Cover Image */}
       <div className="flex flex-col gap-1.5">
         <label className="font-inter font-semibold text-sm text-[#1a2a41] flex items-center gap-1">
-          Cover Image URL <span className="text-[#94A3B8] text-xs font-normal">(optional)</span>
+          Cover Image <span className="text-[#94A3B8] text-xs font-normal">(optional)</span>
         </label>
         <p className="font-inter text-xs text-[#6b7a8f] -mt-0.5">
-          Provide a URL to an image that represents your bounty.
+          Upload an image that represents your bounty.
         </p>
-        <input
-          type="url"
-          className="w-full py-3 px-4 border border-[#dce1e8] rounded-xl font-inter text-sm text-[#1a2a41] bg-white outline-none transition-all placeholder:text-[#a0b0c4] focus:ring-2 focus:border-primary focus:ring-[#34A563]/20"
-          placeholder="https://example.com/bounty-image.jpg"
-          value={formData.imageUrl}
-          onChange={(e) => updateFormData('imageUrl', e.target.value)}
-        />
-        {formData.imageUrl && (
-          <div className="mt-1 rounded-xl overflow-hidden border border-[#dce1e8]">
+        {formData.imageUrl ? (
+          <div className="relative rounded-xl overflow-hidden border border-[#dce1e8]">
             <img
               src={formData.imageUrl}
-              alt="Preview"
-              className="w-full h-32 object-cover"
-              onError={(e) => {
-                e.target.style.display = 'none'
+              alt="Cover preview"
+              className="w-full h-40 object-cover"
+            />
+            <button
+              onClick={() => updateFormData('imageUrl', '')}
+              className="absolute top-2 right-2 bg-black/50 text-white rounded-full p-1 hover:bg-black/70 transition-colors cursor-pointer"
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            </button>
+          </div>
+        ) : (
+          <div
+            className="border-2 border-dashed border-[#dce1e8] rounded-xl py-8 px-5 text-center cursor-pointer transition-all bg-[#fafbfc] hover:border-[#34A563] hover:bg-[#fafffe]"
+            onClick={() => imageInputRef.current?.click()}
+          >
+            <svg className="w-10 h-10 mx-auto mb-2 text-[#a0b0c4]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21zm16.5-13.5h-3.75" />
+            </svg>
+            <p className="font-inter text-sm text-[#1a2a41] my-1">
+              {uploadingImage ? 'Uploading...' : 'Click to upload cover image'}
+            </p>
+            <span className="font-inter text-xs text-[#a0b0c4]">
+              PNG, JPG, WebP (Max 5MB)
+            </span>
+            <input
+              type="file"
+              ref={imageInputRef}
+              className="hidden"
+              accept="image/*"
+              disabled={uploadingImage}
+              onChange={async (e) => {
+                const file = e.target.files?.[0]
+                if (!file) return
+                setUploadingImage(true)
+                try {
+                  await onImageUpload(file)
+                } finally {
+                  setUploadingImage(false)
+                }
               }}
             />
           </div>
