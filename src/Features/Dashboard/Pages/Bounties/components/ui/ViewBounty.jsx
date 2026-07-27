@@ -783,17 +783,19 @@ export default function ViewBounty() {
                     ? 'cursor-not-allowed'
                     : 'cursor-pointer'
                 } items-center justify-center space-x-3 ${
-                  reviewStatus === 'pending' ||
-                  isOwnBounty ||
-                  (reviewStatus === 'selected' ? isBountyDeadlinePassed : isApplyDeadlinePassed)
-                    ? 'bg-[#C5C9C7]'
-                    : 'bg-[#34A563]'
+                  reviewStatus === 'selected' && !isBountyDeadlinePassed
+                    ? 'bg-[#EAB308]'
+                    : reviewStatus === 'pending' ||
+                        isOwnBounty ||
+                        (reviewStatus === 'selected' ? isBountyDeadlinePassed : isApplyDeadlinePassed)
+                      ? 'bg-[#C5C9C7]'
+                      : 'bg-[#34A563]'
                 } rounded-2xl py-4 w-full`}
               >
                 {isSubmitting ? (
                   <Loader2 className="animate-spin" />
                 ) : (
-                  <ArrowRight color="#FFFFFF" />
+                  <ArrowRight color={reviewStatus === 'selected' && !isBountyDeadlinePassed ? '#1A1A1A' : '#FFFFFF'} />
                 )}
                 <span className="text-white text-md font-inter font-bold">
                   {isOwnBounty
