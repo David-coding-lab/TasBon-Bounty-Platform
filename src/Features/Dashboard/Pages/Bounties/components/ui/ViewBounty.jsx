@@ -281,8 +281,8 @@ export default function ViewBounty() {
           day: 'numeric',
         })
       : 'Recently',
-    bounty_id: bounty?.id
-      ? `#TAS-${String(bounty.id).slice(-4).toUpperCase()}`
+    bounty_id: bountyId
+      ? `#${bountyId.slice(-8).toUpperCase()}`
       : '',
   }
 
