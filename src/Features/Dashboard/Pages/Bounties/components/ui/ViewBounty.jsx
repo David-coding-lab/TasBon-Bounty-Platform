@@ -70,9 +70,11 @@ export default function ViewBounty() {
       handleClose(setIsModalOpen)
       const appStatus = res.data?.status || res.data?.applicationStatus || 'pending'
       setReviewStatus(appStatus)
-      if (res.data) {
-        setBounty((prev) => ({ ...prev, ...res.data }))
-      }
+      setBounty((prev) => ({
+        ...prev,
+        applicationsCount: (prev?.applicationsCount || prev?.applications?.length || 0) + 1,
+        ...(res.data || {}),
+      }))
       setIsPendingModalOpen(true)
     } catch (error) {
       toast.error(error.message || 'Failed to apply')
