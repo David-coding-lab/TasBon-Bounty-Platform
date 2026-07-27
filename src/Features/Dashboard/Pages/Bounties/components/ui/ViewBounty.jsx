@@ -64,6 +64,10 @@ export default function ViewBounty() {
   const handleClose = (state) => state(false)
 
   const handleApply = async (data) => {
+    if (user?.id === bounty?.creatorId) {
+      toast.error('You cannot apply to your own bounty')
+      return
+    }
     setIsApplying(true)
     try {
       const res = await applyForBounty(bountyId, data)
@@ -218,6 +222,7 @@ export default function ViewBounty() {
   const isApplyDeadlinePassed = bounty?.applicationDeadline
     ? new Date(bounty.applicationDeadline) < new Date()
     : false
+  const isOwnBounty = user?.id === bounty?.creatorId
 
   const parseDeliverable = (item) => {
     try { return JSON.parse(item) } catch { return { type: 'link', description: item } }
@@ -767,16 +772,19 @@ export default function ViewBounty() {
                 disabled={
                   reviewStatus === 'pending' ||
                   isSubmitting ||
+                  isOwnBounty ||
                   (reviewStatus === 'selected' ? isBountyDeadlinePassed : isApplyDeadlinePassed)
                 }
                 className={`flex flex-row ${
                   reviewStatus === 'pending' ||
                   isSubmitting ||
+                  isOwnBounty ||
                   (reviewStatus === 'selected' ? isBountyDeadlinePassed : isApplyDeadlinePassed)
                     ? 'cursor-not-allowed'
                     : 'cursor-pointer'
                 } items-center justify-center space-x-3 ${
                   reviewStatus === 'pending' ||
+                  isOwnBounty ||
                   (reviewStatus === 'selected' ? isBountyDeadlinePassed : isApplyDeadlinePassed)
                     ? 'bg-[#C5C9C7]'
                     : 'bg-[#34A563]'
@@ -788,15 +796,17 @@ export default function ViewBounty() {
                   <ArrowRight color="#FFFFFF" />
                 )}
                 <span className="text-white text-md font-inter font-bold">
-                  {reviewStatus === 'pending'
-                    ? 'Application Pending'
-                    : reviewStatus === 'selected'
-                      ? isSubmitting
-                        ? 'Submitting...'
-                        : 'Submit Bounty'
-                      : isApplyDeadlinePassed
-                        ? 'Deadline Passed'
-                        : 'Apply for Bounty'}
+                  {isOwnBounty
+                    ? 'Your bounty'
+                    : reviewStatus === 'pending'
+                      ? 'Application Pending'
+                      : reviewStatus === 'selected'
+                        ? isSubmitting
+                          ? 'Submitting...'
+                          : 'Submit Bounty'
+                        : isApplyDeadlinePassed
+                          ? 'Deadline Passed'
+                          : 'Apply for Bounty'}
                 </span>
               </button>
 
