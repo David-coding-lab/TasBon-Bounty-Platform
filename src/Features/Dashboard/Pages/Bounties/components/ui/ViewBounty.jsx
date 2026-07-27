@@ -87,10 +87,6 @@ export default function ViewBounty() {
     }
   }
 
-  const handleViewApplication = () => {
-    handleClose(setIsPendingModalOpen)
-  }
-
   const handleSubmitBounty = async () => {
     if (!submissionMessage.trim()) {
       setSubmitError('Please describe the work you have completed')
@@ -355,7 +351,6 @@ export default function ViewBounty() {
             <ApplicationPendingModal
               bounty={bounty}
               onContinueExploring={() => handleClose(setIsPendingModalOpen)}
-              onViewApplication={handleViewApplication}
             />
           </div>
         </div>
