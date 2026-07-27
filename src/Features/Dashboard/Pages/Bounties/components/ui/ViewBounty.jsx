@@ -509,32 +509,39 @@ export default function ViewBounty() {
                 <div className="flex flex-row space-x-8">
                   <div className="border p-3 border-[#E5E7EB] flex flex-col space-y-2 rounded-xl">
                     <p className="text-md font-semibold text-[#616161] ">
-                      Application Deadline
+                      {reviewStatus === 'selected'
+                        ? 'Deadline to Submit'
+                        : 'Application Deadline'}
                     </p>
                     <p className="text-xl font-semibold text-[#000000]">
-                      {bounty?.applicationDeadline
-                        ? new Date(
-                            bounty.applicationDeadline,
-                          ).toLocaleDateString('en-US', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                          })
-                        : 'N/A'}
+                      {reviewStatus === 'selected'
+                        ? formattedDueDate
+                        : bounty?.applicationDeadline
+                          ? new Date(
+                              bounty.applicationDeadline,
+                            ).toLocaleDateString('en-US', {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric',
+                            })
+                          : 'N/A'}
                     </p>
                     <p className="text-md font-medium text-[#616161]">
-                      {bounty?.applicationDeadline
-                        ? `${new Date(
-                            bounty.applicationDeadline,
-                          ).toLocaleTimeString('en-US', {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            hour12: false,
-                            timeZone: 'UTC',
-                          })} (UTC)`
-                        : ''}
+                      {reviewStatus === 'selected'
+                        ? formattedDueDateTime
+                        : bounty?.applicationDeadline
+                          ? `${new Date(
+                              bounty.applicationDeadline,
+                            ).toLocaleTimeString('en-US', {
+                              hour: '2-digit',
+                              minute: '2-digit',
+                              hour12: false,
+                              timeZone: 'UTC',
+                            })} (UTC)`
+                          : ''}
                     </p>
                   </div>
+                  {reviewStatus !== 'selected' && (
                   <div className="border p-3 border-[#E5E7EB] flex flex-col space-y-2 rounded-xl">
                     <p className="text-md font-semibold text-[#616161]">
                       Bounty Deadline
@@ -546,6 +553,7 @@ export default function ViewBounty() {
                       {formattedDueDateTime}
                     </p>
                   </div>
+                  )}
                 </div>
 
                 {workDurationDays && (
@@ -812,7 +820,43 @@ export default function ViewBounty() {
                 </span>
               </button>
 
-              {bounty?.applicationDeadline &&
+              {reviewStatus === 'selected'
+                ? bounty?.dueDate && (() => {
+                    const now = new Date()
+                    const deadline = new Date(bounty.dueDate)
+                    const daysLeft = Math.ceil(
+                      (deadline - now) / (1000 * 60 * 60 * 24),
+                    )
+                    return (
+                      <div className="flex flex-row space-x-4 items-center border border-gray-200 rounded-2xl p-4">
+                        <Clock color="#EAB308" className="h-12 w-12" />
+                        <div className="flex flex-col space-y-2">
+                          <p className="text-[#000000] text-md font-bold">
+                            {daysLeft > 0
+                              ? `${daysLeft} day${daysLeft > 1 ? 's' : ''} left to submit`
+                              : 'Submission closed'}
+                          </p>
+                          <p className="text-[#616161] text-base">
+                            Submission closes on{' '}
+                            {deadline.toLocaleDateString('en-US', {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric',
+                            })}{' '}
+                            at{' '}
+                            {deadline.toLocaleTimeString('en-US', {
+                              hour: '2-digit',
+                              minute: '2-digit',
+                              hour12: false,
+                              timeZone: 'UTC',
+                            })}{' '}
+                            (UTC)
+                          </p>
+                        </div>
+                      </div>
+                    )
+                  })()
+                : bounty?.applicationDeadline &&
                 (() => {
                   const now = new Date()
                   const deadline = new Date(bounty.applicationDeadline)
