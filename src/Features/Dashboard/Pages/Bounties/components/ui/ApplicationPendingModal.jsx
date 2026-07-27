@@ -1,10 +1,11 @@
 import { Check, ShieldCheck, ArrowRight } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 export default function ApplicationPendingModal({
-  onViewApplication = () => {},
   onContinueExploring = () => {},
   bounty,
 }) {
+  const navigate = useNavigate()
   return (
     <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 font-[Inter]">
       {/* Icon */}
@@ -54,7 +55,7 @@ export default function ApplicationPendingModal({
       {/* Actions */}
       <div className="flex gap-3">
         <button
-          onClick={onViewApplication}
+          onClick={() => navigate('/dashboard/applications')}
           className="flex-1 py-3 rounded-xl border border-slate-200 text-slate-900 font-bold text-[15px] hover:bg-slate-50 transition-colors"
         >
           View My Application
