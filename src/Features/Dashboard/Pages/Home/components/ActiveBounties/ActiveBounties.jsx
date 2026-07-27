@@ -80,7 +80,14 @@ const ActiveBounties = () => {
           ) : (
             bounties.map((item, index) => (
               <tr key={index} className="border-b border-[#E5E7EB]">
-                <td className="text-base text-[#0A0A0A] p-3">{item.title}</td>
+                <td className="text-base text-[#0A0A0A] p-3">
+                  <Link
+                    to={`/dashboard/bounties/${item.id}`}
+                    className="hover:text-[#009966] hover:underline"
+                  >
+                    {item.title}
+                  </Link>
+                </td>
                 <td className="text-base text-[#4A5565] p-3">
                   {item.creatorName || '—'}
                 </td>
@@ -101,9 +108,12 @@ const ActiveBounties = () => {
                   </span>
                 </td>
                 <td className="p-3">
-                  <button className="py-2 px-4 rounded-2xl bg-[#009966] text-[#FFFFFF] text-base cursor-pointer hover:bg-[#007A55] transition-colors">
+                  <Link
+                    to={`/dashboard/bounties/${item.id}`}
+                    className="inline-block py-2 px-4 rounded-2xl bg-[#009966] text-[#FFFFFF] text-base hover:bg-[#007A55] transition-colors"
+                  >
                     Submit
-                  </button>
+                  </Link>
                 </td>
               </tr>
             ))

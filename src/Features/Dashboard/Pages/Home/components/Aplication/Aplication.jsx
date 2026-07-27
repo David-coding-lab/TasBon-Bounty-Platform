@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { getApplications } from '../../../../../../services/applications'
 
 const Aplication = () => {
@@ -58,7 +59,18 @@ const Aplication = () => {
                 const style = getStyle(item.status)
                 return (
                   <tr key={index} className="border-b border-[#E5E7EB]">
-                    <td className="text-base text-[#0A0A0A] p-3 hover:cursor-pointer hover:underline hover:text-[#009966]">{item.title}</td>
+                    <td className="text-base text-[#0A0A0A] p-3">
+                      {item.bountyId ? (
+                        <Link
+                          to={`/dashboard/bounties/${item.bountyId}`}
+                          className="hover:text-[#009966] hover:underline"
+                        >
+                          {item.title}
+                        </Link>
+                      ) : (
+                        <span className="hover:cursor-pointer hover:underline hover:text-[#009966]">{item.title}</span>
+                      )}
+                    </td>
                     <td className="text-base text-[#4A5565] p-3">Bounty</td>
                     <td className="text-base text-[#4A5565] p-3">{item.issuerName}</td>
                     <td className="p-3">

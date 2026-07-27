@@ -1,4 +1,4 @@
-// ApplicationRow.jsx
+import { Link } from 'react-router-dom'
 import { MoreVertical } from 'lucide-react'
 import StatusBadge from './StatusBadge'
 
@@ -14,9 +14,18 @@ const ApplicationRow = ({ application, gridCols }) => {
           className="w-14 h-14 rounded-lg object-cover shrink-0"
         />
         <div className="flex min-w-0 flex-col gap-1">
-          <span className="text-sm font-semibold text-[#0A0A0A] leading-snug">
-            {application.title}
-          </span>
+          {application.bountyId ? (
+            <Link
+              to={`/dashboard/bounties/${application.bountyId}`}
+              className="text-sm font-semibold text-[#0A0A0A] leading-snug hover:text-[#009966]"
+            >
+              {application.title}
+            </Link>
+          ) : (
+            <span className="text-sm font-semibold text-[#0A0A0A] leading-snug">
+              {application.title}
+            </span>
+          )}
           <div className="flex flex-row flex-wrap gap-1">
             {(application.tags || []).slice(0, 3).map((tag) => (
               <span
@@ -67,9 +76,18 @@ const ApplicationRow = ({ application, gridCols }) => {
         <span className="text-sm font-bold text-[#009966] whitespace-nowrap">
           {application.reward}
         </span>
-        <button className="text-sm text-[#0A0A0A] font-medium hover:text-[#009966] cursor-pointer whitespace-nowrap">
-          View details
-        </button>
+        {application.bountyId ? (
+          <Link
+            to={`/dashboard/bounties/${application.bountyId}`}
+            className="text-sm text-[#0A0A0A] font-medium hover:text-[#009966] whitespace-nowrap"
+          >
+            View details
+          </Link>
+        ) : (
+          <button className="text-sm text-[#0A0A0A] font-medium hover:text-[#009966] cursor-pointer whitespace-nowrap">
+            View details
+          </button>
+        )}
         <button className="text-[#9CA3AF] hover:text-[#4A5565] cursor-pointer">
           <MoreVertical size={16} />
         </button>

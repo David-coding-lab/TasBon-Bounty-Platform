@@ -1,4 +1,4 @@
-// ApplicantRow.jsx
+import { Link } from 'react-router-dom'
 import StatusBadge from './StatusBadge'
 
 const ApplicantRow = ({ applicant, onSelect, onRemove, gridCols }) => {
@@ -32,9 +32,18 @@ const ApplicantRow = ({ applicant, onSelect, onRemove, gridCols }) => {
       </div>
 
       <div className="flex flex-col min-w-0">
-        <span className="text-sm text-[#0A0A0A] font-medium truncate">
-          {applicant.bountyTitle}
-        </span>
+        {applicant.bountyId ? (
+          <Link
+            to={`/dashboard/bounties/${applicant.bountyId}`}
+            className="text-sm text-[#0A0A0A] font-medium truncate hover:text-[#009966]"
+          >
+            {applicant.bountyTitle}
+          </Link>
+        ) : (
+          <span className="text-sm text-[#0A0A0A] font-medium truncate">
+            {applicant.bountyTitle}
+          </span>
+        )}
         <span className="text-xs text-[#4A5565]">{applicant.reward}</span>
       </div>
 
