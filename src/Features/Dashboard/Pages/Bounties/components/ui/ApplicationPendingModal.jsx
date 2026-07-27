@@ -1,7 +1,7 @@
 import { Check, ShieldCheck, ArrowRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 export default function ApplicationPendingModal({
-  onViewApplication = () => {},
   onContinueExploring = () => {},
   bounty,
 }) {
@@ -53,11 +53,8 @@ export default function ApplicationPendingModal({
 
       {/* Actions */}
       <div className="flex gap-3">
-        <button
-          onClick={onViewApplication}
-          className="flex-1 py-3 rounded-xl border border-slate-200 text-slate-900 font-bold text-[15px] hover:bg-slate-50 transition-colors"
-        >
-          View My Application
+        <button className="flex-1 py-3 rounded-xl border border-slate-200 text-slate-900 font-bold text-[15px] hover:bg-slate-50 transition-colors">
+          <Link href={`/dashboard/applications`}>View My Application</Link>
         </button>
         <button
           onClick={onContinueExploring}
