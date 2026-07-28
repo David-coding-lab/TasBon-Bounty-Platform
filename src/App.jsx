@@ -1,6 +1,6 @@
 import './App.css'
 import { useEffect } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 import { Toaster } from 'sonner'
 import { PrivyProvider, usePrivy } from '@privy-io/react-auth'
 import { useDispatch, useSelector } from 'react-redux'
@@ -60,21 +60,24 @@ function Home() {
 
 function AppRoutes() {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { loading, isAuthenticated } = useSelector((state) => state.auth)
-  const { ready, authenticated, getAccessToken } = usePrivy()
+  const { ready, authenticated, getAccessToken, logout: privyLogout } = usePrivy()
 
   useEffect(() => {
     dispatch(hydrateSession())
   }, [dispatch])
 
   useEffect(() => {
-    const handleSessionExpired = () => {
+    const handleSessionExpired = async () => {
       dispatch(logout())
+      try { await privyLogout() } catch {}
+      navigate('/signin', { replace: true })
     }
     window.addEventListener('session-expired', handleSessionExpired)
     return () =>
       window.removeEventListener('session-expired', handleSessionExpired)
-  }, [dispatch])
+  }, [dispatch, privyLogout, navigate])
 
   // Sync Privy's restored session into Redux
   useEffect(() => {

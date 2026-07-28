@@ -1,5 +1,6 @@
 import { config } from '../../lib/config'
 import Cookies from 'js-cookie'
+import { clearSession } from './clearSession'
 
 function authHeaders() {
   const token = Cookies.get('session')
@@ -50,8 +51,7 @@ async function handleResponse(response, url, options) {
         if (!refreshResp.ok) {
           const err = new Error('Session expired')
           processQueue(err)
-          Cookies.remove('session')
-          window.dispatchEvent(new CustomEvent('session-expired'))
+          clearSession()
           throw err
         }
 
@@ -69,8 +69,7 @@ async function handleResponse(response, url, options) {
         return handleResponse(retryResp, url, options)
       } catch (err) {
         if (err.message === 'Session expired') throw err
-        Cookies.remove('session')
-        window.dispatchEvent(new CustomEvent('session-expired'))
+        clearSession()
         throw err
       } finally {
         isRefreshing = false
@@ -85,7 +84,14 @@ async function handleResponse(response, url, options) {
   }
 
   const data = await response.json()
-  if (!response.ok) throw new Error(data.message || 'Request failed')
+  if (!response.ok) {
+    const msg = data.message || ''
+    const isTokenExpired = msg.toLowerCase().includes('token expired') || msg.toLowerCase().includes('session expired')
+    if (isTokenExpired) {
+      clearSession()
+    }
+    throw new Error(msg || 'Request failed')
+  }
   return data
 }
 
@@ -124,6 +130,11 @@ export async function uploadFile(file) {
   })
 
   const data = await response.json()
-  if (!response.ok) throw new Error(data.message || 'Upload failed')
+  if (!response.ok) {
+    const msg = data.message || ''
+    const isTokenExpired = msg.toLowerCase().includes('token expired') || msg.toLowerCase().includes('session expired')
+    if (isTokenExpired) clearSession()
+    throw new Error(msg || 'Upload failed')
+  }
   return data
 }
