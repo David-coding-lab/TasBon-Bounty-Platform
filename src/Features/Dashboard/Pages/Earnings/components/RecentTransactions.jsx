@@ -24,8 +24,8 @@ const RecentTransactions = () => {
           </a>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+        <div className="overflow-x-auto -mx-6 sm:mx-0 px-6 sm:px-0">
+          <table className="w-full text-left border-collapse min-w-[500px]">
             <thead>
               <tr className="border-b border-gray-100">
                 <th className="pb-3 text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider">Transaction</th>

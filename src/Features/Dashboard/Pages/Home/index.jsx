@@ -11,7 +11,7 @@ const Home = () => {
   const [isOpen, setIsOpen] = useState(true)
   return (
     /* Page layout: full height, white background, vertical stack with spacing */
-    <div className="flex flex-col space-y-6 h-full bg-[#FFFFFF] p-6 ">
+    <div className="flex flex-col space-y-6 h-full bg-[#FFFFFF] p-3 sm:p-6">
       {/* Hero section */}
       <Hero />
       {/* Recommended bounties section */}

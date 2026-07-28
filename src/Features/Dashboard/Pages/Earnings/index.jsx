@@ -7,7 +7,7 @@ import QuickStats from './components/QuickStats'
 
 const Earnings = () => {
   return (
-    <div className="flex flex-col space-y-6 min-h-full bg-gray-50 p-6">
+    <div className="flex flex-col space-y-6 min-h-full bg-gray-50 p-3 sm:p-6">
       {/* Top Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>

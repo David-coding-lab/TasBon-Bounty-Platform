@@ -37,18 +37,18 @@ const AboutCreator = ({ creatorName, creatorAvatar, creatorId, creatorProfile, r
 
         {creatorProfile && (
           <div className="flex flex-col w-full justify-end items-end">
-            <div className="flex space-x-24">
-              <div className="flex flex-col space-y-3">
-                <p className="text-[#000000] text-lg font-bold">{creatorProfile.bountiesPosted}</p>
-                <p className="text-[#616161] text-lg">Bounties Posted</p>
+            <div className="flex gap-4 sm:gap-8 lg:gap-24">
+              <div className="flex flex-col space-y-1 sm:space-y-3">
+                <p className="text-[#000000] text-base sm:text-lg font-bold">{creatorProfile.bountiesPosted}</p>
+                <p className="text-[#616161] text-sm sm:text-lg">Bounties Posted</p>
               </div>
-              <div className="flex flex-col space-y-3">
-                <p className="text-[#000000] text-lg font-bold">{creatorProfile.activeBounties}</p>
-                <p className="text-[#616161] text-lg">Active</p>
+              <div className="flex flex-col space-y-1 sm:space-y-3">
+                <p className="text-[#000000] text-base sm:text-lg font-bold">{creatorProfile.activeBounties}</p>
+                <p className="text-[#616161] text-sm sm:text-lg">Active</p>
               </div>
-              <div className="flex flex-col space-y-3">
-                <p className="text-[#000000] text-lg font-bold">${(creatorProfile.totalPaid / 1000).toFixed(1)}k+</p>
-                <p className="text-[#616161] text-lg">Total Paid</p>
+              <div className="flex flex-col space-y-1 sm:space-y-3">
+                <p className="text-[#000000] text-base sm:text-lg font-bold">${(creatorProfile.totalPaid / 1000).toFixed(1)}k+</p>
+                <p className="text-[#616161] text-sm sm:text-lg">Total Paid</p>
               </div>
             </div>
           </div>
@@ -59,7 +59,7 @@ const AboutCreator = ({ creatorName, creatorAvatar, creatorId, creatorProfile, r
             <h2 className="text-[#000000] text-lg font-medium">
               Recently paid bounties
             </h2>
-            <div className="flex gap-4 justify-between w-full">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full">
               {recentBounties.slice(0, 3).map((bounty, index) => (
                 <Bountycardmini
                   key={bounty.id || index}

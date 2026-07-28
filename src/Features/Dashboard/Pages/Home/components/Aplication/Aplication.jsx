@@ -32,12 +32,12 @@ const Aplication = () => {
         <p className="font-[Inter] text-sm text-[#4A5565]">Track your applications for bounties, grants and hackathons.</p>
       </div>
 
-      <div className="w-full border border-[#E5E7EB] rounded-md">
+      <div className="hidden sm:block w-full border border-[#E5E7EB] rounded-md overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-[#E5E7EB]">
               {headers.map((header, index) => (
-                <th key={index} className="font-[Inter] text-sm text-[#4A5565] text-left p-3 font-medium">{header}</th>
+                <th key={index} className="font-[Inter] text-sm text-[#4A5565] text-left p-3 font-medium whitespace-nowrap">{header}</th>
               ))}
             </tr>
           </thead>
@@ -51,9 +51,7 @@ const Aplication = () => {
                 </tr>
               ))
             ) : applications.length === 0 ? (
-              <tr>
-                <td colSpan={5} className="p-6 text-center text-gray-400 text-sm">No applications yet</td>
-              </tr>
+              <tr><td colSpan={5} className="p-6 text-center text-gray-400 text-sm">No applications yet</td></tr>
             ) : (
               applications.map((item, index) => {
                 const style = getStyle(item.status)
@@ -61,28 +59,56 @@ const Aplication = () => {
                   <tr key={index} className="border-b border-[#E5E7EB]">
                     <td className="text-base text-[#0A0A0A] p-3">
                       {item.bountyId ? (
-                        <Link
-                          to={`/dashboard/bounties/${item.bountyId}`}
-                          className="hover:text-[#009966] hover:underline"
-                        >
-                          {item.title}
-                        </Link>
+                        <Link to={`/dashboard/bounties/${item.bountyId}`} className="hover:text-[#009966] hover:underline">{item.title}</Link>
                       ) : (
                         <span className="hover:cursor-pointer hover:underline hover:text-[#009966]">{item.title}</span>
                       )}
                     </td>
                     <td className="text-base text-[#4A5565] p-3">Bounty</td>
                     <td className="text-base text-[#4A5565] p-3">{item.issuerName}</td>
-                    <td className="p-3">
-                      <span className={`px-3 py-1 rounded-2xl text-xs font-medium ${style.bg} ${style.text}`}>{item.status}</span>
-                    </td>
-                    <td className="text-base text-[#4A5565] p-3">{item.appliedOn}</td>
+                    <td className="p-3"><span className={`px-3 py-1 rounded-2xl text-xs font-medium ${style.bg} ${style.text}`}>{item.status}</span></td>
+                    <td className="text-base text-[#4A5565] p-3 whitespace-nowrap">{item.appliedOn}</td>
                   </tr>
                 )
               })
             )}
           </tbody>
         </table>
+      </div>
+
+      <div className="sm:hidden flex flex-col gap-3">
+        {loading ? (
+          Array(3).fill(null).map((_, i) => (
+            <div key={i} className="border border-[#E5E7EB] rounded-xl p-4 animate-pulse">
+              <div className="h-4 bg-gray-100 rounded w-3/4 mb-2" />
+              <div className="h-3 bg-gray-100 rounded w-1/2" />
+            </div>
+          ))
+        ) : applications.length === 0 ? (
+          <div className="py-6 text-center text-gray-400 text-sm">No applications yet</div>
+        ) : (
+          applications.map((item, index) => {
+            const style = getStyle(item.status)
+            return (
+              <div key={index} className="border border-[#E5E7EB] rounded-xl p-4 flex flex-col gap-2">
+                <div className="flex justify-between items-start gap-2">
+                  <div className="flex-1 min-w-0">
+                    {item.bountyId ? (
+                      <Link to={`/dashboard/bounties/${item.bountyId}`} className="text-sm font-semibold text-[#0A0A0A] hover:text-[#009966] leading-snug line-clamp-2">{item.title}</Link>
+                    ) : (
+                      <span className="text-sm font-semibold text-[#0A0A0A] leading-snug line-clamp-2">{item.title}</span>
+                    )}
+                  </div>
+                  <span className={`shrink-0 px-2.5 py-0.5 rounded-2xl text-[10px] font-medium ${style.bg} ${style.text}`}>{item.status}</span>
+                </div>
+                <div className="flex justify-between items-center text-xs text-[#4A5565]">
+                  <span>Bounty · {item.issuerName}</span>
+                  <span className="whitespace-nowrap">{item.appliedOn}</span>
+                </div>
+              </div>
+            )
+          })
+        )}
       </div>
     </div>
   )

@@ -3,16 +3,17 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { usePrivy } from '@privy-io/react-auth'
 import Cookies from 'js-cookie'
-import { Search, Bell, ChevronDown, LogOut } from 'lucide-react'
+import { Search, Bell, ChevronDown, LogOut, Menu } from 'lucide-react'
 import { logout } from '../../../../store/slices/authSlice'
 import { config } from '../../../../../lib/config'
 
-const NavBar = () => {
+const NavBar = ({ onMenuToggle }) => {
   const user = useSelector((state) => state.auth.user)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { logout: privyLogout } = usePrivy()
   const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const dropdownRef = useRef(null)
 
   useEffect(() => {
@@ -46,8 +47,16 @@ const NavBar = () => {
     : '?'
 
   return (
-    <div className="bg-[#ffffff] p-4 flex flex-row justify-between items-center">
-      <div className="flex-3 relative">
+    <div className="bg-[#ffffff] px-3 sm:px-4 py-3 sm:py-4 flex flex-row justify-between items-center gap-2">
+      <button
+        onClick={onMenuToggle}
+        className="xl:hidden p-2 -ml-1 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+        aria-label="Open menu"
+      >
+        <Menu size={22} className="text-[#364153]" />
+      </button>
+
+      <div className="hidden sm:block flex-1 relative max-w-md">
         <Search
           size={18}
           className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
@@ -59,7 +68,29 @@ const NavBar = () => {
         />
       </div>
 
-      <div className="flex-1 flex flex-row items-center justify-end space-x-4">
+      <button
+        onClick={() => setSearchOpen(!searchOpen)}
+        className="sm:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+        aria-label="Toggle search"
+      >
+        <Search size={20} className="text-[#364153]" />
+      </button>
+
+      {searchOpen && (
+        <div className="absolute left-0 right-0 top-full bg-white border-b border-gray-200 p-3 z-40 sm:hidden shadow-lg">
+          <div className="relative">
+            <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search..."
+              autoFocus
+              className="w-full pl-10 pr-4 py-2.5 rounded-2xl border border-gray-200 text-base text-[#364153] placeholder-gray-400 outline-none focus:border-[#009966]"
+            />
+          </div>
+        </div>
+      )}
+
+      <div className="flex flex-row items-center justify-end space-x-2 sm:space-x-4 shrink-0">
         <div className="cursor-pointer flex flex-col items-center pt-1">
           <Bell size={20} className="text-[#364153]" />
         </div>

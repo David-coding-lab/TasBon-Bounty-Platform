@@ -18,7 +18,7 @@ const Hero = () => {
   return (
     <div className="flex flex-col space-y-4">
       <div className="flex flex-col space-y-2">
-        <h1 className="font-[Inter] text-3xl font-semibold text-[#0A0A0A]">
+        <h1 className="font-[Inter] text-xl sm:text-2xl lg:text-3xl font-semibold text-[#0A0A0A]">
           Welcome back, <span className="text-[#009966]">{user?.fullName || 'there'}</span>
         </h1>
         <p className="text-base text-[#4A5565]">
@@ -26,7 +26,7 @@ const Hero = () => {
         </p>
       </div>
 
-      <div className="flex flex-row gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
         <div className="border border-[#E5E7EB] rounded-2xl p-6 flex flex-col flex-1 space-y-2">
           <div className="flex flex-row justify-between items-center">
             <span className="text-sm text-[#4A5565]">Total Earnings</span>

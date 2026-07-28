@@ -73,16 +73,19 @@ const NavItem = ({ icon: Icon, label, path, badge, isActive }) => {
   )
 }
 
-const SideBar = () => {
+const SideBar = ({ isMobileOpen, onClose }) => {
   /* Read current route to highlight the active nav item */
   const { pathname } = useLocation()
 
-  return (
-    <div className="h-full bg-[#ffffff] border-r border-gray-200 mr-4 flex flex-col">
-      {/* Header - Logo and brand name with bottom border and shadow */}
+  const handleNavClick = () => {
+    if (onClose) onClose()
+  }
 
+  const sidebarContent = (
+    <div className="h-full bg-[#ffffff] border-r border-gray-200 xl:mr-4 flex flex-col">
       <Link
         to="/"
+        onClick={handleNavClick}
         className="flex items-center gap-2 px-3 py-4 border-b border-gray-200"
       >
         <img
@@ -95,44 +98,41 @@ const SideBar = () => {
         </span>
       </Link>
 
-      {/* Primary navigation links section - bordered */}
       <div className="w-full px-3 flex flex-col space-y-1 border-b border-gray-200">
         {navItems.map((item) => (
-          <NavItem
-            key={item.label}
-            {...item}
-            isActive={
-              pathname === item.path ||
-              (item.path !== '/dashboard' &&
-                pathname.startsWith(item.path + '/'))
-            }
-          />
+          <div key={item.label} onClick={handleNavClick}>
+            <NavItem
+              {...item}
+              isActive={
+                pathname === item.path ||
+                (item.path !== '/dashboard' &&
+                  pathname.startsWith(item.path + '/'))
+              }
+            />
+          </div>
         ))}
       </div>
 
-      {/* Secondary navigation links section - same hover/active design */}
       <div className="w-full px-3 flex flex-col space-y-1">
         {secondaryNavItems.map((item) => (
-          <NavItem
-            key={item.label}
-            {...item}
-            isActive={
-              pathname === item.path ||
-              (item.path !== '/dashboard' &&
-                pathname.startsWith(item.path + '/'))
-            }
-          />
+          <div key={item.label} onClick={handleNavClick}>
+            <NavItem
+              {...item}
+              isActive={
+                pathname === item.path ||
+                (item.path !== '/dashboard' &&
+                  pathname.startsWith(item.path + '/'))
+              }
+            />
+          </div>
         ))}
       </div>
 
-      {/* Host a Bounty promo card */}
-      <div className="px-3  mt-8 mb-6">
+      <div className="px-3 mt-8 mb-6">
         <div className="bg-[#006045] rounded-2xl flex flex-col space-y-2 p-4">
-          {/* Gift icon container */}
           <div className="p-4 rounded-md bg-[#007A55] w-fit">
             <Gift size={20} className="text-white" />
           </div>
-          {/* Card text */}
           <div className="flex flex-col space-y-1">
             <span className="text-white font-black text-base">
               Host a bounty
@@ -141,9 +141,8 @@ const SideBar = () => {
               Get high-quality solutions from skilled builders.
             </span>
           </div>
-          {/* CTA button */}
           <button className="bg-[#FFFFFF] text-[#006045] text-base px-3 py-1 rounded-md flex flex-row items-center space-x-2 w-fit cursor-pointer">
-            <Link to="?modal=create-bounty" className="flex items-center gap-1">
+            <Link to="?modal=create-bounty" onClick={handleNavClick} className="flex items-center gap-1">
               <span>Create bounty</span>
               <ArrowRight size={16} className="text-[#006045]" />
             </Link>
@@ -151,6 +150,23 @@ const SideBar = () => {
         </div>
       </div>
     </div>
+  )
+
+  return (
+    <>
+      {isMobileOpen && (
+        <div className="fixed inset-0 z-50 xl:hidden">
+          <div
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={onClose}
+          />
+          <div className="fixed left-0 top-0 bottom-0 w-62.5 bg-white shadow-2xl z-50 animate-[slideInLeft_0.2s_ease-out]">
+            {sidebarContent}
+          </div>
+        </div>
+      )}
+      <div className="hidden xl:block h-full">{sidebarContent}</div>
+    </>
   )
 }
 

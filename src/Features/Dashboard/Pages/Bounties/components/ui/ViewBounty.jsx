@@ -318,7 +318,7 @@ export default function ViewBounty() {
   }
 
   return (
-    <main className="w-full h-min-screen mx-auto flex flex-col  px-8 pt-12 pb-6 bg-[#ffffff]  ">
+    <main className="w-full h-min-screen mx-auto flex flex-col px-4 sm:px-8 pt-6 sm:pt-12 pb-6 bg-[#ffffff]">
       <button
         onClick={() => navigate(-1)}
         className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-emerald-600 pt-10 mb-6 transition-colors cursor-pointer"
@@ -435,15 +435,15 @@ export default function ViewBounty() {
       )}
       <div className="w-full flex flex-col space-y-8">
         <div className="flex flex-col space-y-3">
-          <div className="flex flex-row space-x-6 items-center">
-            <h1 className="text-[#101820] text-4xl pr-15 font-bold">
+          <div className="flex flex-row flex-wrap items-center gap-3">
+            <h1 className="text-[#101820] text-2xl sm:text-3xl lg:text-4xl font-bold flex-1 min-w-[200px]">
               {bounty.title}
             </h1>
 
             <button
               onClick={handleBookmarkToggle}
               disabled={bookmarkLoading}
-              className="cursor-pointer disabled:opacity-50"
+              className="cursor-pointer disabled:opacity-50 shrink-0"
             >
               <Bookmark
                 width={20}
@@ -453,24 +453,24 @@ export default function ViewBounty() {
             </button>
 
             <div
-              className="flex flex-row space-x-2 cursor-pointer"
+              className="flex flex-row space-x-2 cursor-pointer shrink-0"
               onClick={() => setIsShareModalOpen(true)}
             >
               <Share2 width={20} />
-              <p className="text-lg font-bold">share</p>
+              <p className="text-base sm:text-lg font-bold">share</p>
             </div>
           </div>
 
-          <div className="flex flex-row space-x-6 items-center">
-            <div className="p-1 px-4 bg-[#E6F6E2] border border-[#E5E7EB] text-[#34A563] rounded-xl">
+          <div className="flex flex-row flex-wrap gap-2 sm:gap-6 items-center">
+            <div className="p-1 px-4 bg-[#E6F6E2] border border-[#E5E7EB] text-[#34A563] rounded-xl text-sm sm:text-base">
               {bounty?.category || bounty?.categoryName || 'General'}
             </div>
-            <div className="p-1 px-4 bg-[#E6F6E2] border border-[#E5E7EB] text-[#34A563] rounded-xl">
+            <div className="p-1 px-4 bg-[#E6F6E2] border border-[#E5E7EB] text-[#34A563] rounded-xl text-sm sm:text-base">
               <span className="text-[#383838]">
                 {bounty?.difficulty || bounty?.level || 'Intermediate'}
               </span>
             </div>
-            <div className="p-1 px-4 bg-[#E6F6E2] border border-[#E5E7EB] text-[#34A563] rounded-xl">
+            <div className="p-1 px-4 bg-[#E6F6E2] border border-[#E5E7EB] text-[#34A563] rounded-xl text-sm sm:text-base">
               <span className="text-[#383838]">
                 {workDurationDays
                   ? `${workDurationDays} Days`
@@ -480,8 +480,8 @@ export default function ViewBounty() {
           </div>
         </div>
 
-        <div className="flex flex-row space-x-8 w-full max-w-7xl">
-          <div className="flex-2 flex flex-col space-y-8 pr-15">
+        <div className="flex flex-col lg:flex-row lg:space-x-8 w-full max-w-7xl">
+          <div className="flex-2 flex flex-col space-y-8 lg:pr-15">
             <div className="flex flex-col space-y-6">
               {taskDetails.map((taskDetail, index) => (
                 <TaskDetails
@@ -501,14 +501,14 @@ export default function ViewBounty() {
               <div className="flex flex-col space-y-4">
                 <h1 className="text-[#000000] text-xl font-bold">Timeline</h1>
 
-                <div className="flex flex-row space-x-8">
-                  <div className="border p-3 border-[#E5E7EB] flex flex-col space-y-2 rounded-xl">
-                    <p className="text-md font-semibold text-[#616161] ">
+                <div className="flex flex-col sm:flex-row gap-3 sm:space-x-8">
+                  <div className="border p-3 border-[#E5E7EB] flex flex-col space-y-2 rounded-xl flex-1">
+                    <p className="text-sm sm:text-md font-semibold text-[#616161]">
                       {reviewStatus === 'selected'
                         ? 'Deadline to Submit'
                         : 'Application Deadline'}
                     </p>
-                    <p className="text-xl font-semibold text-[#000000]">
+                    <p className="text-base sm:text-xl font-semibold text-[#000000]">
                       {reviewStatus === 'selected'
                         ? formattedDueDate
                         : bounty?.applicationDeadline
@@ -521,7 +521,7 @@ export default function ViewBounty() {
                             })
                           : 'N/A'}
                     </p>
-                    <p className="text-md font-medium text-[#616161]">
+                    <p className="text-sm sm:text-md font-medium text-[#616161]">
                       {reviewStatus === 'selected'
                         ? formattedDueDateTime
                         : bounty?.applicationDeadline
@@ -537,14 +537,14 @@ export default function ViewBounty() {
                     </p>
                   </div>
                   {reviewStatus !== 'selected' && (
-                  <div className="border p-3 border-[#E5E7EB] flex flex-col space-y-2 rounded-xl">
-                    <p className="text-md font-semibold text-[#616161]">
+                  <div className="border p-3 border-[#E5E7EB] flex flex-col space-y-2 rounded-xl flex-1">
+                    <p className="text-sm sm:text-md font-semibold text-[#616161]">
                       Bounty Deadline
                     </p>
-                    <p className="text-xl font-semibold text-[#000000]">
+                    <p className="text-base sm:text-xl font-semibold text-[#000000]">
                       {formattedDueDate || 'N/A'}
                     </p>
-                    <p className="text-md font-medium text-[#616161]">
+                    <p className="text-sm sm:text-md font-medium text-[#616161]">
                       {formattedDueDateTime}
                     </p>
                   </div>
@@ -561,17 +561,17 @@ export default function ViewBounty() {
               </div>
             </div>
 
-            {bounty?.attachments?.length > 0 && (
-              <div className="flex flex-row space-x-8 items-start">
-                <div className="pt-2">
+              {bounty?.attachments?.length > 0 && (
+              <div className="flex flex-row space-x-3 sm:space-x-8 items-start">
+                <div className="pt-2 shrink-0">
                   <Paperclip color="#34A563" />
                 </div>
-                <div className="flex flex-col space-y-6">
-                  <h1 className="text-[#000000] font-bold font-inter text-xl">
+                <div className="flex flex-col space-y-4 sm:space-y-6 min-w-0">
+                  <h1 className="text-[#000000] font-bold font-inter text-lg sm:text-xl">
                     Attachments
                   </h1>
 
-                  <div className="flex flex-row flex-wrap gap-6">
+                  <div className="flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-6">
                     {bounty.attachments.map((url, index) => {
                       const fileName =
                         url.split('/').pop() || `Attachment ${index + 1}`
@@ -615,7 +615,7 @@ export default function ViewBounty() {
             />
           </div>
 
-          <div className="flex-1 border border-gray-100 rounded-2xl flex flex-col space-y-8 p-6">
+          <div className="flex-1 border border-gray-100 rounded-2xl flex flex-col space-y-8 p-4 sm:p-6">
             <div className="flex flex-col space-y-4">
               <p className="text-xl font-semibold text-[#353535]">
                 Total Reward

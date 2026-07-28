@@ -60,7 +60,7 @@ const NftBanner = () => {
 
   return (
     <div className={`relative bg-linear-to-r ${gradient} rounded-2xl w-full overflow-hidden`}>
-      <div className="w-full h-full flex items-center py-6 px-8 space-x-24 relative z-10">
+      <div className="w-full h-full flex flex-col md:flex-row items-center py-6 px-4 sm:px-8 md:space-x-24 relative z-10">
         <div className="flex flex-col space-y-4 flex-1">
           <div className="flex flex-col space-y-1">
             <h2 className="text-3xl font-semibold text-white">

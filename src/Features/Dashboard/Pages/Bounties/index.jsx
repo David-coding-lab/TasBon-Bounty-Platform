@@ -54,7 +54,7 @@ const DashBounties = () => {
       <div className="flex flex-col space-y-4">
         <div className="relative w-full max-w-7xl">
           <svg
-            className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-black/50"
+            className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 w-4 sm:w-5 h-4 sm:h-5 text-black/50"
             fill="none"
             stroke="currentColor"
             strokeWidth={2.5}
@@ -68,11 +68,11 @@ const DashBounties = () => {
             placeholder="Search bounties..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-white border-2 border-gray-200 rounded-full py-5 pl-16 pr-6 text-base text-black placeholder:text-black/50 focus:outline-none focus:border-green-500 transition-colors"
+            className="w-full bg-white border-2 border-gray-200 rounded-full py-3 sm:py-5 pl-12 sm:pl-16 pr-4 sm:pr-6 text-sm sm:text-base text-black placeholder:text-black/50 focus:outline-none focus:border-green-500 transition-colors"
           />
         </div>
 
-        <div className="flex items-center space-x-4 overflow-x-auto py-2">
+        <div className="flex items-center space-x-4 overflow-x-auto py-2 -mx-3 sm:mx-0 px-3 sm:px-0">
           {filters.map((filter) => (
             <button
               key={filter}

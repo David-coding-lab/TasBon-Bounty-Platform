@@ -52,6 +52,20 @@ main {
 .animate-marquee-reverse:hover {
   animation-play-state: paused;
 }
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 /* Chrome, Edge, Safari */
 .custom-scrollbar::-webkit-scrollbar {
   display: none;
