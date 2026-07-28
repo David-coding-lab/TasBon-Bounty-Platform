@@ -11,14 +11,18 @@ export default function NewsletterBanner() {
 
   const validateEmail = (value) => {
     if (!value.trim()) return 'Email is required'
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'Please enter a valid email'
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+      return 'Please enter a valid email'
     return ''
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     const err = validateEmail(email)
-    if (err) { setError(err); return }
+    if (err) {
+      setError(err)
+      return
+    }
     setError('')
 
     setLoading(true)
@@ -75,7 +79,7 @@ export default function NewsletterBanner() {
               className="text-base md:text-lg text-gray-200 leading-relaxed"
             >
               Subscribe to get the latest articles, opportunities and platform
-              update from TASBUN
+              update from TASBON
             </motion.p>
           </div>
         </div>
@@ -94,7 +98,10 @@ export default function NewsletterBanner() {
               <input
                 type="email"
                 value={email}
-                onChange={(e) => { setEmail(e.target.value); setError('') }}
+                onChange={(e) => {
+                  setEmail(e.target.value)
+                  setError('')
+                }}
                 placeholder="Enter your email"
                 required
                 className="flex-1 px-5 py-3 text-black outline-none text-base"

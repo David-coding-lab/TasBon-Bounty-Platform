@@ -23,7 +23,7 @@ export default function CTASection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: 'easeOut', delay: 0.15 }}
         >
-          Join 50,000+ builders and community leaders <br /> who run on TASBUN.
+          Join 50,000+ builders and community leaders <br /> who run on TASBON.
         </motion.p>
         <Link to={isLoggedIn ? '/dashboard' : '/signup'}>
           <motion.button

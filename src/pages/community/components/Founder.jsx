@@ -113,7 +113,7 @@ export default function Founder() {
                 "
               </span>
               <p className="text-base sm:text-lg text-gray-700 font-sans italic leading-relaxed text-left">
-                We built TASBUN to break barriers between talent and
+                We built TASBON to break barriers between talent and
                 opportunity. Our mission is simple - enable builders to build,
                 earn and make an impact together.
               </p>

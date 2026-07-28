@@ -16,7 +16,7 @@ export default function Movement() {
             </h2>
             <p className="text-base sm:text-lg text-gray-400 font-sans leading-relaxed mb-10 max-w-xl">
               The best products come from collaboration, creativity, and
-              execution. TASBUN helps connect talented people with opportunities
+              execution. TASBON helps connect talented people with opportunities
               that bring great ideas to life.
             </p>
 
@@ -65,7 +65,7 @@ export default function Movement() {
             <div className="w-full max-w-105 lg:max-w-none hover:scale-105 transition-transform duration-500 ease-out">
               <img
                 src={movementGraphicImg}
-                alt="TASBUN three-people abstract community graphic"
+                alt="TASBON three-people abstract community graphic"
                 className="w-full h-auto object-contain opacity-70 group-hover:opacity-100 transition-opacity"
                 loading="lazy"
               />

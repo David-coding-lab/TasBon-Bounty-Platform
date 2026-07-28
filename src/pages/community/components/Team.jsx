@@ -92,7 +92,7 @@ export default function Team() {
   const topRow = [
     {
       name: 'Amio Anthony',
-      role: 'Founder & CEO, TASBUN',
+      role: 'Founder & CEO, TASBON',
       image: teamAmioImg,
       linkedin: 'https://linkedin.com',
       twitter: 'https://x.com/amioantho/',
@@ -204,7 +204,7 @@ export default function Team() {
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
           <span className="text-[#34A563] text-sm font-bold tracking-wider uppercase block mb-3 font-sans">
-            THE TEAM BEHIND TASBUN
+            THE TEAM BEHIND TASBON
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-black font-sans tracking-tight">
             The people building the future with you

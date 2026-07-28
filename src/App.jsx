@@ -34,6 +34,7 @@ import Hackathons from './pages/Hackathons/Index'
 import Grants from './pages/Grants'
 import SettingsPage from './pages/Settings/Index'
 import BookmarkPage from './pages/Bookmark/Index'
+import MessagesPage from './pages/Messages/Index'
 import NotFound from './pages/NotFound'
 import ErrorBoundary from './Components/Ui/ErrorBoundary'
 import ProtectedRoute from './Components/auth/ProtectedRoute'
@@ -116,6 +117,7 @@ function AppRoutes() {
       <Route path="/grants" element={<Grants />} />
       <Route path="/settings" element={<SettingsPage />} />
       <Route path="/bookmark" element={<BookmarkPage />} />
+      <Route path="/messages" element={<MessagesPage />} />
       <Route path="/verify-email" element={<VerifyEmail />} />
       <Route path="/reset-password/:token" element={<SignUp />} />
 
