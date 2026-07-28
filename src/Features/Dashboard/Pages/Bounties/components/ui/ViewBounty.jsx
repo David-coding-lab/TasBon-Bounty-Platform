@@ -76,8 +76,8 @@ export default function ViewBounty() {
       setReviewStatus(appStatus)
       setBounty((prev) => ({
         ...prev,
-        applicationsCount: (prev?.applicationsCount || prev?.applications?.length || 0) + 1,
         ...(res.data || {}),
+        applicationsCount: (prev?.applicationsCount || 0) + 1,
       }))
       setIsPendingModalOpen(true)
     } catch (error) {
