@@ -68,29 +68,29 @@ const NavBar = ({ onMenuToggle }) => {
         />
       </div>
 
-      <button
-        onClick={() => setSearchOpen(!searchOpen)}
-        className="sm:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
-        aria-label="Toggle search"
-      >
-        <Search size={20} className="text-[#364153]" />
-      </button>
-
-      {searchOpen && (
-        <div className="absolute left-0 right-0 top-full bg-white border-b border-gray-200 p-3 z-40 sm:hidden shadow-lg">
-          <div className="relative">
-            <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search..."
-              autoFocus
-              className="w-full pl-10 pr-4 py-2.5 rounded-2xl border border-gray-200 text-base text-[#364153] placeholder-gray-400 outline-none focus:border-[#009966]"
-            />
-          </div>
-        </div>
-      )}
-
       <div className="flex flex-row items-center justify-end space-x-2 sm:space-x-4 shrink-0">
+        <button
+          onClick={() => setSearchOpen(!searchOpen)}
+          className="sm:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+          aria-label="Toggle search"
+        >
+          <Search size={20} className="text-[#364153]" />
+        </button>
+
+        {searchOpen && (
+          <div className="absolute left-0 right-0 top-full bg-white border-b border-gray-200 p-3 z-40 sm:hidden shadow-lg">
+            <div className="relative">
+              <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search..."
+                autoFocus
+                className="w-full pl-10 pr-4 py-2.5 rounded-2xl border border-gray-200 text-base text-[#364153] placeholder-gray-400 outline-none focus:border-[#009966]"
+              />
+            </div>
+          </div>
+        )}
+
         <div className="cursor-pointer flex flex-col items-center pt-1">
           <Bell size={20} className="text-[#364153]" />
         </div>
