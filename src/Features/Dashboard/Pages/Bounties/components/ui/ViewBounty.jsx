@@ -339,7 +339,7 @@ export default function ViewBounty() {
 
       {isModalOpen && (
         <div
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+          className="fixed inset-0 bg-black/50 flex items-start justify-center z-50 overflow-y-auto py-6"
           onClick={() => handleClose(setIsModalOpen)}
         >
           <div onClick={(e) => e.stopPropagation()}>
@@ -356,7 +356,7 @@ export default function ViewBounty() {
 
       {isPendingModalOpen && (
         <div
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+          className="fixed inset-0 bg-black/50 flex items-start justify-center z-50 overflow-y-auto py-6"
           onClick={() => handleClose(setIsPendingModalOpen)}
         >
           <div onClick={(e) => e.stopPropagation()}>
@@ -370,12 +370,12 @@ export default function ViewBounty() {
 
       {isSubmitModalOpen && (
         <div
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+          className="fixed inset-0 bg-black/50 flex items-start justify-center z-50 overflow-y-auto py-6"
           onClick={() => !isSubmitting && handleClose(setIsSubmitModalOpen)}
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl"
+            className="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl my-auto"
           >
             <h2 className="text-xl font-bold text-slate-900 mb-2">
               Submit Your Work
@@ -429,7 +429,7 @@ export default function ViewBounty() {
 
       {isSubmissionReceivedOpen && (
         <div
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+          className="fixed inset-0 bg-black/50 flex items-start justify-center z-50 overflow-y-auto py-6"
           onClick={() => handleClose(setIsSubmissionReceivedOpen)}
         >
           <div onClick={(e) => e.stopPropagation()}>

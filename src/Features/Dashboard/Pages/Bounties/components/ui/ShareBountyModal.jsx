@@ -65,7 +65,7 @@ export default function ShareBountyModal({ bounty, onClose }) {
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+      className="fixed inset-0 bg-black/50 flex items-start justify-center z-50 overflow-y-auto py-6"
       onClick={onClose}
     >
       <div
