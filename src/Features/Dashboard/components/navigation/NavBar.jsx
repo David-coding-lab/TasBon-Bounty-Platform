@@ -103,8 +103,8 @@ const NavBar = ({ onMenuToggle }) => {
             <div className="h-8 w-8 rounded-full bg-[#009966] flex items-center justify-center text-white text-sm font-semibold">
               {initials}
             </div>
-            <span className="text-base text-[#0A0A0A]">{user?.fullName || 'User'}</span>
-            <ChevronDown size={16} className="text-[#0A0A0A]" />
+            <span className="hidden sm:inline text-base text-[#0A0A0A]">{user?.fullName || 'User'}</span>
+            <ChevronDown size={16} className="hidden sm:block text-[#0A0A0A]" />
           </div>
 
           {dropdownOpen && (
