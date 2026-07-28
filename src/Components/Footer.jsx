@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { toast } from 'sonner'
-import Logo from '../Assets/logo.png'
+import Logo from '../Assets/Tas-Logo.png'
 import { Link } from 'react-router-dom'
 import { config } from '../../lib/config'
 
@@ -33,14 +33,18 @@ export default function Footer() {
 
   const validateEmail = (value) => {
     if (!value.trim()) return 'Email is required'
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'Please enter a valid email'
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+      return 'Please enter a valid email'
     return ''
   }
 
   const handleSubscribe = async (e) => {
     e.preventDefault()
     const err = validateEmail(email)
-    if (err) { setError(err); return }
+    if (err) {
+      setError(err)
+      return
+    }
     setError('')
 
     setLoading(true)
@@ -88,7 +92,10 @@ export default function Footer() {
               <input
                 type="email"
                 value={email}
-                onChange={(e) => { setEmail(e.target.value); setError('') }}
+                onChange={(e) => {
+                  setEmail(e.target.value)
+                  setError('')
+                }}
                 placeholder="Enter your email"
                 required
                 className="flex-1 md:w-64 px-4 py-2.5 font-sora rounded-sm text-sm outline-none"
@@ -101,7 +108,9 @@ export default function Footer() {
                 {loading ? 'Subscribing...' : 'Subscribe'}
               </button>
             </form>
-            {error && <p className="text-red-500 text-xs mt-1 font-sora">{error}</p>}
+            {error && (
+              <p className="text-red-500 text-xs mt-1 font-sora">{error}</p>
+            )}
           </div>
         </div>
       </div>
@@ -114,7 +123,7 @@ export default function Footer() {
             <div className="flex items-center mb-4">
               <img
                 src={Logo}
-                alt="TASBUN Logo"
+                alt="TASBON Logo"
                 className="h-10 w-auto object-contain"
               />
               <h2 className="text-xl font-bold text-primary ml-2">TASBON</h2>
@@ -193,7 +202,7 @@ export default function Footer() {
       <div className="border-t border-gray-100 py-5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="text-black text-xs">
-            © 2026 TASBUN. All rights reserved.
+            © 2026 TASBON. All rights reserved.
           </span>
         </div>
       </div>

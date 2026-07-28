@@ -27,14 +27,18 @@ export default function TopSection({ featuredPost }) {
 
   const validateEmail = (value) => {
     if (!value.trim()) return 'Email is required'
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'Please enter a valid email'
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+      return 'Please enter a valid email'
     return ''
   }
 
   const handleSubscribe = async (e) => {
     e.preventDefault()
     const err = validateEmail(email)
-    if (err) { setError(err); return }
+    if (err) {
+      setError(err)
+      return
+    }
     setError('')
 
     setLoading(true)
@@ -136,7 +140,7 @@ export default function TopSection({ featuredPost }) {
                   </div>
                 )}
                 <span className="text-sm text-gray-600 font-medium">
-                  {featuredPost?.author || 'TASBUN'}
+                  {featuredPost?.author || 'TASBON'}
                 </span>
               </div>
               <Link
@@ -179,7 +183,10 @@ export default function TopSection({ featuredPost }) {
               <input
                 type="email"
                 value={email}
-                onChange={(e) => { setEmail(e.target.value); setError('') }}
+                onChange={(e) => {
+                  setEmail(e.target.value)
+                  setError('')
+                }}
                 placeholder="Enter your email address"
                 className="bg-white border-gray-200 rounded-l-md px-4 py-2.5 text-black text-sm focus:outline-none focus:ring-2 focus:ring-green-500 flex-1"
               />

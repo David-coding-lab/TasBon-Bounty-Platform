@@ -5,7 +5,7 @@ import { usePrivy } from '@privy-io/react-auth'
 import Cookies from 'js-cookie'
 import { logout } from '../store/slices/authSlice'
 import { config } from '../../lib/config'
-import Logo from '../Assets/logo.png'
+import Logo from '../Assets/Tas-Logo.png'
 
 const navLinks = [
   { name: 'Hackathons', url: '/hackathons' },
@@ -65,12 +65,15 @@ export default function Navbar() {
             <Link to="/">
               <img
                 src={Logo}
-                alt="TASBUN Logo"
-                className="h-10 w-auto object-contain"
+                alt="TASBON Logo"
+                className="h-8 w-auto object-contain"
               />
             </Link>
-            <Link to="/" className="ml-2 text-xl font-bold text-primary">
-              TASBUN
+            <Link
+              to="/"
+              className="text-xl ml-2 md:text-2xl font-bold text-primary"
+            >
+              TASBON
             </Link>
           </div>
 

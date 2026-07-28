@@ -60,7 +60,7 @@ export default function SimplifySection() {
           </h2>
           <p className="text-gray-500 max-w-xl mx-auto text-base">
             Whether you're completing tasks for rewards or launching bounties
-            for your project, TASBUN makes the experience simple, transparent,
+            for your project, TASBON makes the experience simple, transparent,
             and rewarding.
           </p>
         </motion.div>

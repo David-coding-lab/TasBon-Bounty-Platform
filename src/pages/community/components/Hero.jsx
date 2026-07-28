@@ -87,7 +87,7 @@ export default function Hero() {
             <div className="w-full max-w-135 md:max-w-150 hover:scale-[1.02] transition-transform duration-500 ease-out">
               <img
                 src={heroGroupImg}
-                alt="TASBUN global community working together"
+                alt="TASBON global community working together"
                 className="w-full h-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.06)]"
                 loading="eager"
               />

@@ -6,7 +6,7 @@ export default function Highlights() {
   const testimonials = [
     {
       quote:
-        "TASBUN helped us find the right skilled persons to build something that's now used by thousands.",
+        "TASBON helped us find the right skilled persons to build something that's now used by thousands.",
       name: 'Gregory Martins',
       role: 'CEO Novalstro',
       avatar:
@@ -14,7 +14,7 @@ export default function Highlights() {
     },
     {
       quote:
-        "TASBUN helped us find the right skilled persons to build something that's now used by thousands.",
+        "TASBON helped us find the right skilled persons to build something that's now used by thousands.",
       name: 'Gregory Martins',
       role: 'CEO Novalstro',
       avatar:
@@ -22,7 +22,7 @@ export default function Highlights() {
     },
     {
       quote:
-        "TASBUN helped us find the right skilled persons to build something that's now used by thousands.",
+        "TASBON helped us find the right skilled persons to build something that's now used by thousands.",
       name: 'Gregory Martins',
       role: 'CEO Novalstro',
       avatar:
@@ -30,7 +30,7 @@ export default function Highlights() {
     },
     {
       quote:
-        "TASBUN helped us find the right skilled persons to build something that's now used by thousands.",
+        "TASBON helped us find the right skilled persons to build something that's now used by thousands.",
       name: 'Gregory Martins',
       role: 'CEO Novalstro',
       avatar:

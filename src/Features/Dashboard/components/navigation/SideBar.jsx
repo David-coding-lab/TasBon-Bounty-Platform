@@ -12,7 +12,7 @@ import {
   Gift,
   ArrowRight,
 } from 'lucide-react'
-import Logo from '../../Assets/logo.png'
+import Logo from '../../../../Assets/Tas-Logo.png'
 
 /**
  * Navigation items for the sidebar.
@@ -33,7 +33,7 @@ const navItems = [
  * Messages item includes a notification badge.
  */
 const secondaryNavItems = [
-  { icon: MessageSquare, label: 'Messages', path: '/messages', badge: 3 },
+  { icon: MessageSquare, label: 'Messages', path: '/messages' },
   { icon: Bookmark, label: 'Bookmark', path: '/bookmark' },
   { icon: Settings, label: 'Settings', path: '/settings' },
 ]
@@ -90,11 +90,11 @@ const SideBar = ({ isMobileOpen, onClose }) => {
       >
         <img
           src={Logo}
-          alt="TASBUN Logo"
+          alt="TASBON Logo"
           className="h-10 w-auto object-contain"
         />
-        <span className="font-inter font-bold text-[#009966] text-xl">
-          TASBUN
+        <span className="hidden xl:inline font-inter font-bold text-[#009966] text-2xl">
+          TASBON
         </span>
       </Link>
 
@@ -142,7 +142,11 @@ const SideBar = ({ isMobileOpen, onClose }) => {
             </span>
           </div>
           <button className="bg-[#FFFFFF] text-[#006045] text-base px-3 py-1 rounded-md flex flex-row items-center space-x-2 w-fit cursor-pointer">
-            <Link to="?modal=create-bounty" onClick={handleNavClick} className="flex items-center gap-1">
+            <Link
+              to="?modal=create-bounty"
+              onClick={handleNavClick}
+              className="flex items-center gap-1"
+            >
               <span>Create bounty</span>
               <ArrowRight size={16} className="text-[#006045]" />
             </Link>

@@ -6,9 +6,9 @@ export default function FAQ() {
 
   const faqs = [
     {
-      question: 'What is TASBUN?',
+      question: 'What is TASBON?',
       answer:
-        'TASBUN is a global collaborative platform built specifically for builders creators, and problem solvers. It provides a unified portal for participating in hackathons, working on active bounties, and securing grants from ecosystem companies.',
+        'TASBON is a global collaborative platform built specifically for builders creators, and problem solvers. It provides a unified portal for participating in hackathons, working on active bounties, and securing grants from ecosystem companies.',
     },
     {
       question: 'How do I participate in hackathons?',
@@ -18,17 +18,17 @@ export default function FAQ() {
     {
       question: 'What types of bounties are available?',
       answer:
-        'TASBUN features multiple bounty types, ranging from technical development and smart contract audits to content creation, marketing design, and developer relations operations.',
+        'TASBON features multiple bounty types, ranging from technical development and smart contract audits to content creation, marketing design, and developer relations operations.',
     },
     {
       question: 'How are grants distributed?',
       answer:
-        'Ecosystem partners submit grant proposals through TASBUN, and funding is disbursed to selected builders based on project milestones verified on-chain by peer assessors.',
+        'Ecosystem partners submit grant proposals through TASBON, and funding is disbursed to selected builders based on project milestones verified on-chain by peer assessors.',
     },
     {
       question: 'Is it free to join the community?',
       answer:
-        'Yes! TASBUN is fully open and free for creators and developers. You can join the developer guild, start contributing immediately, and build a verified reputational Portfolio.',
+        'Yes! TASBON is fully open and free for creators and developers. You can join the developer guild, start contributing immediately, and build a verified reputational Portfolio.',
     },
     {
       question: 'How do I build my builder profile?',

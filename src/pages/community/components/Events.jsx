@@ -8,7 +8,7 @@ export default function Events() {
       month: 'JUN',
       day: '08',
       label: 'AMA',
-      title: 'Building on TASBUN: Ask Me Anything',
+      title: 'Building on TASBON: Ask Me Anything',
       time: '3:00 PM UTC',
       attendeeCount: '+80',
       avatars: [
@@ -21,7 +21,7 @@ export default function Events() {
       month: 'JUN',
       day: '08',
       label: 'AMA',
-      title: 'Building on TASBUN: Ask Me Anything',
+      title: 'Building on TASBON: Ask Me Anything',
       time: '3:00 PM UTC',
       attendeeCount: '+80',
       avatars: [
@@ -34,7 +34,7 @@ export default function Events() {
       month: 'JUN',
       day: '08',
       label: 'AMA',
-      title: 'Building on TASBUN: Ask Me Anything',
+      title: 'Building on TASBON: Ask Me Anything',
       time: '3:00 PM UTC',
       attendeeCount: '+80',
       avatars: [
@@ -73,7 +73,7 @@ export default function Events() {
               whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
               whileTap={{ scale: 0.95 }}
             >
-              <span>View bounty</span>
+              <span>Coming Soon</span>
               <ArrowRight className="w-4 h-4" />
             </motion.button>
           </motion.div>
@@ -163,7 +163,7 @@ export default function Events() {
                     whileHover={{ scale: 1.08, transition: { duration: 0.2 } }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    Register
+                    Coming Soon
                   </motion.button>
                 </div>
               </motion.div>
