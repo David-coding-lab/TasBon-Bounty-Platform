@@ -452,24 +452,26 @@ export default function ViewBounty() {
               {bounty.title}
             </h1>
 
-            <button
-              onClick={handleBookmarkToggle}
-              disabled={bookmarkLoading}
-              className="cursor-pointer disabled:opacity-50 shrink-0"
-            >
-              <Bookmark
-                width={20}
-                fill={isBookmarked ? '#34A563' : 'none'}
-                stroke={isBookmarked ? '#34A563' : 'currentColor'}
-              />
-            </button>
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                onClick={handleBookmarkToggle}
+                disabled={bookmarkLoading}
+                className="cursor-pointer disabled:opacity-50"
+              >
+                <Bookmark
+                  width={20}
+                  fill={isBookmarked ? '#34A563' : 'none'}
+                  stroke={isBookmarked ? '#34A563' : 'currentColor'}
+                />
+              </button>
 
-            <div
-              className="flex flex-row space-x-2 cursor-pointer shrink-0"
-              onClick={() => setIsShareModalOpen(true)}
-            >
-              <Share2 width={20} />
-              <p className="text-base sm:text-lg font-bold">share</p>
+              <div
+                className="flex flex-row items-center gap-1.5 cursor-pointer"
+                onClick={() => setIsShareModalOpen(true)}
+              >
+                <Share2 width={18} />
+                <p className="text-sm sm:text-lg font-bold">share</p>
+              </div>
             </div>
           </div>
 
@@ -506,11 +508,11 @@ export default function ViewBounty() {
               ))}
             </div>
 
-            <div className="flex flex-row space-x-8 items-start">
-              <div className="pt-2">
+            <div className="flex flex-row space-x-3 sm:space-x-8 items-start">
+              <div className="pt-2 shrink-0">
                 <Calendar color="#34A563" />
               </div>
-              <div className="flex flex-col space-y-4">
+              <div className="flex flex-col space-y-4 flex-1 min-w-0">
                 <h1 className="text-[#000000] text-xl font-bold">Timeline</h1>
 
                 <div className="flex flex-col sm:flex-row gap-3 sm:space-x-8">
@@ -575,8 +577,8 @@ export default function ViewBounty() {
 
               {bounty?.attachments?.length > 0 && (
               <div className="flex flex-row space-x-3 sm:space-x-8 items-start">
-                <div className="pt-2 shrink-0">
-                  <Paperclip color="#34A563" />
+                <div className="pt-2 shrink-0 self-start">
+                  <Paperclip color="#34A563" size={20} />
                 </div>
                 <div className="flex flex-col space-y-4 sm:space-y-6 min-w-0">
                   <h1 className="text-[#000000] font-bold font-inter text-lg sm:text-xl">
@@ -593,9 +595,9 @@ export default function ViewBounty() {
                       return (
                         <div key={index} className="flex flex-col space-y-1">
                           <div className="flex flex-row items-center space-x-2">
-                            <FileMinus width={20} height={20} color="#616161" />
-                            <div className="flex flex-col space-y-1">
-                              <p className="text-[#616161] text-base truncate max-w-[200px]">
+                            <FileMinus width={18} height={18} color="#616161" />
+                            <div className="flex flex-col space-y-1 min-w-0">
+                              <p className="text-[#616161] text-sm sm:text-base truncate max-w-[140px] sm:max-w-[200px]">
                                 {fileName}
                               </p>
                               <p className="text-[#616161] text-xs">{ext}</p>
@@ -646,14 +648,14 @@ export default function ViewBounty() {
               <div className="w-full mt-5 h-px bg-gray-200" />
             </div>
 
-            <div className="flex flex-col">
+            <div className="flex flex-col divide-y divide-gray-100">
               {Object.entries(bountyMeta).map(([key, value]) => (
                 <div
                   key={key}
-                  className="flex flex-row justify-between items-start py-3"
+                  className="flex flex-row justify-between items-start py-3 gap-2"
                 >
-                  <p className="text-[#616161] text-lg">{metaLabels[key]}</p>
-                  <p className="text-[#616161] text-lg text-right">{value}</p>
+                  <p className="text-[#616161] text-sm sm:text-lg shrink-0">{metaLabels[key]}</p>
+                  <p className="text-[#616161] text-sm sm:text-lg text-right break-words max-w-[60%] sm:max-w-none">{value}</p>
                 </div>
               ))}
             </div>
@@ -710,7 +712,7 @@ export default function ViewBounty() {
                     <h2 className="text-[#000000] text-lg font-bold">
                       About the reward
                     </h2>
-                    <p className="text-[#616161] text-lg">
+                    <p className="text-[#616161] text-sm sm:text-lg">
                       {bounty?.rewardDescription ||
                         `The reward will be paid in ${bounty.rewardToken || 'USDC'} once the work is approved.`}
                     </p>
@@ -720,7 +722,7 @@ export default function ViewBounty() {
                     <h2 className="text-[#000000] text-lg font-bold">
                       Who can apply
                     </h2>
-                    <p className="text-[#616161] text-lg">
+                    <p className="text-[#616161] text-sm sm:text-lg">
                       {bounty?.eligibility ||
                         'Anyone with the required skills and experience can apply.'}
                     </p>
