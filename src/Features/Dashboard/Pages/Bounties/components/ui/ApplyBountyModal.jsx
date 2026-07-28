@@ -13,6 +13,7 @@ export default function ApplyBountyModal({
   onApply = () => {},
   isApplying = false,
   bounty = {},
+  userLevelTitle = '',
 }) {
   const displayTitle = bounty.title || 'Build DeFi Analytics Dashboard'
   const displayProject = bounty.clientName || 'Nexus Protocol'
@@ -20,7 +21,7 @@ export default function ApplyBountyModal({
   const displayReward = bounty.rewardAmount
     ? `$${Number(bounty.rewardAmount).toLocaleString()} ${bounty.rewardToken || 'USDC'}`
     : '$750 USDC'
-  const displayExperience = bounty.difficulty || 'Intermediate'
+  const displayExperience = userLevelTitle || bounty.difficulty || 'Intermediate'
   const displayCategory = bounty.category || 'Frontend'
   const displayDeadline = bounty.applicationDeadline
     ? new Date(bounty.applicationDeadline).toLocaleDateString('en-US', {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { ArrowLeft, Clock, Copy, Check, RefreshCw, Users, Image, FileArchive, Music, Link as LinkIcon } from 'lucide-react'
+import { ArrowLeft, Clock, Copy, Check, RefreshCw, Users, Image, FileArchive, Music, Link as LinkIcon, Bookmark, Share2, Calendar, Paperclip, FileMinus, Download, ArrowRight, ChevronRight, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import {
   fetchBountyById,
@@ -10,19 +10,23 @@ import {
   getSimilarBounties,
   listBounties,
 } from '../../../../../../pages/Bounties/Api/bounties'
-import { getPublicProfile } from '../../../../../../services/profile'
+import { getDashboardStats, getPublicProfile } from '../../../../../../services/profile'
 import { getBookmarks, createBookmark, deleteBookmark } from '../../../../../../services/bookmarks'
-import {
-  Bookmark,
-  Share2,
-  Calendar,
-  Paperclip,
-  FileMinus,
-  Download,
-  ArrowRight,
-  ChevronRight,
-  Loader2,
-} from 'lucide-react'
+
+const LEVEL_TITLES = {
+  1: 'Builder',
+  2: 'Builder',
+  3: 'Skilled Builder',
+  4: 'Skilled Builder',
+  5: 'Expert Builder',
+  6: 'Expert Builder',
+  7: 'Master Builder',
+  8: 'Master Builder',
+  9: 'Elite Builder',
+  10: 'Elite Builder',
+}
+
+const getLevelTitle = (level) => LEVEL_TITLES[level] || 'Builder'
 import TaskDetails from './TaskDetails'
 import AboutCreator from './AboutCreator'
 import GroupPhoto from '../../../../Assets/bountyIconLarge.png'
@@ -59,6 +63,9 @@ export default function ViewBounty() {
   const [bookmarkId, setBookmarkId] = useState(null)
   const [bookmarkLoading, setBookmarkLoading] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
+  const [userLevel, setUserLevel] = useState(null)
+
+  const userLevelTitle = userLevel ? `Level ${userLevel} - ${getLevelTitle(userLevel)}` : ''
 
   const handleOpen = (state) => state(true)
   const handleClose = (state) => state(false)
@@ -116,8 +123,9 @@ export default function ViewBounty() {
   useEffect(() => {
     if (!bountyId) return
     setLoading(true)
-    Promise.all([fetchBountyById(bountyId), getSimilarBounties(bountyId)])
-      .then(([bountyRes, similarRes]) => {
+    Promise.all([fetchBountyById(bountyId), getSimilarBounties(bountyId), getDashboardStats()])
+      .then(([bountyRes, similarRes, statsRes]) => {
+        setUserLevel(statsRes.data?.level || null)
         const bountyData = bountyRes.data
         setBounty(bountyData)
         setInviteCode(bountyData.inviteCode || null)
@@ -334,6 +342,7 @@ export default function ViewBounty() {
           <div onClick={(e) => e.stopPropagation()}>
             <ApplyBountyModal
               bounty={bounty}
+              userLevelTitle={userLevelTitle}
               onCancel={() => handleClose(setIsModalOpen)}
               onApply={handleApply}
               isApplying={isApplying}
