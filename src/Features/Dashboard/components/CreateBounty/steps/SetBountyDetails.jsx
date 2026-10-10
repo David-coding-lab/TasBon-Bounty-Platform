@@ -1,9 +1,24 @@
 import { useState, useRef } from 'react'
 
 const DELIVERABLE_TYPES = [
-  { value: 'image', label: 'Image', icon: 'image', desc: 'PNG, JPG, SVG, GIF, WebP' },
-  { value: 'zip', label: 'Zip File', icon: 'folder_zip', desc: 'ZIP, RAR, 7z archives' },
-  { value: 'audio', label: 'Audio', icon: 'audio_file', desc: 'MP3, WAV, AAC, FLAC' },
+  {
+    value: 'image',
+    label: 'Image',
+    icon: 'image',
+    desc: 'PNG, JPG, SVG, GIF, WebP',
+  },
+  {
+    value: 'zip',
+    label: 'Zip File',
+    icon: 'folder_zip',
+    desc: 'ZIP, RAR, 7z archives',
+  },
+  {
+    value: 'audio',
+    label: 'Audio',
+    icon: 'audio_file',
+    desc: 'MP3, WAV, AAC, FLAC',
+  },
   { value: 'link', label: 'Link', icon: 'link', desc: 'URL to deployed work' },
 ]
 
@@ -96,7 +111,7 @@ export default function Step1BountyDetails({
         <div className="relative">
           <input
             type="text"
-            className={`w-full py-3 px-4 border rounded-xl font-inter text-sm text-[#1a2a41] bg-white outline-none transition-all placeholder:text-[#a0b0c4] focus:ring-2 ${
+            className={`w-full py-3 pl-4 pr-14 border rounded-xl font-inter text-base sm:text-sm text-[#1a2a41] bg-white outline-none transition-all placeholder:text-[#a0b0c4] focus:ring-2 ${
               errors.title
                 ? 'border-red-400 focus:border-red-500 focus:ring-red-500/20'
                 : 'border-[#dce1e8] focus:border-primary focus:ring-[#34A563]/20'
@@ -131,7 +146,7 @@ export default function Step1BountyDetails({
           }`}
         >
           <textarea
-            className="w-full py-4 px-5 font-inter text-sm text-[#1a2a41] bg-transparent outline-none resize-y min-h-[160px] placeholder:text-[#a0b0c4]"
+            className="w-full py-4 px-5 font-inter text-base sm:text-sm text-[#1a2a41] bg-transparent outline-none resize-y min-h-[160px] placeholder:text-[#a0b0c4]"
             placeholder="Provide a detailed description of the work to be done..."
             value={formData.description}
             onChange={(e) => updateFormData('description', e.target.value)}
@@ -153,7 +168,8 @@ export default function Step1BountyDetails({
             Deliverables
           </label>
           <p className="font-inter text-xs text-[#6b7a8f] mt-0.5">
-            Specify what the builder needs to deliver. Choose the type that matches each deliverable.
+            Specify what the builder needs to deliver. Choose the type that
+            matches each deliverable.
           </p>
         </div>
 
@@ -173,13 +189,17 @@ export default function Step1BountyDetails({
                     <span className="text-xs font-medium text-[#34A563] uppercase tracking-wide">
                       {del.type}
                     </span>
-                    <p className="text-sm text-[#1a2a41] truncate">{del.description}</p>
+                    <p className="text-sm text-[#1a2a41] truncate">
+                      {del.description}
+                    </p>
                   </div>
                   <button
                     onClick={() => removeDeliverable(idx)}
                     className="bg-transparent border-none cursor-pointer text-[#a0b0c4] p-1 rounded transition-colors hover:text-[#e74c3c] hover:bg-red-50"
                   >
-                    <span className="material-symbols-outlined text-lg">delete</span>
+                    <span className="material-symbols-outlined text-lg">
+                      delete
+                    </span>
                   </button>
                 </div>
               )
@@ -188,28 +208,35 @@ export default function Step1BountyDetails({
         )}
 
         <div className="flex flex-col gap-2 p-4 border border-dashed border-[#dce1e8] rounded-xl bg-[#fafbfc]">
-          <div className="flex flex-row gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row">
             <select
               value={newDelType}
               onChange={(e) => setNewDelType(e.target.value)}
-              className="px-3 py-2 border border-[#dce1e8] rounded-lg bg-white text-sm text-[#1a2a41] outline-none focus:border-[#34A563] cursor-pointer"
+              className="w-full px-3 py-2.5 border border-[#dce1e8] rounded-lg bg-white text-base sm:text-sm text-[#1a2a41] outline-none focus:border-[#34A563] cursor-pointer sm:w-auto"
             >
               {DELIVERABLE_TYPES.map((t) => (
-                <option key={t.value} value={t.value}>{t.label}</option>
+                <option key={t.value} value={t.value}>
+                  {t.label}
+                </option>
               ))}
             </select>
             <input
               type="text"
               value={newDelDesc}
               onChange={(e) => setNewDelDesc(e.target.value)}
-              onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addDeliverable() } }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  addDeliverable()
+                }
+              }}
               placeholder="Describe this deliverable..."
-              className="flex-1 px-3 py-2 border border-[#dce1e8] rounded-lg bg-white text-sm text-[#1a2a41] outline-none focus:border-[#34A563] placeholder:text-[#a0b0c4]"
+              className="flex-1 w-full px-3 py-2.5 border border-[#dce1e8] rounded-lg bg-white text-base sm:text-sm text-[#1a2a41] outline-none focus:border-[#34A563] placeholder:text-[#a0b0c4]"
             />
             <button
               onClick={addDeliverable}
               disabled={!newDelDesc.trim()}
-              className="px-4 py-2 bg-[#34A563] text-white text-sm font-medium rounded-lg hover:bg-[#007A55] transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              className="w-full px-4 py-2.5 bg-[#34A563] text-white text-sm font-medium rounded-lg hover:bg-[#007A55] transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer sm:w-auto"
             >
               Add
             </button>
@@ -277,7 +304,8 @@ export default function Step1BountyDetails({
       {/* Cover Image */}
       <div className="flex flex-col gap-1.5">
         <label className="font-inter font-semibold text-sm text-[#1a2a41] flex items-center gap-1">
-          Cover Image <span className="text-[#94A3B8] text-xs font-normal">(optional)</span>
+          Cover Image{' '}
+          <span className="text-[#94A3B8] text-xs font-normal">(optional)</span>
         </label>
         <p className="font-inter text-xs text-[#6b7a8f] -mt-0.5">
           Upload an image that represents your bounty.
@@ -294,7 +322,12 @@ export default function Step1BountyDetails({
               className="absolute top-2 right-2 bg-black/50 text-white rounded-full p-1 hover:bg-black/70 transition-colors cursor-pointer"
             >
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                <path
+                  d="M4 4l8 8M12 4l-8 8"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
               </svg>
             </button>
           </div>
@@ -303,8 +336,18 @@ export default function Step1BountyDetails({
             className="border-2 border-dashed border-[#dce1e8] rounded-xl py-8 px-5 text-center cursor-pointer transition-all bg-[#fafbfc] hover:border-[#34A563] hover:bg-[#fafffe]"
             onClick={() => imageInputRef.current?.click()}
           >
-            <svg className="w-10 h-10 mx-auto mb-2 text-[#a0b0c4]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21zm16.5-13.5h-3.75" />
+            <svg
+              className="w-10 h-10 mx-auto mb-2 text-[#a0b0c4]"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.5}
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21zm16.5-13.5h-3.75"
+              />
             </svg>
             <p className="font-inter text-sm text-[#1a2a41] my-1">
               {uploadingImage ? 'Uploading...' : 'Click to upload cover image'}
@@ -377,23 +420,37 @@ export default function Step1BountyDetails({
           Experience Level
           <span className="text-[#e74c3c]">*</span>
         </label>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-3">
           {[
-            { value: 'Beginner', label: 'Beginner', desc: 'Entry-level, guided tasks' },
-            { value: 'Intermediate', label: 'Intermediate', desc: 'Some experience needed' },
-            { value: 'Advanced', label: 'Advanced', desc: 'Expert-level challenges' },
+            {
+              value: 'Beginner',
+              label: 'Beginner',
+              desc: 'Entry-level, guided tasks',
+            },
+            {
+              value: 'Intermediate',
+              label: 'Intermediate',
+              desc: 'Some experience needed',
+            },
+            {
+              value: 'Advanced',
+              label: 'Advanced',
+              desc: 'Expert-level challenges',
+            },
           ].map((level) => (
             <button
               key={level.value}
               type="button"
               onClick={() => updateFormData('difficulty', level.value)}
-              className={`flex flex-col items-start gap-1 p-4 rounded-xl border text-left transition-all ${
+              className={`flex flex-row items-center gap-3 p-3.5 rounded-xl border text-left transition-all sm:flex-col sm:items-start sm:gap-1 sm:p-4 ${
                 formData.difficulty === level.value
                   ? 'border-[#34A563] bg-[#f0faf5] shadow-[0_0_0_1px_#34A563]'
                   : 'border-[#dce1e8] bg-white hover:border-[#b0c4d8]'
               }`}
             >
-              <span className={`font-semibold text-sm ${formData.difficulty === level.value ? 'text-[#34A563]' : 'text-[#1a2a41]'}`}>
+              <span
+                className={`font-semibold text-sm shrink-0 sm:text-sm ${formData.difficulty === level.value ? 'text-[#34A563]' : 'text-[#1a2a41]'}`}
+              >
                 {level.label}
               </span>
               <span className="text-xs text-[#6b7a8f]">{level.desc}</span>
@@ -401,7 +458,9 @@ export default function Step1BountyDetails({
           ))}
         </div>
         {errors.difficulty && (
-          <p className="text-red-500 text-xs mt-1 font-inter">{errors.difficulty}</p>
+          <p className="text-red-500 text-xs mt-1 font-inter">
+            {errors.difficulty}
+          </p>
         )}
       </div>
     </div>

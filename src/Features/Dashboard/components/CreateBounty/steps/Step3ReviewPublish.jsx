@@ -104,76 +104,81 @@ export default function Step3ReviewPublish({ formData }) {
             />
           </div>
         )}
-        <div className="p-5">
-        <div className="flex items-start justify-between gap-4">
-          {/* Left: badge + title + org + description + skills */}
-          <div className="flex-1 min-w-0">
-            <span className="inline-block rounded-md bg-[#e6f5ed] px-2.5 py-0.5 text-xs font-semibold text-[#34A563]">
-              {formData.category || 'Smart Contracts'}
-            </span>
-            <h4 className="mt-2 text-lg font-bold text-[#0b1a33]">
-              {formData.title || 'Audit DeFi Protocol Smart Contracts'}
-            </h4>
-
-            {/* Creator row */}
-            <div className="mt-3 flex items-center gap-2">
-              {user?.avatarUrl ? (
-                <img src={user.avatarUrl} alt={user.fullName} className="w-7 h-7 rounded-full object-cover" />
-              ) : (
-                <div className="w-7 h-7 rounded-full bg-[#34A563] flex items-center justify-center text-white text-xs font-bold">
-                  {user?.fullName?.charAt(0) || '?'}
-                </div>
-              )}
-              <span className="font-bold text-sm text-[#1a2a41] tracking-wide">
-                {user?.fullName || 'TASHUB'}
+        <div className="p-4 sm:p-5">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            {/* Left: badge + title + org + description + skills */}
+            <div className="flex-1 min-w-0">
+              <span className="inline-block rounded-md bg-[#e6f5ed] px-2.5 py-0.5 text-xs font-semibold text-[#34A563]">
+                {formData.category || 'Smart Contracts'}
               </span>
-              <VerifiedIcon />
-            </div>
+              <h4 className="mt-2 text-lg font-bold text-[#0b1a33]">
+                {formData.title || 'Audit DeFi Protocol Smart Contracts'}
+              </h4>
 
-            {/* Description */}
-            <p className="mt-2 text-sm leading-relaxed text-[#4a5568]">
-              {formData.description ||
-                'We need a comprehensive security audit of our DeFi protocol smart contracts. The audit should cover all core contracts including staking, governance, and reward distribution mechanisms.'}
-            </p>
-
-            {/* Skill pills */}
-            <div className="mt-4 flex flex-wrap gap-2">
-              {(formData.skills?.length > 0
-                ? formData.skills
-                : ['Solidity', 'Smart Contract', 'DeFi', 'Security']
-              ).map((skill) => (
-                <span
-                  key={skill}
-                  className="rounded-lg border border-[#dce1e8] bg-white px-4 py-1.5 text-sm font-medium text-[#1a2a41]"
-                >
-                  {skill}
+              {/* Creator row */}
+              <div className="mt-3 flex items-center gap-2">
+                {user?.avatarUrl ? (
+                  <img
+                    src={user.avatarUrl}
+                    alt={user.fullName}
+                    className="w-7 h-7 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="w-7 h-7 rounded-full bg-[#34A563] flex items-center justify-center text-white text-xs font-bold">
+                    {user?.fullName?.charAt(0) || '?'}
+                  </div>
+                )}
+                <span className="font-bold text-sm text-[#1a2a41] tracking-wide">
+                  {user?.fullName || 'TASHUB'}
                 </span>
-              ))}
-            </div>
-          </div>
+                <VerifiedIcon />
+              </div>
 
-          {/* Right: reward box */}
-          <div className="shrink-0 rounded-xl border border-[#dce1e8] bg-white px-5 py-3 text-right min-w-[130px]">
-            <div className="text-lg font-bold text-[#0b1a33]">
-              ${formData.rewardAmount || '1200'} {formData.rewardToken || 'USDC'}
+              {/* Description */}
+              <p className="mt-2 text-sm leading-relaxed text-[#4a5568]">
+                {formData.description ||
+                  'We need a comprehensive security audit of our DeFi protocol smart contracts. The audit should cover all core contracts including staking, governance, and reward distribution mechanisms.'}
+              </p>
+
+              {/* Skill pills */}
+              <div className="mt-4 flex flex-wrap gap-2">
+                {(formData.skills?.length > 0
+                  ? formData.skills
+                  : ['Solidity', 'Smart Contract', 'DeFi', 'Security']
+                ).map((skill) => (
+                  <span
+                    key={skill}
+                    className="rounded-lg border border-[#dce1e8] bg-white px-4 py-1.5 text-sm font-medium text-[#1a2a41]"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
             </div>
-            <div className="mt-1.5 flex items-center justify-end gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-[#34A563] shrink-0" />
-              <span className="text-sm font-medium text-[#1a2a41]">
-                {formData.rewardType === 'milestone'
-                  ? 'Milestone'
-                  : 'Fixed price'}
-              </span>
+
+            {/* Right: reward box */}
+            <div className="w-full shrink-0 rounded-xl border border-[#dce1e8] bg-white px-5 py-3 text-left sm:w-auto sm:min-w-[130px] sm:text-right">
+              <div className="text-lg font-bold text-[#0b1a33] break-words">
+                ${formData.rewardAmount || '1200'}{' '}
+                {formData.rewardToken || 'USDC'}
+              </div>
+              <div className="mt-1.5 flex items-center justify-start gap-1.5 sm:justify-end">
+                <span className="w-2 h-2 rounded-full bg-[#34A563] shrink-0" />
+                <span className="text-sm font-medium text-[#1a2a41]">
+                  {formData.rewardType === 'milestone'
+                    ? 'Milestone'
+                    : 'Fixed price'}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
 
       {/* Bottom two cards */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {/* Left card: Bounty Details (content fields) */}
-        <div className="rounded-2xl border border-[#e2e8f0] bg-white p-5 flex flex-col gap-5">
+        <div className="rounded-2xl border border-[#e2e8f0] bg-white p-4 sm:p-5 flex flex-col gap-5">
           <h5 className="font-bold text-base text-[#0b1a33]">Bounty Details</h5>
 
           {/* Title */}
@@ -219,8 +224,22 @@ export default function Step3ReviewPublish({ formData }) {
             <div className="flex items-start gap-3">
               <div className="w-8 h-8 rounded-lg bg-[#f0faf5] flex items-center justify-center shrink-0">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <rect x="1" y="1" width="14" height="14" rx="2" stroke="#34A563" strokeWidth="1.5" />
-                  <path d="M5 8l2 2 4-4" stroke="#34A563" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <rect
+                    x="1"
+                    y="1"
+                    width="14"
+                    height="14"
+                    rx="2"
+                    stroke="#34A563"
+                    strokeWidth="1.5"
+                  />
+                  <path
+                    d="M5 8l2 2 4-4"
+                    stroke="#34A563"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               </div>
               <div className="pb-3">
@@ -228,10 +247,18 @@ export default function Step3ReviewPublish({ formData }) {
                 <div className="mt-1 flex flex-col gap-1">
                   {formData.deliverables.map((item, idx) => {
                     let del
-                    try { del = JSON.parse(item) } catch { del = { type: 'link', description: item } }
+                    try {
+                      del = JSON.parse(item)
+                    } catch {
+                      del = { type: 'link', description: item }
+                    }
                     return (
                       <span key={idx} className="text-sm text-[#4a5568]">
-                        • <span className="font-medium text-[#34A563]">{del.type}</span>: {del.description}
+                        •{' '}
+                        <span className="font-medium text-[#34A563]">
+                          {del.type}
+                        </span>
+                        : {del.description}
                       </span>
                     )
                   })}
@@ -242,7 +269,7 @@ export default function Step3ReviewPublish({ formData }) {
         </div>
 
         {/* Right card: Bounty Details (reward/logistics) */}
-        <div className="rounded-2xl border border-[#e2e8f0] bg-white p-5 flex flex-col gap-0">
+        <div className="rounded-2xl border border-[#e2e8f0] bg-white p-4 sm:p-5 flex flex-col gap-0">
           <h5 className="font-bold text-base text-[#0b1a33] mb-4">
             Bounty Details
           </h5>
@@ -319,8 +346,21 @@ export default function Step3ReviewPublish({ formData }) {
             <div className="flex items-center gap-1.5">
               {formData.isPrivate ? (
                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                  <rect x="3.5" y="7" width="11" height="8" rx="2" stroke="#34A563" strokeWidth="1.3" />
-                  <path d="M6 7V5a3 3 0 016 0v2" stroke="#34A563" strokeWidth="1.3" strokeLinecap="round" />
+                  <rect
+                    x="3.5"
+                    y="7"
+                    width="11"
+                    height="8"
+                    rx="2"
+                    stroke="#34A563"
+                    strokeWidth="1.3"
+                  />
+                  <path
+                    d="M6 7V5a3 3 0 016 0v2"
+                    stroke="#34A563"
+                    strokeWidth="1.3"
+                    strokeLinecap="round"
+                  />
                 </svg>
               ) : (
                 <CircleCheckIcon />

@@ -233,25 +233,23 @@ const CreateBountyModal = () => {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs">
-      <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm w-screen h-screen flex items-center justify-center z-1000 p-5"
-        onClick={handleOverlayClick}
-      >
-        <div className="bg-white rounded-3xl max-w-205 w-full max-h-[90vh] flex flex-col shadow-2xl animate-[modalFadeIn_0.25s_ease-out] overflow-hidden">
-          <BountyHeader onClose={handleClose} />
-          <StepsIndicator activeStep={activeStep} />
-          <div className="flex-1 overflow-y-auto px-8 pt-5 pb-6 scrollbar-thin scrollbar-track-[#f0f3f7] scrollbar-thumb-[#d0d7e0] hover:scrollbar-thumb-[#b0c0d0] max-sm:px-5 max-sm:pt-4 max-sm:pb-5">
-            {renderStepContent()}
-          </div>
-          <BountyFooter
-            activeStep={activeStep}
-            onBack={handleBack}
-            onNext={handleNext}
-            onPublish={handlePublish}
-            isPublishing={isPublishing}
-          />
+    <div
+      className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-sm p-0 sm:items-center sm:p-5"
+      onClick={handleOverlayClick}
+    >
+      <div className="flex max-h-[92dvh] w-full flex-col overflow-hidden bg-white shadow-2xl animate-[modalFadeIn_0.25s_ease-out] rounded-t-3xl sm:rounded-3xl sm:max-w-205 sm:max-h-[90vh]">
+        <BountyHeader onClose={handleClose} />
+        <StepsIndicator activeStep={activeStep} />
+        <div className="flex-1 overflow-y-auto overscroll-contain px-5 pt-4 pb-5 sm:px-8 sm:pt-5 sm:pb-6 scrollbar-thin scrollbar-track-[#f0f3f7] scrollbar-thumb-[#d0d7e0] hover:scrollbar-thumb-[#b0c0d0]">
+          {renderStepContent()}
         </div>
+        <BountyFooter
+          activeStep={activeStep}
+          onBack={handleBack}
+          onNext={handleNext}
+          onPublish={handlePublish}
+          isPublishing={isPublishing}
+        />
       </div>
     </div>
   )
