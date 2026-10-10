@@ -16,7 +16,7 @@ const BountiesCard = ({
 }) => {
   return (
     /* Card container: vertical layout with border and rounded bottom corners */
-    <div className="flex flex-col gap-1.5 border border-[#E5E7EB] rounded-2xl overflow-hidden w-70 min-w-70 max-w-70 shrink-0">
+    <div className="flex w-full min-w-0 max-w-70 shrink-0 flex-col gap-1.5 overflow-hidden rounded-2xl border border-[#E5E7EB] sm:w-70 sm:min-w-70">
       {/* Header image — full width */}
       <img
         src={headerImg}
