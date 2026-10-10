@@ -377,7 +377,7 @@ export default function ViewBounty() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen w-full min-w-0 flex-col overflow-x-clip bg-[#ffffff] px-4 pb-6 pt-2 sm:px-8 sm:pt-12">
+    <main className="mx-auto flex min-h-screen w-full min-w-0 flex-col overflow-x-clip bg-[#ffffff] px-5 pb-10 pt-2 sm:px-8 sm:pt-12">
       <button
         onClick={() => navigate(-1)}
         className="mb-4 inline-flex w-fit items-center gap-1.5 rounded-lg px-1 py-2 text-sm text-gray-500 transition-colors cursor-pointer hover:text-emerald-600 sm:mb-6 sm:pt-10"
