@@ -26,29 +26,29 @@ export default function Step2RewardLogistics({
   return (
     <div className="flex flex-col font-sans text-[#1a2a41]">
       {/* Reward Section */}
-      <div className="py-6">
+      <div className="py-4 sm:py-6">
         <h2 className="font-bold text-base text-[#1a2a41] mb-0.5">Reward</h2>
-        <p className="text-sm text-[#6b7a8f] mb-5">
+        <p className="text-sm text-[#6b7a8f] mb-4 sm:mb-5">
           Set the compensation and reward structure for this bounty.
         </p>
 
         {/* Reward Amount + Reward Type side by side */}
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
           {/* Reward Amount */}
           <div className="flex flex-col gap-2">
             <label className="flex items-center gap-1 font-bold text-sm text-[#1a2a41]">
               Reward Amount
               <span className="text-[#e74c3c]">*</span>
             </label>
-            <div className="flex gap-2">
+            <div className="flex gap-2 min-w-0">
               {/* Token selector */}
-              <div className="relative group">
+              <div className="relative group shrink-0">
                 <select
                   value={formData.rewardToken}
                   onChange={(e) =>
                     updateFormData('rewardToken', e.target.value)
                   }
-                  className="appearance-none flex items-center gap-1 px-3 border border-[#dce1e8] rounded-xl bg-white h-12 font-semibold text-sm text-[#1a2a41] cursor-pointer hover:border-[#b0c4d8] transition-colors min-w-[90px] pr-8 outline-none"
+                  className="appearance-none flex items-center gap-1 px-3 border border-[#dce1e8] rounded-xl bg-white h-12 font-semibold text-base sm:text-sm text-[#1a2a41] cursor-pointer hover:border-[#b0c4d8] transition-colors min-w-[84px] sm:min-w-[90px] pr-8 outline-none"
                 >
                   <option value="USDC">USDC</option>
                   <option value="USDT">USDT</option>
@@ -76,7 +76,7 @@ export default function Step2RewardLogistics({
               </div>
               {/* Amount input */}
               <div
-                className={`flex-1 flex items-center border rounded-xl bg-white px-4 h-12 focus-within:ring-2 ${
+                className={`flex-1 min-w-0 flex items-center border rounded-xl bg-white px-3 sm:px-4 h-12 focus-within:ring-2 ${
                   errors.rewardAmount
                     ? 'border-red-400 focus-within:border-red-500 focus-within:ring-red-500/20'
                     : 'border-[#dce1e8] focus-within:ring-[#34A563] focus-within:border-[#34A563]'
@@ -84,12 +84,13 @@ export default function Step2RewardLogistics({
               >
                 <input
                   type="number"
-                  className="w-full border-0 outline-none font-semibold text-[#1a2a41] bg-transparent text-sm"
+                  className="w-full min-w-0 border-0 outline-none font-semibold text-[#1a2a41] bg-transparent text-base sm:text-sm"
                   value={formData.rewardAmount}
                   onChange={(e) =>
                     updateFormData('rewardAmount', Number(e.target.value))
                   }
                   min={0}
+                  inputMode="decimal"
                 />
                 <span className="text-sm font-medium text-[#a0b0c4] ml-2 shrink-0">
                   {formData.rewardToken || 'USDC'}
@@ -108,9 +109,9 @@ export default function Step2RewardLogistics({
             <label className="font-bold text-sm text-[#1a2a41]">
               Reward Type
             </label>
-            <div className="flex gap-2 h-12">
+            <div className="flex gap-2 h-auto sm:h-12">
               <button
-                className={`flex-1 px-3 border rounded-xl bg-white text-left transition-colors hover:border-[#b0c4d8] ${
+                className={`flex-1 min-w-0 px-2.5 sm:px-3 py-2.5 sm:py-0 border rounded-xl bg-white text-left transition-colors hover:border-[#b0c4d8] ${
                   formData.rewardType === 'fixed'
                     ? 'border-[#34A563] bg-[#f0faf5] shadow-[0_0_0_1px_#34A563]'
                     : 'border-[#dce1e8]'
@@ -118,28 +119,28 @@ export default function Step2RewardLogistics({
                 onClick={() => updateFormData('rewardType', 'fixed')}
               >
                 <span
-                  className={`font-semibold text-sm block ${formData.rewardType === 'fixed' ? 'text-[#34A563]' : 'text-[#1a2a41]'}`}
+                  className={`font-semibold text-[13px] sm:text-sm block truncate ${formData.rewardType === 'fixed' ? 'text-[#34A563]' : 'text-[#1a2a41]'}`}
                 >
                   Fixed Price
                 </span>
-                <span className="block text-xs text-[#6b7a8f]">
+                <span className="block text-[11px] sm:text-xs text-[#6b7a8f] truncate">
                   One-time Payment
                 </span>
               </button>
               <button
                 disabled
-                className={`flex-1 px-3 border rounded-xl bg-white text-left transition-colors opacity-50 cursor-not-allowed ${
+                className={`flex-1 min-w-0 px-2.5 sm:px-3 py-2.5 sm:py-0 border rounded-xl bg-white text-left transition-colors opacity-50 cursor-not-allowed ${
                   formData.rewardType === 'milestone'
                     ? 'border-[#34A563] bg-[#f0faf5] shadow-[0_0_0_1px_#34A563]'
                     : 'border-[#dce1e8]'
                 }`}
               >
                 <span
-                  className={`font-semibold text-sm block ${formData.rewardType === 'milestone' ? 'text-[#34A563]' : 'text-[#1a2a41]'}`}
+                  className={`font-semibold text-[13px] sm:text-sm block truncate ${formData.rewardType === 'milestone' ? 'text-[#34A563]' : 'text-[#1a2a41]'}`}
                 >
                   Milestone
                 </span>
-                <span className="block text-xs text-[#6b7a8f]">
+                <span className="block text-[11px] sm:text-xs text-[#6b7a8f] truncate">
                   Pay in stages
                 </span>
               </button>
@@ -151,20 +152,20 @@ export default function Step2RewardLogistics({
       <hr className="border-[#edf0f4]" />
 
       {/* Timeline Section */}
-      <div className="py-6">
+      <div className="py-4 sm:py-6">
         <h2 className="font-bold text-base text-[#1a2a41] mb-0.5">Timeline</h2>
-        <p className="text-sm text-[#6b7a8f] mb-5">
+        <p className="text-sm text-[#6b7a8f] mb-4 sm:mb-5">
           Define the important date for applications and delivery.
         </p>
 
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
           {/* Application Deadline */}
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 min-w-0">
             <label className="font-bold text-sm text-[#1a2a41]">
               Application Deadline
             </label>
-            <div className="flex border border-[#dce1e8] rounded-xl overflow-hidden bg-white focus-within:ring-2 focus-within:ring-[#34A563] focus-within:border-[#34A563] h-12">
-              <div className="flex items-center gap-2 px-3 flex-1">
+            <div className="flex flex-col border border-[#dce1e8] rounded-xl overflow-hidden bg-white focus-within:ring-2 focus-within:ring-[#34A563] focus-within:border-[#34A563] h-auto sm:flex-row sm:h-12">
+              <div className="flex items-center gap-2 px-3 py-2.5 sm:py-0 flex-1 min-w-0">
                 <svg
                   width="16"
                   height="16"
@@ -195,7 +196,7 @@ export default function Step2RewardLogistics({
                 </svg>
                 <input
                   type="date"
-                  className="border-0 outline-none bg-transparent text-sm text-[#1a2a41] font-medium w-full"
+                  className="border-0 outline-none bg-transparent text-base sm:text-sm text-[#1a2a41] font-medium w-full min-w-0"
                   value={formData.applicationDeadline?.split('T')[0] || ''}
                   onChange={(e) => {
                     const time =
@@ -209,10 +210,10 @@ export default function Step2RewardLogistics({
                   }}
                 />
               </div>
-              <div className="flex items-center border-l border-[#dce1e8] px-3 gap-2">
+              <div className="flex items-center border-t sm:border-t-0 sm:border-l border-[#dce1e8] px-3 py-2.5 sm:py-0 gap-2">
                 <input
                   type="time"
-                  className="border-0 outline-none bg-transparent text-sm text-[#1a2a41] font-medium"
+                  className="border-0 outline-none bg-transparent text-base sm:text-sm text-[#1a2a41] font-medium w-full min-w-0"
                   value={
                     formData.applicationDeadline?.split('T')[1]?.slice(0, 5) ||
                     '23:59'
@@ -252,18 +253,18 @@ export default function Step2RewardLogistics({
           </div>
 
           {/* Bounty Deadline */}
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 min-w-0">
             <label className="font-bold text-sm text-[#1a2a41]">
               Bounty Deadline
             </label>
             <div
-              className={`flex border rounded-xl overflow-hidden bg-white focus-within:ring-2 h-12 ${
+              className={`flex flex-col sm:flex-row border rounded-xl overflow-hidden bg-white focus-within:ring-2 h-auto sm:h-12 ${
                 errors.bountyDeadline
                   ? 'border-red-400 focus-within:border-red-500 focus-within:ring-red-500/20'
                   : 'border-[#dce1e8] focus-within:ring-[#34A563] focus-within:border-[#34A563]'
               }`}
             >
-              <div className="flex items-center gap-2 px-3 flex-1">
+              <div className="flex items-center gap-2 px-3 py-2.5 sm:py-0 flex-1 min-w-0">
                 <svg
                   width="16"
                   height="16"
@@ -294,7 +295,7 @@ export default function Step2RewardLogistics({
                 </svg>
                 <input
                   type="date"
-                  className="border-0 outline-none bg-transparent text-sm text-[#1a2a41] font-medium w-full"
+                  className="border-0 outline-none bg-transparent text-base sm:text-sm text-[#1a2a41] font-medium w-full min-w-0"
                   value={formData.bountyDeadline?.split('T')[0] || ''}
                   onChange={(e) => {
                     const time =
@@ -307,10 +308,10 @@ export default function Step2RewardLogistics({
                   }}
                 />
               </div>
-              <div className="flex items-center border-l border-[#dce1e8] px-3 gap-2">
+              <div className="flex items-center border-t sm:border-t-0 sm:border-l border-[#dce1e8] px-3 py-2.5 sm:py-0 gap-2">
                 <input
                   type="time"
-                  className="border-0 outline-none bg-transparent text-sm text-[#1a2a41] font-medium"
+                  className="border-0 outline-none bg-transparent text-base sm:text-sm text-[#1a2a41] font-medium w-full min-w-0"
                   value={
                     formData.bountyDeadline?.split('T')[1]?.slice(0, 5) ||
                     '23:59'
@@ -360,11 +361,11 @@ export default function Step2RewardLogistics({
       <hr className="border-[#edf0f4]" />
 
       {/* Required Skills Section */}
-      <div className="py-6">
+      <div className="py-4 sm:py-6">
         <h2 className="font-bold text-base text-[#1a2a41] mb-0.5">
           Required Skills
         </h2>
-        <p className="text-sm text-[#6b7a8f] mb-5">
+        <p className="text-sm text-[#6b7a8f] mb-4 sm:mb-5">
           Add relevant skills or tags to attract the right builders.
         </p>
 
@@ -394,7 +395,7 @@ export default function Step2RewardLogistics({
             ))}
             <input
               type="text"
-              className="border-0 outline-none bg-transparent text-sm text-[#1a2a41] flex-1 min-w-[100px] placeholder:text-[#a0b0c4]"
+              className="border-0 outline-none bg-transparent text-base sm:text-sm text-[#1a2a41] flex-1 min-w-[100px] placeholder:text-[#a0b0c4]"
               placeholder={formData.skills.length === 0 ? 'Add a skill...' : ''}
               value={skillInput}
               onChange={(e) => setSkillInput(e.target.value)}
@@ -424,25 +425,31 @@ export default function Step2RewardLogistics({
       <hr className="border-[#edf0f4]" />
 
       {/* Additional Settings Section */}
-      <div className="py-6">
+      <div className="py-4 sm:py-6">
         <h2 className="font-bold text-base text-[#1a2a41] mb-0.5">
           Additional Settings
         </h2>
-        <p className="text-sm text-[#6b7a8f] mb-5">
+        <p className="text-sm text-[#6b7a8f] mb-4 sm:mb-5">
           More options to customize this bounty
         </p>
 
         <button
-          className={`flex items-center gap-4 px-4 py-3.5 border rounded-xl bg-white text-left transition-all w-full max-w-sm hover:border-[#b0c4d8] ${
-            formData.isPrivate ? 'border-[#34A563] bg-[#f0faf5]' : 'border-[#dce1e8]'
+          className={`flex items-start sm:items-center gap-3 sm:gap-4 px-4 py-3.5 border rounded-xl bg-white text-left transition-all w-full sm:max-w-sm hover:border-[#b0c4d8] ${
+            formData.isPrivate
+              ? 'border-[#34A563] bg-[#f0faf5]'
+              : 'border-[#dce1e8]'
           }`}
           onClick={() => updateFormData('isPrivate', !formData.isPrivate)}
         >
           <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0">
             {formData.isPrivate ? (
-              <span className="material-symbols-outlined text-[#34A563] text-[20px]">link</span>
+              <span className="material-symbols-outlined text-[#34A563] text-[20px]">
+                link
+              </span>
             ) : (
-              <span className="material-symbols-outlined text-[20px]">lock</span>
+              <span className="material-symbols-outlined text-[20px]">
+                lock
+              </span>
             )}
           </div>
           <div>

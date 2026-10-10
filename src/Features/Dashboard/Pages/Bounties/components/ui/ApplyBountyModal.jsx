@@ -17,11 +17,14 @@ export default function ApplyBountyModal({
 }) {
   const displayTitle = bounty.title || 'Build DeFi Analytics Dashboard'
   const displayProject = bounty.clientName || 'Nexus Protocol'
-  const displayImage = bounty.imageUrl || 'https://images.unsplash.com/photo-1642104704074-907c0698cbd9?q=80&w=400&auto=format&fit=crop'
+  const displayImage =
+    bounty.imageUrl ||
+    'https://images.unsplash.com/photo-1642104704074-907c0698cbd9?q=80&w=400&auto=format&fit=crop'
   const displayReward = bounty.rewardAmount
     ? `$${Number(bounty.rewardAmount).toLocaleString()} ${bounty.rewardToken || 'USDC'}`
     : '$750 USDC'
-  const displayExperience = userLevelTitle || bounty.difficulty || 'Intermediate'
+  const displayExperience =
+    userLevelTitle || bounty.difficulty || 'Intermediate'
   const displayCategory = bounty.category || 'Frontend'
   const displayDeadline = bounty.applicationDeadline
     ? new Date(bounty.applicationDeadline).toLocaleDateString('en-US', {
@@ -36,8 +39,8 @@ export default function ApplyBountyModal({
   }
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center p-4 font-[Inter]">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
+    <div className="flex w-full items-center justify-center font-[Inter]">
+      <div className="w-full max-w-md rounded-2xl bg-white p-5 shadow-xl sm:p-8">
         <div className="flex justify-center mb-6">
           <div className="relative w-20 h-20 rounded-full bg-[#15803D]/10 flex items-center justify-center">
             <FileText className="w-9 h-9 text-[#15803D]" strokeWidth={1.75} />
@@ -55,14 +58,14 @@ export default function ApplyBountyModal({
           your profile and portfolio are up to date.
         </p>
 
-        <div className="border border-slate-200 rounded-xl p-3 flex items-center gap-3 mb-6">
+        <div className="mb-6 flex items-center gap-3 rounded-xl border border-slate-200 p-3">
           <img
             src={displayImage}
             alt={displayTitle}
-            className="w-16 h-16 rounded-lg object-cover shrink-0"
+            className="h-16 w-16 shrink-0 rounded-lg object-cover"
           />
-          <div>
-            <h3 className="font-bold text-slate-900 text-base leading-snug">
+          <div className="min-w-0">
+            <h3 className="break-words text-base font-bold leading-snug text-slate-900">
               {displayTitle}
             </h3>
             <div className="flex items-center gap-1 text-[#64748B] text-sm mt-0.5">
@@ -94,8 +97,6 @@ export default function ApplyBountyModal({
             value={displayDeadline}
           />
         </div>
-
-
 
         <div className="bg-[#15803D]/5 rounded-xl p-4 flex gap-3 mb-8">
           <ShieldCheck className="w-5 h-5 text-[#15803D] shrink-0 mt-0.5" />
@@ -145,12 +146,16 @@ function DetailRow({
   valueClass = 'text-slate-900 font-medium',
 }) {
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex items-center gap-2.5 text-[#64748B]">
+    <div className="flex items-center justify-between gap-3">
+      <div className="flex min-w-0 items-center gap-2.5 text-[#64748B]">
         {icon}
-        <span className="text-[15px]">{label}</span>
+        <span className="shrink-0 text-[15px]">{label}</span>
       </div>
-      <span className={`text-[15px] ${valueClass}`}>{value}</span>
+      <span
+        className={`min-w-0 break-words text-right text-[15px] ${valueClass}`}
+      >
+        {value}
+      </span>
     </div>
   )
 }

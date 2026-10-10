@@ -2,53 +2,70 @@ import { BadgeCheck, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import Bountycardmini from './Bountycardmini'
 
-const AboutCreator = ({ creatorName, creatorAvatar, creatorId, creatorProfile, recentBounties }) => {
+const AboutCreator = ({
+  creatorName,
+  creatorAvatar,
+  creatorId,
+  creatorProfile,
+  recentBounties,
+}) => {
   const displayName = creatorName || 'Unknown Creator'
-  const avatarUrl = creatorAvatar || `https://avatar.vercel.sh/${encodeURIComponent(displayName)}`
+  const avatarUrl =
+    creatorAvatar ||
+    `https://avatar.vercel.sh/${encodeURIComponent(displayName)}`
 
   return (
-    <div className="flex flex-col space-y-8 pt-12">
-      <h1 className="text-[#000000] font-bold font-inter text-lg ">
+    <div className="flex min-w-0 flex-col space-y-6 pt-8 sm:space-y-8 sm:pt-12">
+      <h1 className="font-inter text-lg font-bold text-[#000000]">
         About the creator
       </h1>
 
-      <div className="rounded-lg w-full">
-        <div className="flex flex-row space-x-3 p-3">
+      <div className="w-full min-w-0 rounded-lg">
+        <div className="flex min-w-0 flex-row gap-3 p-3">
           <img
             src={avatarUrl}
             alt={displayName}
-            className="h-12 w-12 rounded-full object-cover"
+            className="h-12 w-12 shrink-0 rounded-full object-cover"
           />
 
-          <div className="flex flex-col space-y-3">
-            <div className="flex space-x-3 items-center">
-              <p className="text-base font-bold text-[#000000]">
+          <div className="flex min-w-0 flex-col space-y-2 sm:space-y-3">
+            <div className="flex items-center gap-2 sm:space-x-3">
+              <p className="break-words text-base font-bold text-[#000000]">
                 {displayName}
               </p>
 
-              <BadgeCheck color="#34A563" className="h-6 w-6" />
+              <BadgeCheck color="#34A563" className="h-6 w-6 shrink-0" />
             </div>
 
-            <p className="text-[#616161] text-base">
-              {creatorProfile?.bio || 'Building innovative solutions in the Web3 space.'}
+            <p className="break-words text-sm text-[#616161] sm:text-base">
+              {creatorProfile?.bio ||
+                'Building innovative solutions in the Web3 space.'}
             </p>
           </div>
         </div>
 
         {creatorProfile && (
-          <div className="flex flex-col w-full justify-end items-end">
-            <div className="flex gap-4 sm:gap-8 lg:gap-24">
-              <div className="flex flex-col space-y-1 sm:space-y-3">
-                <p className="text-[#000000] text-base sm:text-lg font-bold">{creatorProfile.bountiesPosted}</p>
-                <p className="text-[#616161] text-sm sm:text-lg">Bounties Posted</p>
+          <div className="flex w-full flex-col items-stretch sm:items-end">
+            <div className="grid w-full grid-cols-3 gap-3 sm:flex sm:w-auto sm:gap-8 lg:gap-24">
+              <div className="flex min-w-0 flex-col space-y-1 sm:space-y-3">
+                <p className="truncate text-base font-bold text-[#000000] sm:text-lg">
+                  {creatorProfile.bountiesPosted}
+                </p>
+                <p className="text-xs text-[#616161] sm:text-lg">
+                  Bounties Posted
+                </p>
               </div>
-              <div className="flex flex-col space-y-1 sm:space-y-3">
-                <p className="text-[#000000] text-base sm:text-lg font-bold">{creatorProfile.activeBounties}</p>
-                <p className="text-[#616161] text-sm sm:text-lg">Active</p>
+              <div className="flex min-w-0 flex-col space-y-1 sm:space-y-3">
+                <p className="truncate text-base font-bold text-[#000000] sm:text-lg">
+                  {creatorProfile.activeBounties}
+                </p>
+                <p className="text-xs text-[#616161] sm:text-lg">Active</p>
               </div>
-              <div className="flex flex-col space-y-1 sm:space-y-3">
-                <p className="text-[#000000] text-base sm:text-lg font-bold">${(creatorProfile.totalPaid / 1000).toFixed(1)}k+</p>
-                <p className="text-[#616161] text-sm sm:text-lg">Total Paid</p>
+              <div className="flex min-w-0 flex-col space-y-1 sm:space-y-3">
+                <p className="truncate text-base font-bold text-[#000000] sm:text-lg">
+                  ${(creatorProfile.totalPaid / 1000).toFixed(1)}k+
+                </p>
+                <p className="text-xs text-[#616161] sm:text-lg">Total Paid</p>
               </div>
             </div>
           </div>

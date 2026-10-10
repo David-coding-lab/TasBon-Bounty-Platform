@@ -1,7 +1,27 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { ArrowLeft, Clock, Copy, Check, RefreshCw, Users, Image, FileArchive, Music, Link as LinkIcon, Bookmark, Share2, Calendar, Paperclip, FileMinus, Download, ArrowRight, ChevronRight, Loader2 } from 'lucide-react'
+import {
+  ArrowLeft,
+  Clock,
+  Copy,
+  Check,
+  RefreshCw,
+  Users,
+  Image,
+  FileArchive,
+  Music,
+  Link as LinkIcon,
+  Bookmark,
+  Share2,
+  Calendar,
+  Paperclip,
+  FileMinus,
+  Download,
+  ArrowRight,
+  ChevronRight,
+  Loader2,
+} from 'lucide-react'
 import { toast } from 'sonner'
 import {
   fetchBountyById,
@@ -10,8 +30,15 @@ import {
   getSimilarBounties,
   listBounties,
 } from '../../../../../../pages/Bounties/Api/bounties'
-import { getDashboardStats, getPublicProfile } from '../../../../../../services/profile'
-import { getBookmarks, createBookmark, deleteBookmark } from '../../../../../../services/bookmarks'
+import {
+  getDashboardStats,
+  getPublicProfile,
+} from '../../../../../../services/profile'
+import {
+  getBookmarks,
+  createBookmark,
+  deleteBookmark,
+} from '../../../../../../services/bookmarks'
 
 const LEVEL_TITLES = {
   1: 'Builder',
@@ -65,7 +92,9 @@ export default function ViewBounty() {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
   const [userLevel, setUserLevel] = useState(null)
 
-  const userLevelTitle = userLevel ? `Level ${userLevel} - ${getLevelTitle(userLevel)}` : ''
+  const userLevelTitle = userLevel
+    ? `Level ${userLevel} - ${getLevelTitle(userLevel)}`
+    : ''
 
   const handleOpen = (state) => state(true)
   const handleClose = (state) => state(false)
@@ -79,7 +108,8 @@ export default function ViewBounty() {
     try {
       const res = await applyForBounty(bountyId, data)
       handleClose(setIsModalOpen)
-      const appStatus = res.data?.status || res.data?.applicationStatus || 'pending'
+      const appStatus =
+        res.data?.status || res.data?.applicationStatus || 'pending'
       setReviewStatus(appStatus)
       setBounty((prev) => {
         const serverCount = res.data?.applicationsCount
@@ -126,7 +156,11 @@ export default function ViewBounty() {
   useEffect(() => {
     if (!bountyId) return
     setLoading(true)
-    Promise.all([fetchBountyById(bountyId), getSimilarBounties(bountyId), getDashboardStats()])
+    Promise.all([
+      fetchBountyById(bountyId),
+      getSimilarBounties(bountyId),
+      getDashboardStats(),
+    ])
       .then(([bountyRes, similarRes, statsRes]) => {
         setUserLevel(statsRes.data?.level || null)
         const bountyData = bountyRes.data
@@ -232,16 +266,25 @@ export default function ViewBounty() {
   const isOwnBounty = user?.id === bounty?.creatorId
 
   const parseDeliverable = (item) => {
-    try { return JSON.parse(item) } catch { return { type: 'link', description: item } }
+    try {
+      return JSON.parse(item)
+    } catch {
+      return { type: 'link', description: item }
+    }
   }
 
   const deliverableTypeIcon = (type) => {
     switch (type) {
-      case 'image': return <Image size={18} className="text-[#34A563] shrink-0" />
-      case 'zip': return <FileArchive size={18} className="text-[#E17100] shrink-0" />
-      case 'audio': return <Music size={18} className="text-[#6D28D9] shrink-0" />
-      case 'link': return <LinkIcon size={18} className="text-[#155DFC] shrink-0" />
-      default: return <LinkIcon size={18} className="text-[#155DFC] shrink-0" />
+      case 'image':
+        return <Image size={18} className="text-[#34A563] shrink-0" />
+      case 'zip':
+        return <FileArchive size={18} className="text-[#E17100] shrink-0" />
+      case 'audio':
+        return <Music size={18} className="text-[#6D28D9] shrink-0" />
+      case 'link':
+        return <LinkIcon size={18} className="text-[#155DFC] shrink-0" />
+      default:
+        return <LinkIcon size={18} className="text-[#155DFC] shrink-0" />
     }
   }
 
@@ -259,11 +302,18 @@ export default function ViewBounty() {
           {bounty.deliverables.map((item, idx) => {
             const del = parseDeliverable(item)
             return (
-              <div key={idx} className="flex items-start gap-3 p-3 bg-[#f8fafc] rounded-lg border border-[#e8ecf1]">
+              <div
+                key={idx}
+                className="flex items-start gap-3 p-3 bg-[#f8fafc] rounded-lg border border-[#e8ecf1]"
+              >
                 {deliverableTypeIcon(del.type)}
                 <div className="flex-1 min-w-0">
-                  <span className="text-xs font-semibold text-[#34A563] uppercase tracking-wide">{del.type}</span>
-                  <p className="text-sm text-[#1a2a41] mt-0.5">{del.description}</p>
+                  <span className="text-xs font-semibold text-[#34A563] uppercase tracking-wide">
+                    {del.type}
+                  </span>
+                  <p className="text-sm text-[#1a2a41] mt-0.5">
+                    {del.description}
+                  </p>
                 </div>
               </div>
             )
@@ -293,9 +343,7 @@ export default function ViewBounty() {
           day: 'numeric',
         })
       : 'Recently',
-    bounty_id: bountyId
-      ? `#${bountyId.slice(-8).toUpperCase()}`
-      : '',
+    bounty_id: bountyId ? `#${bountyId.slice(-8).toUpperCase()}` : '',
   }
 
   const metaLabels = {
@@ -329,20 +377,23 @@ export default function ViewBounty() {
   }
 
   return (
-    <main className="w-full h-min-screen mx-auto flex flex-col px-4 sm:px-8 pt-6 sm:pt-12 pb-6 bg-[#ffffff]">
+    <main className="mx-auto flex min-h-screen w-full min-w-0 flex-col overflow-x-clip bg-[#ffffff] px-5 pb-10 pt-2 sm:px-8 sm:pt-12">
       <button
         onClick={() => navigate(-1)}
-        className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-emerald-600 pt-10 mb-6 transition-colors cursor-pointer"
+        className="mb-4 inline-flex w-fit items-center gap-1.5 rounded-lg px-1 py-2 text-sm text-gray-500 transition-colors cursor-pointer hover:text-emerald-600 sm:mb-6 sm:pt-10"
       >
         <ArrowLeft size={16} color="#34A563" /> Back to bounties
       </button>
 
       {isModalOpen && (
         <div
-          className="fixed inset-0 bg-black/50 flex items-start justify-center z-50 overflow-y-auto py-6"
+          className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/50 px-4 py-6"
           onClick={() => handleClose(setIsModalOpen)}
         >
-          <div onClick={(e) => e.stopPropagation()}>
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="my-auto w-full max-w-md"
+          >
             <ApplyBountyModal
               bounty={bounty}
               userLevelTitle={userLevelTitle}
@@ -356,10 +407,13 @@ export default function ViewBounty() {
 
       {isPendingModalOpen && (
         <div
-          className="fixed inset-0 bg-black/50 flex items-start justify-center z-50 overflow-y-auto py-6"
+          className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/50 px-4 py-6"
           onClick={() => handleClose(setIsPendingModalOpen)}
         >
-          <div onClick={(e) => e.stopPropagation()}>
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="my-auto w-full max-w-md"
+          >
             <ApplicationPendingModal
               bounty={bounty}
               onContinueExploring={() => handleClose(setIsPendingModalOpen)}
@@ -370,12 +424,12 @@ export default function ViewBounty() {
 
       {isSubmitModalOpen && (
         <div
-          className="fixed inset-0 bg-black/50 flex items-start justify-center z-50 overflow-y-auto py-6"
+          className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/50 px-4 py-6"
           onClick={() => !isSubmitting && handleClose(setIsSubmitModalOpen)}
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl my-auto"
+            className="my-auto w-full max-w-md rounded-2xl bg-white p-5 shadow-xl sm:p-6"
           >
             <h2 className="text-xl font-bold text-slate-900 mb-2">
               Submit Your Work
@@ -429,10 +483,13 @@ export default function ViewBounty() {
 
       {isSubmissionReceivedOpen && (
         <div
-          className="fixed inset-0 bg-black/50 flex items-start justify-center z-50 overflow-y-auto py-6"
+          className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/50 px-4 py-6"
           onClick={() => handleClose(setIsSubmissionReceivedOpen)}
         >
-          <div onClick={(e) => e.stopPropagation()}>
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="my-auto w-full max-w-md"
+          >
             <SubmissionReceivedModal
               bounty={bounty}
               submission={submissionResult}
@@ -445,18 +502,19 @@ export default function ViewBounty() {
           </div>
         </div>
       )}
-      <div className="w-full flex flex-col space-y-8">
-        <div className="flex flex-col space-y-3">
-          <div className="flex flex-row flex-wrap items-center gap-3">
-            <h1 className="text-[#101820] text-2xl sm:text-3xl lg:text-4xl font-bold flex-1 min-w-[200px]">
+      <div className="flex w-full min-w-0 flex-col space-y-8">
+        <div className="flex min-w-0 flex-col space-y-3">
+          <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+            <h1 className="min-w-0 w-full flex-1 text-xl font-bold break-words text-[#101820] sm:min-w-[200px] sm:text-3xl lg:text-4xl">
               {bounty.title}
             </h1>
 
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="flex w-full items-center justify-between gap-2 sm:w-auto sm:justify-end">
               <button
                 onClick={handleBookmarkToggle}
                 disabled={bookmarkLoading}
-                className="cursor-pointer disabled:opacity-50"
+                aria-label="Bookmark bounty"
+                className="cursor-pointer rounded-lg p-2 disabled:opacity-50 hover:bg-gray-100"
               >
                 <Bookmark
                   width={20}
@@ -466,25 +524,25 @@ export default function ViewBounty() {
               </button>
 
               <div
-                className="flex flex-row items-center gap-1.5 cursor-pointer"
+                className="flex cursor-pointer flex-row items-center gap-1.5 rounded-lg px-2 py-2 hover:bg-gray-100"
                 onClick={() => setIsShareModalOpen(true)}
               >
                 <Share2 width={18} />
-                <p className="text-sm sm:text-lg font-bold">share</p>
+                <p className="text-sm font-bold sm:text-lg">share</p>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-row flex-wrap gap-2 sm:gap-6 items-center">
-            <div className="p-1 px-4 bg-[#E6F6E2] border border-[#E5E7EB] text-[#34A563] rounded-xl text-sm sm:text-base">
+          <div className="flex flex-row flex-wrap items-center gap-2 sm:gap-3">
+            <div className="whitespace-nowrap rounded-xl border border-[#E5E7EB] bg-[#E6F6E2] p-1 px-3 text-xs text-[#34A563] sm:px-4 sm:text-base">
               {bounty?.category || bounty?.categoryName || 'General'}
             </div>
-            <div className="p-1 px-4 bg-[#E6F6E2] border border-[#E5E7EB] text-[#34A563] rounded-xl text-sm sm:text-base">
+            <div className="whitespace-nowrap rounded-xl border border-[#E5E7EB] bg-[#E6F6E2] p-1 px-3 text-xs text-[#34A563] sm:px-4 sm:text-base">
               <span className="text-[#383838]">
                 {bounty?.difficulty || bounty?.level || 'Intermediate'}
               </span>
             </div>
-            <div className="p-1 px-4 bg-[#E6F6E2] border border-[#E5E7EB] text-[#34A563] rounded-xl text-sm sm:text-base">
+            <div className="whitespace-nowrap rounded-xl border border-[#E5E7EB] bg-[#E6F6E2] p-1 px-3 text-xs text-[#34A563] sm:px-4 sm:text-base">
               <span className="text-[#383838]">
                 {workDurationDays
                   ? `${workDurationDays} Days`
@@ -494,8 +552,8 @@ export default function ViewBounty() {
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row lg:space-x-8 w-full max-w-7xl">
-          <div className="flex-2 flex flex-col space-y-8 lg:pr-15">
+        <div className="flex w-full min-w-0 max-w-7xl flex-col gap-8 lg:flex-row lg:gap-0 lg:space-x-8">
+          <div className="flex min-w-0 flex-1 flex-col space-y-8 lg:pr-8 xl:pr-15">
             <div className="flex flex-col space-y-6">
               {taskDetails.map((taskDetail, index) => (
                 <TaskDetails
@@ -508,21 +566,23 @@ export default function ViewBounty() {
               ))}
             </div>
 
-            <div className="flex flex-row space-x-3 sm:space-x-8 items-start">
-              <div className="pt-2 shrink-0">
+            <div className="flex min-w-0 flex-row items-start gap-3 sm:gap-4">
+              <div className="pt-1 shrink-0 sm:pt-2">
                 <Calendar color="#34A563" />
               </div>
-              <div className="flex flex-col space-y-4 flex-1 min-w-0">
-                <h1 className="text-[#000000] text-xl font-bold">Timeline</h1>
+              <div className="flex min-w-0 flex-1 flex-col space-y-4">
+                <h1 className="text-lg font-bold text-[#000000] sm:text-xl">
+                  Timeline
+                </h1>
 
-                <div className="flex flex-col sm:flex-row gap-3 sm:space-x-8">
-                  <div className="border p-3 border-[#E5E7EB] flex flex-col space-y-2 rounded-xl flex-1">
-                    <p className="text-sm sm:text-md font-semibold text-[#616161]">
+                <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
+                  <div className="flex min-w-0 flex-1 flex-col space-y-2 rounded-xl border border-[#E5E7EB] p-3">
+                    <p className="text-sm font-semibold text-[#616161]">
                       {reviewStatus === 'selected'
                         ? 'Deadline to Submit'
                         : 'Application Deadline'}
                     </p>
-                    <p className="text-base sm:text-xl font-semibold text-[#000000]">
+                    <p className="break-words text-base font-semibold text-[#000000] sm:text-xl">
                       {reviewStatus === 'selected'
                         ? formattedDueDate
                         : bounty?.applicationDeadline
@@ -535,7 +595,7 @@ export default function ViewBounty() {
                             })
                           : 'N/A'}
                     </p>
-                    <p className="text-sm sm:text-md font-medium text-[#616161]">
+                    <p className="text-sm font-medium break-words text-[#616161]">
                       {reviewStatus === 'selected'
                         ? formattedDueDateTime
                         : bounty?.applicationDeadline
@@ -551,17 +611,17 @@ export default function ViewBounty() {
                     </p>
                   </div>
                   {reviewStatus !== 'selected' && (
-                  <div className="border p-3 border-[#E5E7EB] flex flex-col space-y-2 rounded-xl flex-1">
-                    <p className="text-sm sm:text-md font-semibold text-[#616161]">
-                      Bounty Deadline
-                    </p>
-                    <p className="text-base sm:text-xl font-semibold text-[#000000]">
-                      {formattedDueDate || 'N/A'}
-                    </p>
-                    <p className="text-sm sm:text-md font-medium text-[#616161]">
-                      {formattedDueDateTime}
-                    </p>
-                  </div>
+                    <div className="flex min-w-0 flex-1 flex-col space-y-2 rounded-xl border border-[#E5E7EB] p-3">
+                      <p className="text-sm font-semibold text-[#616161]">
+                        Bounty Deadline
+                      </p>
+                      <p className="break-words text-base font-semibold text-[#000000] sm:text-xl">
+                        {formattedDueDate || 'N/A'}
+                      </p>
+                      <p className="text-sm font-medium break-words text-[#616161]">
+                        {formattedDueDateTime}
+                      </p>
+                    </div>
                   )}
                 </div>
 
@@ -575,17 +635,17 @@ export default function ViewBounty() {
               </div>
             </div>
 
-              {bounty?.attachments?.length > 0 && (
-              <div className="flex flex-row space-x-3 sm:space-x-8 items-start">
-                <div className="pt-2 shrink-0 self-start">
+            {bounty?.attachments?.length > 0 && (
+              <div className="flex min-w-0 flex-row items-start gap-3 sm:gap-4">
+                <div className="shrink-0 self-start pt-1 sm:pt-2">
                   <Paperclip color="#34A563" size={20} />
                 </div>
-                <div className="flex flex-col space-y-4 sm:space-y-6 min-w-0">
-                  <h1 className="text-[#000000] font-bold font-inter text-lg sm:text-xl">
+                <div className="flex min-w-0 flex-1 flex-col space-y-4 sm:space-y-6">
+                  <h1 className="font-inter text-lg font-bold text-[#000000] sm:text-xl">
                     Attachments
                   </h1>
 
-                  <div className="flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-6">
+                  <div className="flex flex-col flex-wrap gap-4 sm:flex-row sm:gap-6">
                     {bounty.attachments.map((url, index) => {
                       const fileName =
                         url.split('/').pop() || `Attachment ${index + 1}`
@@ -629,12 +689,12 @@ export default function ViewBounty() {
             />
           </div>
 
-          <div className="flex-1 border border-gray-100 rounded-2xl flex flex-col space-y-8 p-4 sm:p-6">
-            <div className="flex flex-col space-y-4">
-              <p className="text-xl font-semibold text-[#353535]">
+          <div className="flex w-full min-w-0 flex-1 flex-col space-y-6 rounded-2xl border border-gray-100 p-4 sm:space-y-8 sm:p-6">
+            <div className="flex min-w-0 flex-col space-y-4">
+              <p className="text-lg font-semibold text-[#353535] sm:text-xl">
                 Total Reward
               </p>
-              <h1 className="text-[#34A563] text-3xl font-bold">
+              <h1 className="break-words text-2xl font-bold text-[#34A563] sm:text-3xl">
                 {bounty?.rewardAmount || bounty?.reward
                   ? `$${Number(bounty?.rewardAmount || bounty?.reward).toLocaleString()} ${bounty.rewardToken || 'USDC'}`
                   : 'N/A'}
@@ -648,14 +708,18 @@ export default function ViewBounty() {
               <div className="w-full mt-5 h-px bg-gray-200" />
             </div>
 
-            <div className="flex flex-col divide-y divide-gray-100">
+            <div className="flex min-w-0 flex-col divide-y divide-gray-100">
               {Object.entries(bountyMeta).map(([key, value]) => (
                 <div
                   key={key}
-                  className="flex flex-row justify-between items-start py-3 gap-2"
+                  className="flex min-w-0 flex-row items-start justify-between gap-3 py-3"
                 >
-                  <p className="text-[#616161] text-sm sm:text-lg shrink-0">{metaLabels[key]}</p>
-                  <p className="text-[#616161] text-sm sm:text-lg text-right break-words max-w-[60%] sm:max-w-none">{value}</p>
+                  <p className="shrink-0 text-sm text-[#616161] sm:text-base">
+                    {metaLabels[key]}
+                  </p>
+                  <p className="min-w-0 break-words text-right text-sm text-[#616161] sm:text-base">
+                    {value}
+                  </p>
                 </div>
               ))}
             </div>
@@ -664,16 +728,22 @@ export default function ViewBounty() {
               <div className="flex flex-col space-y-3 p-4 bg-[#f0faf5] border border-[#34A563]/30 rounded-xl">
                 <div className="flex items-center gap-2">
                   <Users size={16} className="text-[#34A563]" />
-                  <span className="text-sm font-semibold text-[#0A0A0A]">Invite-only bounty</span>
+                  <span className="text-sm font-semibold text-[#0A0A0A]">
+                    Invite-only bounty
+                  </span>
                 </div>
-                <p className="text-xs text-[#4A5565]">Share this invite link to grant access:</p>
+                <p className="text-xs text-[#4A5565]">
+                  Share this invite link to grant access:
+                </p>
                 <div className="flex items-center gap-2">
                   <div className="flex-1 flex items-center gap-2 px-3 py-2 bg-white border border-[#dce1e8] rounded-lg text-sm text-[#1a2a41] font-mono truncate">
                     <span className="truncate">{`${window.location.origin}/dashboard/bounties/invite/${inviteCode}`}</span>
                   </div>
                   <button
                     onClick={() => {
-                      navigator.clipboard.writeText(`${window.location.origin}/dashboard/bounties/invite/${inviteCode}`)
+                      navigator.clipboard.writeText(
+                        `${window.location.origin}/dashboard/bounties/invite/${inviteCode}`,
+                      )
                       setCopied(true)
                       setTimeout(() => setCopied(false), 2000)
                     }}
@@ -686,8 +756,11 @@ export default function ViewBounty() {
                     onClick={async () => {
                       setRegenerating(true)
                       try {
-                        const { apiPost } = await import('../../../../../../services/api')
-                        const res = await apiPost(`/api/v1/bounties/${bounty.id}/regenerate-invite`)
+                        const { apiPost } =
+                          await import('../../../../../../services/api')
+                        const res = await apiPost(
+                          `/api/v1/bounties/${bounty.id}/regenerate-invite`,
+                        )
                         setInviteCode(res.data.inviteCode)
                         toast.success('New invite link generated')
                       } catch {
@@ -699,7 +772,10 @@ export default function ViewBounty() {
                     disabled={regenerating}
                     className="flex items-center gap-1 px-3 py-2 border border-[#dce1e8] text-[#4A5565] text-xs font-medium rounded-lg hover:bg-gray-50 transition-colors cursor-pointer shrink-0"
                   >
-                    <RefreshCw size={14} className={regenerating ? 'animate-spin' : ''} />
+                    <RefreshCw
+                      size={14}
+                      className={regenerating ? 'animate-spin' : ''}
+                    />
                   </button>
                 </div>
               </div>
@@ -790,13 +866,17 @@ export default function ViewBounty() {
                   reviewStatus === 'pending' ||
                   isSubmitting ||
                   isOwnBounty ||
-                  (reviewStatus === 'selected' ? isBountyDeadlinePassed : isApplyDeadlinePassed)
+                  (reviewStatus === 'selected'
+                    ? isBountyDeadlinePassed
+                    : isApplyDeadlinePassed)
                 }
                 className={`flex flex-row ${
                   reviewStatus === 'pending' ||
                   isSubmitting ||
                   isOwnBounty ||
-                  (reviewStatus === 'selected' ? isBountyDeadlinePassed : isApplyDeadlinePassed)
+                  (reviewStatus === 'selected'
+                    ? isBountyDeadlinePassed
+                    : isApplyDeadlinePassed)
                     ? 'cursor-not-allowed'
                     : 'cursor-pointer'
                 } items-center justify-center space-x-3 ${
@@ -804,7 +884,9 @@ export default function ViewBounty() {
                     ? 'bg-[#EAB308]'
                     : reviewStatus === 'pending' ||
                         isOwnBounty ||
-                        (reviewStatus === 'selected' ? isBountyDeadlinePassed : isApplyDeadlinePassed)
+                        (reviewStatus === 'selected'
+                          ? isBountyDeadlinePassed
+                          : isApplyDeadlinePassed)
                       ? 'bg-[#C5C9C7]'
                       : 'bg-[#34A563]'
                 } rounded-2xl py-4 w-full`}
@@ -812,9 +894,15 @@ export default function ViewBounty() {
                 {isSubmitting ? (
                   <Loader2 className="animate-spin" />
                 ) : (
-                  <ArrowRight color={reviewStatus === 'selected' && !isBountyDeadlinePassed ? '#1A1A1A' : '#FFFFFF'} />
+                  <ArrowRight
+                    color={
+                      reviewStatus === 'selected' && !isBountyDeadlinePassed
+                        ? '#1A1A1A'
+                        : '#FFFFFF'
+                    }
+                  />
                 )}
-                <span className="text-white text-md font-inter font-bold">
+                <span className="font-inter text-base font-bold text-white">
                   {isOwnBounty
                     ? 'Your bounty'
                     : reviewStatus === 'pending'
@@ -830,22 +918,26 @@ export default function ViewBounty() {
               </button>
 
               {reviewStatus === 'selected'
-                ? bounty?.dueDate && (() => {
+                ? bounty?.dueDate &&
+                  (() => {
                     const now = new Date()
                     const deadline = new Date(bounty.dueDate)
                     const daysLeft = Math.ceil(
                       (deadline - now) / (1000 * 60 * 60 * 24),
                     )
                     return (
-                      <div className="flex flex-row space-x-4 items-center border border-gray-200 rounded-2xl p-4">
-                        <Clock color="#EAB308" className="h-12 w-12" />
-                        <div className="flex flex-col space-y-2">
-                          <p className="text-[#000000] text-md font-bold">
+                      <div className="flex flex-row items-start gap-3 rounded-2xl border border-gray-200 p-3 sm:items-center sm:gap-4 sm:p-4">
+                        <Clock
+                          color="#EAB308"
+                          className="h-8 w-8 shrink-0 sm:h-12 sm:w-12"
+                        />
+                        <div className="flex min-w-0 flex-col space-y-1 sm:space-y-2">
+                          <p className="text-sm font-bold text-[#000000] sm:text-base">
                             {daysLeft > 0
                               ? `${daysLeft} day${daysLeft > 1 ? 's' : ''} left to submit`
                               : 'Submission closed'}
                           </p>
-                          <p className="text-[#616161] text-base">
+                          <p className="break-words text-sm text-[#616161] sm:text-base">
                             Submission closes on{' '}
                             {deadline.toLocaleDateString('en-US', {
                               year: 'numeric',
@@ -866,41 +958,44 @@ export default function ViewBounty() {
                     )
                   })()
                 : bounty?.applicationDeadline &&
-                (() => {
-                  const now = new Date()
-                  const deadline = new Date(bounty.applicationDeadline)
-                  const daysLeft = Math.ceil(
-                    (deadline - now) / (1000 * 60 * 60 * 24),
-                  )
-                  return (
-                    <div className="flex flex-row space-x-4 items-center border border-gray-200 rounded-2xl p-4">
-                      <Clock color="#34A563" className="h-12 w-12" />
-                      <div className="flex flex-col space-y-2">
-                        <p className="text-[#000000] text-md font-bold">
-                          {daysLeft > 0
-                            ? `${daysLeft} day${daysLeft > 1 ? 's' : ''} left to apply`
-                            : 'Application closed'}
-                        </p>
-                        <p className="text-[#616161] text-base">
-                          Application closes on{' '}
-                          {deadline.toLocaleDateString('en-US', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                          })}{' '}
-                          at{' '}
-                          {deadline.toLocaleTimeString('en-US', {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            hour12: false,
-                            timeZone: 'UTC',
-                          })}{' '}
-                          (UTC)
-                        </p>
+                  (() => {
+                    const now = new Date()
+                    const deadline = new Date(bounty.applicationDeadline)
+                    const daysLeft = Math.ceil(
+                      (deadline - now) / (1000 * 60 * 60 * 24),
+                    )
+                    return (
+                      <div className="flex flex-row items-start gap-3 rounded-2xl border border-gray-200 p-3 sm:items-center sm:gap-4 sm:p-4">
+                        <Clock
+                          color="#34A563"
+                          className="h-8 w-8 shrink-0 sm:h-12 sm:w-12"
+                        />
+                        <div className="flex min-w-0 flex-col space-y-1 sm:space-y-2">
+                          <p className="text-sm font-bold text-[#000000] sm:text-base">
+                            {daysLeft > 0
+                              ? `${daysLeft} day${daysLeft > 1 ? 's' : ''} left to apply`
+                              : 'Application closed'}
+                          </p>
+                          <p className="break-words text-sm text-[#616161] sm:text-base">
+                            Application closes on{' '}
+                            {deadline.toLocaleDateString('en-US', {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric',
+                            })}{' '}
+                            at{' '}
+                            {deadline.toLocaleTimeString('en-US', {
+                              hour: '2-digit',
+                              minute: '2-digit',
+                              hour12: false,
+                              timeZone: 'UTC',
+                            })}{' '}
+                            (UTC)
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  )
-                })()}
+                    )
+                  })()}
             </div>
 
             {similarBounties.length > 0 && (
@@ -941,7 +1036,9 @@ export default function ViewBounty() {
                           </p>
                           <div className="flex flex-row items-center gap-2">
                             <span className="text-[#616161] text-sm font-bold whitespace-nowrap">
-                              {item.rewardAmount ? `$${Number(item.rewardAmount).toLocaleString()} ${item.rewardToken || 'USDC'}` : item.price}
+                              {item.rewardAmount
+                                ? `$${Number(item.rewardAmount).toLocaleString()} ${item.rewardToken || 'USDC'}`
+                                : item.price}
                             </span>
                             <span className="text-[#9CA3AF] text-sm truncate">
                               {item.tag}
@@ -949,7 +1046,10 @@ export default function ViewBounty() {
                           </div>
                         </div>
                       </div>
-                      <ChevronRight color="#9CA3AF" className="h-5 w-5 shrink-0" />
+                      <ChevronRight
+                        color="#9CA3AF"
+                        className="h-5 w-5 shrink-0"
+                      />
                     </div>
                   ))}
                 </div>
