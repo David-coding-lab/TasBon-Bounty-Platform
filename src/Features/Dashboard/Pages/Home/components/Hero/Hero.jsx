@@ -71,7 +71,7 @@ const Hero = () => {
             )}
           </div>
           <p className="text-sm text-[#E17100]">
-            {stats?.newApplicationsUpdates || 0} new updates
+            {loading ? 'Loading...' : 'Total submitted'}
           </p>
         </div>
 
