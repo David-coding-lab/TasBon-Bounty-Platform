@@ -95,13 +95,13 @@ export default function Bounties() {
     <div className="min-h-screen bg-[#Fff] font-sans antialiased">
       <Navbar />
       <main>
-        <div className="relative container m-auto w-full min-h-[30vh] lg:min-h-[40vh] overflow-hidden pb-5">
+        <div className="relative container m-auto w-full min-h-[30vh] lg:min-h-[40vh] overflow-hidden px-5 pb-5">
           <img
             src={Glow}
             alt=""
             className="hidden sm:block absolute right-1/2 translate-x-250 top-75 -translate-y-1/2 w-187.5 pointer-events-none select-none h-150"
           />
-          <div className="flex flex-col max-w-7xl mx-auto pl-5 lg:pl-10 pt-5 lg:pt-20">
+          <div className="flex flex-col max-w-7xl mx-auto pt-5 lg:pt-20 lg:pl-5">
             <h2 className="lg:text-4xl text-2xl md:text-3xl leading-none font-sora font-bold pt-4 md:mt-4 lg:mt-5 text-[#0E4E2F]">
               Bounties
             </h2>
@@ -186,13 +186,13 @@ export default function Bounties() {
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto mb-10 px-4 sm:px-6 mt-6">
+        <div className="max-w-7xl mx-auto mb-10 px-5 sm:px-6 mt-6">
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 items-stretch">
               {Array.from({ length: 8 }).map((_, i) => (
                 <div
                   key={i}
-                  className="flex flex-col gap-2 border border-[#E5E7EB] rounded-2xl overflow-hidden animate-pulse"
+                  className="flex w-full min-w-0 flex-col gap-2 border border-[#E5E7EB] rounded-2xl overflow-hidden animate-pulse"
                 >
                   <div className="w-full h-40 bg-gray-200" />
                   <div className="p-3 space-y-3">
@@ -207,7 +207,7 @@ export default function Bounties() {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 items-stretch">
                 {filteredBounties.map((bounty) => (
                   <BountiesCard
                     key={bounty.id}
