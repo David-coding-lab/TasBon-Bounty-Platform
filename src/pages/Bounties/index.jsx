@@ -188,11 +188,11 @@ export default function Bounties() {
 
         <div className="max-w-7xl mx-auto mb-10 px-5 sm:px-6 mt-6">
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 items-stretch">
               {Array.from({ length: 8 }).map((_, i) => (
                 <div
                   key={i}
-                  className="flex flex-col gap-2 border border-[#E5E7EB] rounded-2xl overflow-hidden animate-pulse"
+                  className="flex w-full min-w-0 flex-col gap-2 border border-[#E5E7EB] rounded-2xl overflow-hidden animate-pulse"
                 >
                   <div className="w-full h-40 bg-gray-200" />
                   <div className="p-3 space-y-3">
@@ -207,7 +207,7 @@ export default function Bounties() {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 justify-items-center sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 items-stretch">
                 {filteredBounties.map((bounty) => (
                   <BountiesCard
                     key={bounty.id}

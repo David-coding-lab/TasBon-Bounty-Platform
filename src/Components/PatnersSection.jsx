@@ -5,10 +5,10 @@ import Greenpill from '../Assets/greenpill.png'
 import Switch from '../Assets/switch.png'
 
 const partners = [
-  { name: 'Switch Electric', image: Switch },
-  { name: 'Localism Fund', image: Localism },
+  // { name: 'Switch Electric', image: Switch },
+  // { name: 'Localism Fund', image: Localism },
   { name: 'GreenPill', image: Greenpill },
-  { name: 'M3tering', image: M3tering },
+  // { name: 'M3tering', image: M3tering },
 ]
 
 export default function PartnersSection() {
@@ -22,11 +22,13 @@ export default function PartnersSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
-          Our partners
+          Our partner
         </motion.h2>
         <motion.div
           className="flex flex-wrap items-center justify-center gap-10 md:gap-16"
           initial="hidden"
+          our
+          p
           whileInView="visible"
           viewport={{ once: true }}
           variants={{

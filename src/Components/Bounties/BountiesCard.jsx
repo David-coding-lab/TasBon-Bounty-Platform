@@ -15,8 +15,10 @@ const BountiesCard = ({
   bountyId,
 }) => {
   return (
-    /* Card container: vertical layout with border and rounded bottom corners */
-    <div className="flex w-full min-w-0 shrink-0 flex-col gap-1.5 overflow-hidden rounded-2xl border border-[#E5E7EB] sm:w-70 sm:min-w-70 sm:max-w-70">
+    /* Card container: vertical layout with border and rounded bottom corners.
+       Fluid width so it fills its grid cell at every breakpoint;
+       fixed widths for horizontal-scroll rows belong on the parent wrapper. */
+    <div className="flex h-full w-full min-w-0 flex-col gap-1.5 overflow-hidden rounded-2xl border border-[#E5E7EB]">
       {/* Header image — full width */}
       <img
         src={headerImg}
@@ -25,7 +27,7 @@ const BountiesCard = ({
       />
 
       {/* Card body — white background with content */}
-      <div className="bg-[#FFFFFF] p-2.5 flex flex-col space-y-2">
+      <div className="bg-[#FFFFFF] p-2.5 flex flex-1 flex-col space-y-2">
         {/* Bounty category name */}
         <p className="text-[10px] sm:text-[11px] text-[#007A55]">
           {categoryName}
@@ -64,7 +66,7 @@ const BountiesCard = ({
         {/* Apply button */}
         <Link
           to={`/dashboard/bounties/${bountyId}`}
-          className="bg-[#009966] w-full py-2.5 flex flex-row items-center justify-center gap-2 rounded-lg cursor-pointer"
+          className="bg-[#009966] w-full py-2.5 mt-auto flex flex-row items-center justify-center gap-2 rounded-lg cursor-pointer"
         >
           <span className="text-[#FFFFFF] text-sm font-medium">
             View bounty
