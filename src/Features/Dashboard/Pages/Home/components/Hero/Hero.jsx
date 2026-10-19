@@ -19,7 +19,8 @@ const Hero = () => {
     <div className="flex flex-col space-y-4">
       <div className="flex flex-col space-y-2">
         <h1 className="font-[Inter] text-xl sm:text-2xl lg:text-3xl font-semibold text-[#0A0A0A]">
-          Welcome back, <span className="text-[#009966]">{user?.fullName || 'there'}</span>
+          Welcome back,{' '}
+          <span className="text-[#009966]">{user?.fullName || 'there'}</span>
         </h1>
         <p className="text-base text-[#4A5565]">
           Discover opportunities, build solutions, and earn rewards
@@ -39,9 +40,6 @@ const Hero = () => {
               `$${(stats?.totalEarnings || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`
             )}
           </div>
-          <p className="text-sm text-[#009966]">
-            +{stats?.earningsChangePercent || 0}% this month
-          </p>
         </div>
 
         <div className="border border-[#E5E7EB] rounded-2xl p-6 flex flex-col flex-1 space-y-2">
@@ -86,9 +84,6 @@ const Hero = () => {
               `${stats?.successRate || 0}%`
             )}
           </div>
-          <p className="text-sm text-[#009966]">
-            +{stats?.successRateChangePercent || 0}% this month
-          </p>
         </div>
       </div>
     </div>
