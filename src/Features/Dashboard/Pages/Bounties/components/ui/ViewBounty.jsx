@@ -21,6 +21,9 @@ import {
   ArrowRight,
   ChevronRight,
   Loader2,
+  Edit2,
+  Trash2,
+  AlertCircle,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import {
@@ -29,6 +32,7 @@ import {
   applyForBounty,
   getSimilarBounties,
   listBounties,
+  deleteBounty,
 } from '../../../../../../pages/Bounties/Api/bounties'
 import {
   getDashboardStats,
@@ -61,6 +65,7 @@ import ApplyBountyModal from './ApplyBountyModal'
 import ApplicationPendingModal from './ApplicationPendingModal'
 import SubmissionReceivedModal from './SubmissionReceivedModal'
 import ShareBountyModal from './ShareBountyModal'
+import EditBountyModal from './EditBountyModal'
 
 export default function ViewBounty() {
   const { bountyId } = useParams()
@@ -91,6 +96,11 @@ export default function ViewBounty() {
   const [bookmarkLoading, setBookmarkLoading] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
   const [userLevel, setUserLevel] = useState(null)
+
+  // Edit/Delete state
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const userLevelTitle = userLevel
     ? `Level ${userLevel} - ${getLevelTitle(userLevel)}`
@@ -232,6 +242,36 @@ export default function ViewBounty() {
     }
   }
 
+  const isOwnBounty = user?.id === bounty?.creatorId
+  // Check if bounty can be edited/deleted (no applications)
+  const canEditOrDelete = isOwnBounty && (bounty?.applicationsCount || 0) === 0
+
+  const handleDelete = async () => {
+    setIsDeleting(true)
+    try {
+      await deleteBounty(bountyId)
+      toast.success('Bounty deleted successfully')
+      setIsDeleteConfirmOpen(false)
+      navigate('/dashboard/bounties')
+    } catch (error) {
+      toast.error(error.message || 'Failed to delete bounty')
+    } finally {
+      setIsDeleting(false)
+    }
+  }
+
+  const handleBountySaved = (updated) => {
+    if (!updated) return
+    setBounty((prev) => ({
+      ...prev,
+      ...updated,
+      dueDate: updated.dueDate ?? updated.bountyDeadline ?? prev.dueDate,
+    }))
+    if (updated.inviteCode !== undefined) {
+      setInviteCode(updated.inviteCode)
+    }
+  }
+
   const formattedDueDate = bounty?.dueDate
     ? new Date(bounty.dueDate).toLocaleDateString('en-US', {
         year: 'numeric',
@@ -263,7 +303,6 @@ export default function ViewBounty() {
   const isApplyDeadlinePassed = bounty?.applicationDeadline
     ? new Date(bounty.applicationDeadline) < new Date()
     : false
-  const isOwnBounty = user?.id === bounty?.creatorId
 
   const parseDeliverable = (item) => {
     try {
@@ -522,6 +561,37 @@ export default function ViewBounty() {
                   stroke={isBookmarked ? '#34A563' : 'currentColor'}
                 />
               </button>
+
+              {isOwnBounty && (
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => setIsEditModalOpen(true)}
+                    disabled={!canEditOrDelete}
+                    title={
+                      canEditOrDelete
+                        ? 'Edit bounty'
+                        : 'Cannot edit after applications are received'
+                    }
+                    aria-label="Edit bounty"
+                    className="cursor-pointer rounded-lg p-2 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30"
+                  >
+                    <Edit2 width={18} height={18} color="#155DFC" />
+                  </button>
+                  <button
+                    onClick={() => setIsDeleteConfirmOpen(true)}
+                    disabled={!canEditOrDelete || isDeleting}
+                    title={
+                      canEditOrDelete
+                        ? 'Delete bounty'
+                        : 'Cannot delete after applications are received'
+                    }
+                    aria-label="Delete bounty"
+                    className="cursor-pointer rounded-lg p-2 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30"
+                  >
+                    <Trash2 width={18} height={18} color="#EF4444" />
+                  </button>
+                </div>
+              )}
 
               <div
                 className="flex cursor-pointer flex-row items-center gap-1.5 rounded-lg px-2 py-2 hover:bg-gray-100"
@@ -1064,6 +1134,65 @@ export default function ViewBounty() {
           bounty={bounty}
           onClose={() => setIsShareModalOpen(false)}
         />
+      )}
+
+      {isEditModalOpen && (
+        <EditBountyModal
+          bounty={bounty}
+          onClose={() => setIsEditModalOpen(false)}
+          onSaved={handleBountySaved}
+        />
+      )}
+
+      {isDeleteConfirmOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
+          onClick={() => !isDeleting && setIsDeleteConfirmOpen(false)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl"
+          >
+            <div className="mb-4 flex items-start gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-50">
+                <AlertCircle size={20} className="text-red-500" />
+              </div>
+              <div>
+                <h2 className="text-lg font-bold text-slate-900">
+                  Delete this bounty?
+                </h2>
+                <p className="mt-1 text-sm text-slate-600">
+                  This action cannot be undone. The bounty will be permanently
+                  removed.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setIsDeleteConfirmOpen(false)}
+                disabled={isDeleting}
+                className="flex-1 rounded-xl border border-slate-200 py-3 text-sm font-bold text-slate-900 transition-colors hover:bg-slate-50 disabled:opacity-50 cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                disabled={isDeleting}
+                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-red-600 py-3 text-sm font-bold text-white transition-colors hover:bg-red-700 disabled:opacity-70 cursor-pointer"
+              >
+                {isDeleting ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" />
+                    Deleting...
+                  </>
+                ) : (
+                  'Delete Bounty'
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </main>
   )
