@@ -1,4 +1,4 @@
-import { apiGet, apiPost } from './api'
+import { apiGet, apiPost, apiPut, apiDelete } from './api'
 
 export function listBounties(params = {}) {
   const query = new URLSearchParams()
@@ -22,6 +22,14 @@ export function fetchActiveBounties() {
 
 export function createBounty(bountyData) {
   return apiPost('/api/v1/bounties', bountyData)
+}
+
+export function updateBounty(bountyId, data) {
+  return apiPut(`/api/v1/bounties/${bountyId}`, data)
+}
+
+export function deleteBounty(bountyId) {
+  return apiDelete(`/api/v1/bounties/${bountyId}`)
 }
 
 export function fetchBountyById(id) {
