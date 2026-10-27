@@ -89,13 +89,20 @@ function AppRoutes() {
         const privyToken = await getAccessToken()
         const data = await loginWithPrivy(privyToken)
         dispatch(loginSuccess({ user: data.user, token: data.accessToken }))
+
+        // Preserve intended destination from ?redirect= query param
+        const params = new URLSearchParams(window.location.search)
+        const redirectTo = params.get('redirect')
+        if (redirectTo) {
+          navigate(decodeURIComponent(redirectTo), { replace: true })
+        }
       } catch {
         // Privy session exists but backend rejected it — no action needed
       }
     }
 
     syncPrivySession()
-  }, [ready, authenticated, isAuthenticated, getAccessToken, dispatch])
+  }, [ready, authenticated, isAuthenticated, getAccessToken, dispatch, navigate])
 
   if (loading || (ready && authenticated && !isAuthenticated)) {
     return (
