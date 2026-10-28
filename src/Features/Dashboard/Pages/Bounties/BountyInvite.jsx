@@ -19,7 +19,10 @@ const BountyInvite = () => {
         const data = res.data
         setBounty(data)
         if (data.id) {
-          navigate(`/dashboard/bounties/${data.id}`, { replace: true })
+          navigate(
+            `/dashboard/bounties/${data.id}?invite=${encodeURIComponent(code)}`,
+            { replace: true },
+          )
         }
       })
       .catch((err) => {

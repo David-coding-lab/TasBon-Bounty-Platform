@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useParams, useNavigate, Link, useSearchParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import {
   ArrowLeft,
@@ -70,6 +70,8 @@ import EditBountyModal from './EditBountyModal'
 export default function ViewBounty() {
   const { bountyId } = useParams()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const inviteCodeParam = searchParams.get('invite')
   const user = useSelector((state) => state.auth.user)
   const [reviewStatus, setReviewStatus] = useState(null)
   const [bounty, setBounty] = useState(null)
@@ -116,7 +118,10 @@ export default function ViewBounty() {
     }
     setIsApplying(true)
     try {
-      const res = await applyForBounty(bountyId, data)
+      const res = await applyForBounty(bountyId, {
+        ...data,
+        ...(inviteCodeParam ? { inviteCode: inviteCodeParam } : {}),
+      })
       handleClose(setIsModalOpen)
       const appStatus =
         res.data?.status || res.data?.applicationStatus || 'pending'
@@ -167,7 +172,7 @@ export default function ViewBounty() {
     if (!bountyId) return
     setLoading(true)
     Promise.all([
-      fetchBountyById(bountyId),
+      fetchBountyById(bountyId, inviteCodeParam),
       getSimilarBounties(bountyId),
       getDashboardStats(),
     ])
@@ -195,7 +200,7 @@ export default function ViewBounty() {
       })
       .catch((err) => toast.error(err.message || 'Failed to load bounty'))
       .finally(() => setLoading(false))
-  }, [bountyId])
+  }, [bountyId, inviteCodeParam])
 
   useEffect(() => {
     if (!user || !bountyId) return

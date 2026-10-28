@@ -6,7 +6,7 @@ import './login.css'
 import HeroBg from './Assets/Hero-bg.png'
 import ForgetPassword from './componenet/ForgetPassword'
 import ErrorUi from './componenet/ErrorUi'
-import { loginUser } from './Api'
+import { loginUser, verify2FA } from './Api'
 import { loginWithPrivy } from './Api/privy'
 import { loginSuccess } from '../../store/slices/authSlice'
 import { toast } from 'sonner'
@@ -95,6 +95,10 @@ function SignIn() {
   const [showError, setShowError] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [waitingForPrivyAuth, setWaitingForPrivyAuth] = useState(false)
+  const [twoFactorChallenge, setTwoFactorChallenge] = useState(null)
+  const [twoFactorCode, setTwoFactorCode] = useState('')
+  const [twoFactorError, setTwoFactorError] = useState('')
+  const [verifyingTwoFactor, setVerifyingTwoFactor] = useState(false)
   const mountedRef = useRef(true)
 
   useEffect(() => {
@@ -150,6 +154,18 @@ function SignIn() {
     handleLogin({ preventDefault: () => {} })
   }
 
+  // ── Shared session completion ──────────────────────────────────────────
+  const completeLogin = (user, accessToken) => {
+    Cookies.set('session', accessToken, {
+      expires: 1 / 96,
+      secure: true,
+      sameSite: 'Strict',
+    })
+    dispatch(loginSuccess({ user, token: accessToken }))
+    toast.success('Logged in successfully')
+    navigate(decodeURIComponent(redirectTo), { replace: true })
+  }
+
   // ── Standard email/password login ──────────────────────────────────────
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -161,15 +177,17 @@ function SignIn() {
       const result = await loginUser(userEmail, password)
 
       if (result.success) {
-        const { user, accessToken } = result.data.data || result.data
-        Cookies.set('session', accessToken, {
-          expires: 1 / 96,
-          secure: true,
-          sameSite: 'Strict',
-        })
-        dispatch(loginSuccess({ user, token: accessToken }))
-        toast.success('Logged in successfully')
-        navigate(decodeURIComponent(redirectTo), { replace: true })
+        const payload = result.data.data || result.data
+
+        if (payload.isTwoFactorRequired) {
+          setTwoFactorChallenge(payload.challengeToken)
+          setTwoFactorCode('')
+          setTwoFactorError('')
+          return
+        }
+
+        const { user, accessToken } = payload
+        completeLogin(user, accessToken)
       } else {
         toast.error(result?.message || 'Login unsuccessful')
         setErrorMessage(result?.message || 'Login unsuccessful')
@@ -188,6 +206,31 @@ function SignIn() {
       setErrors(newErrors)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleVerify2FA = async (e) => {
+    e.preventDefault()
+    if (!/^\d{6}$/.test(twoFactorCode)) {
+      setTwoFactorError('Enter the 6-digit code from your authenticator app')
+      return
+    }
+
+    setVerifyingTwoFactor(true)
+    setTwoFactorError('')
+    try {
+      const result = await verify2FA(twoFactorChallenge, twoFactorCode)
+      if (!result.success) {
+        setTwoFactorError(result.message || '2FA verification failed')
+        return
+      }
+      const payload = result.data.data || result.data
+      setTwoFactorChallenge(null)
+      completeLogin(payload.user, payload.accessToken)
+    } catch (error) {
+      setTwoFactorError(error.message || '2FA verification failed')
+    } finally {
+      setVerifyingTwoFactor(false)
     }
   }
 
@@ -226,6 +269,52 @@ function SignIn() {
             onEmailValid={handleEmailValid}
             onClose={() => setShowForgetPwd(false)}
           />
+        </div>
+      )}
+
+      {twoFactorChallenge && (
+        <div className="fixed inset-0 bg-[#00000163] z-50 flex items-center justify-center px-4">
+          <form
+            onSubmit={handleVerify2FA}
+            className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-xl"
+          >
+            <h2 className="text-xl font-bold text-[#0A0A0A]">Two-factor authentication</h2>
+            <p className="text-sm text-[#4A5565] mt-2">
+              Enter the 6-digit code from your authenticator app to finish signing in.
+            </p>
+            <input
+              type="text"
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              maxLength={6}
+              value={twoFactorCode}
+              onChange={(e) => setTwoFactorCode(e.target.value.replace(/\D/g, ''))}
+              placeholder="000000"
+              autoFocus
+              className="w-full mt-4 px-4 py-3 border border-gray-200 rounded-lg tracking-[0.5em] text-center text-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            />
+            {twoFactorError && (
+              <p className="text-sm text-red-600 mt-2">{twoFactorError}</p>
+            )}
+            <button
+              type="submit"
+              disabled={verifyingTwoFactor}
+              className="w-full mt-4 bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition disabled:opacity-50"
+            >
+              {verifyingTwoFactor ? 'Verifying...' : 'Verify'}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setTwoFactorChallenge(null)
+                setTwoFactorCode('')
+                setTwoFactorError('')
+              }}
+              className="w-full mt-2 text-sm text-gray-500 hover:text-gray-700"
+            >
+              Back to sign in
+            </button>
+          </form>
         </div>
       )}
 

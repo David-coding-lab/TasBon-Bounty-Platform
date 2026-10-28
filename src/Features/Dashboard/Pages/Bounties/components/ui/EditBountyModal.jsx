@@ -3,8 +3,8 @@ import { X, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { updateBounty } from '../../../../../../services/bounties'
 import { uploadFile } from '../../../../../../services/api'
-import Step1BountyDetails from '../../../CreateBounty/steps/SetBountyDetails'
-import Step2RewardLogistics from '../../../CreateBounty/steps/Step2RewardLogistics'
+import Step1BountyDetails from '../../../../components/CreateBounty/steps/SetBountyDetails'
+import Step2RewardLogistics from '../../../../components/CreateBounty/steps/Step2RewardLogistics'
 
 const toDateTimeLocal = (iso) => {
   if (!iso) return ''

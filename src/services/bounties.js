@@ -32,8 +32,9 @@ export function deleteBounty(bountyId) {
   return apiDelete(`/api/v1/bounties/${bountyId}`)
 }
 
-export function fetchBountyById(id) {
-  return apiGet(`/api/v1/bounties/${id}`)
+export function fetchBountyById(id, inviteCode) {
+  const query = inviteCode ? `?invite=${encodeURIComponent(inviteCode)}` : ''
+  return apiGet(`/api/v1/bounties/${id}${query}`)
 }
 
 export function getMyBounties() {
