@@ -1,6 +1,11 @@
 import { useState, useEffect, useCallback } from 'react'
 import { MessageSquare, Search, Send, ChevronRight } from 'lucide-react'
-import { getMessages, getConversation, sendMessage, markMessageAsRead } from '../../../../services/messages'
+import {
+  getMessages,
+  getConversation,
+  sendMessage,
+  markMessageAsRead,
+} from '../../../../services/messages'
 import { toast } from 'sonner'
 
 const Messages = () => {
@@ -13,6 +18,7 @@ const Messages = () => {
   const [selectedConversation, setSelectedConversation] = useState(null)
   const [unreadCount, setUnreadCount] = useState(0)
   const [view, setView] = useState('list') // 'list' | 'conversation'
+  const timeOptions = { hour: '2-digit', minute: '2-digit' }
 
   const fetchMessages = useCallback(async () => {
     try {
@@ -117,9 +123,7 @@ const Messages = () => {
             placeholder="Search messages..."
             className="pl-10 pr-4 py-2 rounded-xl border border-[#E5E7EB] text-[#111827] focus:border-[#00B87C] focus:outline-none transition-colors w-full md:w-80"
           />
-          <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4"
-          />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
         </div>
       </div>
 
@@ -138,16 +142,18 @@ const Messages = () => {
 
         {loading ? (
           <div className="space-y-3">
-            {Array(5).fill(null).map((_, idx) => (
-              <div key={idx} className="flex items-center space-x-4 h-16">
-                <div className="w-10 h-10 bg-gray-100 rounded-full animate-pulse" />
-                <div className="flex-1 space-y-2">
-                  <div className="h-4 w-32 bg-gray-100 rounded animate-pulse" />
-                  <div className="h-3 w-24 bg-gray-100 rounded animate-pulse" />
+            {Array(5)
+              .fill(null)
+              .map((_, idx) => (
+                <div key={idx} className="flex items-center space-x-4 h-16">
+                  <div className="w-10 h-10 bg-gray-100 rounded-full animate-pulse" />
+                  <div className="flex-1 space-y-2">
+                    <div className="h-4 w-32 bg-gray-100 rounded animate-pulse" />
+                    <div className="h-3 w-24 bg-gray-100 rounded animate-pulse" />
+                  </div>
+                  <div className="h-4 w-16 bg-gray-100 rounded animate-pulse" />
                 </div>
-                <div className="h-4 w-16 bg-gray-100 rounded animate-pulse" />
-              </div>
-            ))}
+              ))}
           </div>
         ) : messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center bg-gray-50 rounded-xl border border-dashed border-gray-200">
@@ -156,7 +162,8 @@ const Messages = () => {
               No messages yet
             </h4>
             <p className="text-xs text-[#6B7280] mb-4 max-w-xs">
-              Start a conversation with other users. Your messages will appear here.
+              Start a conversation with other users. Your messages will appear
+              here.
             </p>
           </div>
         ) : (
@@ -174,7 +181,9 @@ const Messages = () => {
                   <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-start">
                       <span className="text-sm font-semibold text-[#111827] truncate">
-                        {msg.otherUser?.fullName || msg.otherUser?.userName || 'Unknown User'}
+                        {msg.otherUser?.fullName ||
+                          msg.otherUser?.userName ||
+                          'Unknown User'}
                       </span>
                       <span className="text-xs text-[#9CA3AF]">
                         {new Date(msg.createdAt).toLocaleDateString('en-US', {
@@ -192,7 +201,12 @@ const Messages = () => {
                       <span className="w-2 h-2 rounded-full bg-[#00B87C]" />
                     )}
                     <span className="text-xs text-[#4B5563]">
-                      {msg.createdAt ? new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
+                      {msg.createdAt
+                        ? new Date(msg.createdAt).toLocaleTimeString(
+                            [],
+                            timeOptions,
+                          )
+                        : ''}
                     </span>
                   </div>
                 </div>
@@ -213,7 +227,9 @@ const Messages = () => {
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-[#111827]">
-                  {selectedConversation.fullName || selectedConversation.userName || 'Unknown User'}
+                  {selectedConversation.fullName ||
+                    selectedConversation.userName ||
+                    'Unknown User'}
                 </h3>
                 <p className="text-xs text-[#6B7280]">
                   {selectedConversation.email || ''}
@@ -261,10 +277,10 @@ const Messages = () => {
                     >
                       <p className="text-sm">{msg.content}</p>
                       <span className="text-[10px] text-[#6B7280] mt-1 block text-right">
-                        {new Date(msg.createdAt).toLocaleTimeString([], {
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        })}
+                        {new Date(msg.createdAt).toLocaleTimeString(
+                          [],
+                          timeOptions,
+                        )}
                       </span>
                       {!msg.isSender && !msg.read && (
                         <span className="w-1 h-1 rounded-full bg-[#00B87C] mt-1" />
@@ -287,7 +303,9 @@ const Messages = () => {
               />
               <button
                 onClick={handleSendMessage}
-                disabled={!newMessage.trim() || !selectedConversation || sending}
+                disabled={
+                  !newMessage.trim() || !selectedConversation || sending
+                }
                 className="px-4 py-2.5 bg-[#00B87C] hover:bg-[#009966] disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl text-sm font-semibold transition-colors flex items-center gap-2"
               >
                 <Send size={18} />
@@ -295,7 +313,7 @@ const Messages = () => {
               </button>
             </div>
           </div>
-        )}
+        </div>
       )}
     </div>
   )
