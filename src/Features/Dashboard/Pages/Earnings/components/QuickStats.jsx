@@ -6,6 +6,9 @@ const QuickStats = () => {
   const [metrics, setMetrics] = useState(null)
   const [loading, setLoading] = useState(true)
 
+  // Safety: ensure no NaN values slip through to the UI
+  const safeNum = (val) => (val == null || Number.isNaN(val) ? 0 : Number(val))
+
   useEffect(() => {
     getEarningsMetrics()
       .then((res) => setMetrics(res.data))
@@ -63,15 +66,15 @@ const QuickStats = () => {
   const stats = [
     {
       label: 'Completed Bounties',
-      value: metrics.completedBounties ?? 0,
-      subLabel: `${metrics.monthlyGrowth ?? 0}% this month`,
+      value: safeNum(metrics.completedBounties),
+      subLabel: `${safeNum(metrics.monthlyGrowth)}% this month`,
       icon: CheckCircle2,
       iconColor: 'text-[#00B87C]',
       iconBg: 'bg-[#E6F8F2]',
     },
     {
       label: 'Hackathons Won',
-      value: metrics.hackathonsWon ?? 0,
+      value: safeNum(metrics.hackathonsWon),
       subLabel: 'Platform completions',
       icon: Trophy,
       iconColor: 'text-[#F59E0B]',
@@ -79,7 +82,7 @@ const QuickStats = () => {
     },
     {
       label: 'Grants Received',
-      value: metrics.grantsReceived ?? 0,
+      value: safeNum(metrics.grantsReceived),
       subLabel: 'Awarded platform-wide',
       icon: Award,
       iconColor: 'text-[#3B82F6]',
@@ -87,8 +90,8 @@ const QuickStats = () => {
     },
     {
       label: 'Success Rate',
-      value: `${metrics.successRate ?? 0}%`,
-      subLabel: `${metrics.acceptedApplications ?? 0} of ${metrics.totalApplications ?? 0} applications`,
+      value: `${safeNum(metrics.successRate)}%`,
+      subLabel: `${safeNum(metrics.acceptedApplications)} of ${safeNum(metrics.totalApplications)} applications`,
       icon: Star,
       iconColor: 'text-[#F59E0B]',
       iconBg: 'bg-[#FEF3C7]',

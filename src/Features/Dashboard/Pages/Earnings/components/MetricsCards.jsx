@@ -14,6 +14,9 @@ const MetricsCards = () => {
   const [metrics, setMetrics] = useState(null)
   const [loading, setLoading] = useState(true)
 
+  // Safety: ensure no NaN values slip through to the UI
+  const safeNum = (val) => (val == null || Number.isNaN(val) ? 0 : Number(val))
+
   useEffect(() => {
     getEarningsMetrics()
       .then((res) => setMetrics(res.data))
@@ -51,15 +54,15 @@ const MetricsCards = () => {
   const cards = [
     {
       title: 'Total Earned',
-      value: `$${metrics.totalEarned.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
+      value: `$${safeNum(metrics.totalEarned).toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
       subtext: (
         <div className="flex items-center space-x-1.5 mt-2">
           <span
-            className={`flex items-center text-xs font-semibold px-2 py-0.5 rounded-full ${metrics.monthlyGrowth >= 0 ? 'bg-[#E6F8F2] text-[#00B87C]' : 'bg-[#FEF2F2] text-[#EF4444]'}`}
+            className={`flex items-center text-xs font-semibold px-2 py-0.5 rounded-full ${safeNum(metrics.monthlyGrowth) >= 0 ? 'bg-[#E6F8F2] text-[#00B87C]' : 'bg-[#FEF2F2] text-[#EF4444]'}`}
           >
             <RefreshCw className="w-3 h-3 mr-0.5" />
-            {metrics.monthlyGrowth >= 0 ? '+' : ''}
-            {metrics.monthlyGrowth}%
+            {safeNum(metrics.monthlyGrowth) >= 0 ? '+' : ''}
+            {safeNum(metrics.monthlyGrowth)}%
           </span>
           <span className="text-xs text-[#6B7280]">this month</span>
         </div>
@@ -70,10 +73,10 @@ const MetricsCards = () => {
     },
     {
       title: 'Available Balance',
-      value: `$${metrics.availableBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
+      value: `$${safeNum(metrics.availableBalance).toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
       subtext: (
         <p className="text-xs text-[#6B7280] mt-2">
-          +{metrics.availableBalance.toFixed(2)} USDC
+          +${safeNum(metrics.availableBalance).toFixed(2)} USDC
         </p>
       ),
       icon: Wallet,
@@ -82,7 +85,7 @@ const MetricsCards = () => {
     },
     {
       title: 'Active Bounties',
-      value: metrics.activeBounties,
+      value: safeNum(metrics.activeBounties),
       subtext: (
         <p className="text-xs text-[#6B7280] mt-2">bounties you created</p>
       ),
@@ -92,15 +95,15 @@ const MetricsCards = () => {
     },
     {
       title: 'Success Rate',
-      value: `${metrics.successRate}%`,
+      value: `${safeNum(metrics.successRate)}%`,
       subtext: (
         <div className="flex items-center space-x-1.5 mt-2">
           <span
-            className={`flex items-center text-xs font-semibold px-2 py-0.5 rounded-full ${metrics.monthlyGrowth >= 0 ? 'bg-[#E6F8F2] text-[#00B87C]' : 'bg-[#FEF2F2] text-[#EF4444]'}`}
+            className={`flex items-center text-xs font-semibold px-2 py-0.5 rounded-full ${safeNum(metrics.monthlyGrowth) >= 0 ? 'bg-[#E6F8F2] text-[#00B87C]' : 'bg-[#FEF2F2] text-[#EF4444]'}`}
           >
             <RefreshCw className="w-3 h-3 mr-0.5" />
-            {metrics.monthlyGrowth >= 0 ? '+' : ''}
-            {metrics.monthlyGrowth}%
+            {safeNum(metrics.monthlyGrowth) >= 0 ? '+' : ''}
+            {safeNum(metrics.monthlyGrowth)}%
           </span>
           <span className="text-xs text-[#6B7280]">this month</span>
         </div>
@@ -111,7 +114,7 @@ const MetricsCards = () => {
     },
     {
       title: 'Applications',
-      value: metrics.totalApplications,
+      value: safeNum(metrics.totalApplications),
       subtext: (
         <p className="text-xs text-[#6B7280] mt-2">bounties applied to</p>
       ),
@@ -121,10 +124,10 @@ const MetricsCards = () => {
     },
     {
       title: 'Total Withdrawn',
-      value: `$${metrics.totalWithdrawn.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
+      value: `$${safeNum(metrics.totalWithdrawn).toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
       subtext: (
         <p className="text-xs text-[#6B7280] mt-2">
-          +{metrics.totalWithdrawn.toFixed(2)} USDC
+          +${safeNum(metrics.totalWithdrawn).toFixed(2)} USDC
         </p>
       ),
       icon: Check,
