@@ -26,6 +26,7 @@ import ViewBounty from './Features/Dashboard/Pages/Bounties/components/ui/ViewBo
 import BountyInvite from './Features/Dashboard/Pages/Bounties/BountyInvite'
 import Applications from './Features/Dashboard/Pages/Applications'
 import Earnings from './Features/Dashboard/Pages/Earnings'
+import Profile from './Features/Dashboard/Pages/Profile'
 import Layout from './Features/Dashboard/Layout'
 import Bounties from './pages/Bounties'
 import Blogs from './pages/Blogs'
@@ -63,7 +64,12 @@ function AppRoutes() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { loading, isAuthenticated } = useSelector((state) => state.auth)
-  const { ready, authenticated, getAccessToken, logout: privyLogout } = usePrivy()
+  const {
+    ready,
+    authenticated,
+    getAccessToken,
+    logout: privyLogout,
+  } = usePrivy()
 
   useEffect(() => {
     dispatch(hydrateSession())
@@ -72,7 +78,9 @@ function AppRoutes() {
   useEffect(() => {
     const handleSessionExpired = async () => {
       dispatch(logout())
-      try { await privyLogout() } catch {}
+      try {
+        await privyLogout()
+      } catch {}
       navigate('/signin', { replace: true })
     }
     window.addEventListener('session-expired', handleSessionExpired)
@@ -102,7 +110,14 @@ function AppRoutes() {
     }
 
     syncPrivySession()
-  }, [ready, authenticated, isAuthenticated, getAccessToken, dispatch, navigate])
+  }, [
+    ready,
+    authenticated,
+    isAuthenticated,
+    getAccessToken,
+    dispatch,
+    navigate,
+  ])
 
   if (loading || (ready && authenticated && !isAuthenticated)) {
     return (
@@ -142,11 +157,15 @@ function AppRoutes() {
           <Route path="bounties/:bountyId" element={<ViewBounty />} />
           <Route path="applications" element={<Applications />} />
           <Route path="earnings" element={<Earnings />} />
+          <Route path="profile" element={<Profile />} />
           <Route path="messages" element={<Messages />} />
         </Route>
       </Route>
 
-      <Route path="/messages" element={<Navigate to="/dashboard/messages" replace />} />
+      <Route
+        path="/messages"
+        element={<Navigate to="/dashboard/messages" replace />}
+      />
 
       <Route path="*" element={<NotFound />} />
     </Routes>
