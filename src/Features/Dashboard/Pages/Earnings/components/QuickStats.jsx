@@ -1,10 +1,11 @@
-import { CheckCircle2, Trophy, Award, Star } from 'lucide-react'
+import { CheckCircle2, Trophy, Award, Star, RefreshCw } from 'lucide-react'
 
 const QuickStats = () => {
   const stats = [
     {
       label: 'Completed Bounties',
       value: '24',
+      subLabel: '+9.5% this month',
       icon: CheckCircle2,
       iconColor: 'text-[#00B87C]',
       iconBg: 'bg-[#E6F8F2]',
@@ -12,6 +13,7 @@ const QuickStats = () => {
     {
       label: 'Hackathons Won',
       value: '5',
+      subLabel: '+2 this month',
       icon: Trophy,
       iconColor: 'text-[#F59E0B]',
       iconBg: 'bg-[#FEF3C7]',
@@ -19,58 +21,68 @@ const QuickStats = () => {
     {
       label: 'Grants Received',
       value: '3',
+      subLabel: '+1 this month',
       icon: Award,
       iconColor: 'text-[#3B82F6]',
       iconBg: 'bg-[#EFF6FF]',
     },
     {
       label: 'Average Rating',
-      value: (
-        <div className="flex items-center space-x-1">
-          <span>4.9</span>
-          <Star className="w-4 h-4 fill-[#F59E0B] stroke-none" />
-        </div>
-      ),
+      value: '4.9',
+      subLabel: '+0.2 this month',
       icon: Star,
-      iconColor: 'text-[#7C3AED]',
-      iconBg: 'bg-[#F5F3FF]',
+      iconColor: 'text-[#F59E0B]',
+      iconBg: 'bg-[#FEF3C7]',
     },
   ]
 
   return (
-    <div className="bg-white border border-[#E5E7EB] rounded-2xl p-6 shadow-sm flex flex-col h-full justify-between">
-      <div>
-        {/* Header */}
-        <div className="mb-6 pb-4 border-b border-gray-100">
+    <div className="bg-white border border-[#E5E7EB] rounded-2xl p-6 shadow-sm flex flex-col h-full">
+      {/* Header */}
+      <div className="mb-6 pb-4 border-b border-gray-100 flex items-center justify-between">
+        <div>
           <h4 className="text-base font-semibold text-[#111827]">
             Quick Stats
           </h4>
+          <p className="text-xs text-[#6B7280] mt-1">
+            Performance overview this month
+          </p>
         </div>
+        <RefreshCw className="w-5 h-5 text-[#4B5563]" />
+      </div>
 
-        {/* Stats List */}
-        <div className="space-y-4">
-          {stats.map((stat, idx) => {
-            const Icon = stat.icon
-            return (
+      {/* Stats List */}
+      <div className="space-y-3">
+        {stats.map((stat, idx) => (
+          <div
+            key={idx}
+            className="group flex items-center justify-between px-3 py-2.5 rounded-xl border border-transparent hover:border-[#00B87C]/20 hover:bg-[#00B87C]/5 transition-all duration-200"
+          >
+            <div className="flex items-center space-x-3 flex-1">
               <div
-                key={idx}
-                className="flex items-center justify-between py-2 border-b border-gray-50 last:border-none"
+                className={`p-2 rounded-lg flex items-center justify-center ${stat.iconBg}`}
               >
-                <div className="flex items-center space-x-3">
-                  <div className={`p-2 rounded-lg ${stat.iconBg}`}>
-                    <Icon className={`w-4 h-4 ${stat.iconColor}`} />
-                  </div>
-                  <span className="text-sm font-semibold text-[#4B5563]">
-                    {stat.label}
-                  </span>
-                </div>
-                <div className="text-sm font-black text-[#111827]">
-                  {stat.value}
-                </div>
+                <stat.icon
+                  className={`w-5 h-5 ${stat.iconColor}`}
+                  strokeWidth={2.5}
+                />
               </div>
-            )
-          })}
-        </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-[#111827] leading-tight">
+                  {stat.label}
+                </p>
+                <p className="text-xs text-[#6B7280] leading-tight mt-0.5">
+                  {stat.subLabel}
+                </p>
+              </div>
+            </div>
+            <div className="text-right flex-shrink-0">
+              <span className="text-base font-bold text-[#111827] leading-none">
+                {stat.value}
+              </span>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   )
