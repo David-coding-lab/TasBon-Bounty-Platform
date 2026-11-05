@@ -1,6 +1,6 @@
 import './App.css'
 import { useEffect } from 'react'
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import { Route, Routes, useNavigate, Navigate } from 'react-router-dom'
 import { Toaster } from 'sonner'
 import { PrivyProvider, usePrivy } from '@privy-io/react-auth'
 import { useDispatch, useSelector } from 'react-redux'
@@ -34,7 +34,7 @@ import Hackathons from './pages/Hackathons/Index'
 import Grants from './pages/Grants'
 import SettingsPage from './pages/Settings/Index'
 import BookmarkPage from './pages/Bookmark/Index'
-import MessagesPage from './pages/Messages/Index'
+import Messages from './Features/Dashboard/Pages/Messages'
 import NotFound from './pages/NotFound'
 import ErrorBoundary from './Components/Ui/ErrorBoundary'
 import ProtectedRoute from './Components/auth/ProtectedRoute'
@@ -124,7 +124,6 @@ function AppRoutes() {
       <Route path="/grants" element={<Grants />} />
       <Route path="/settings" element={<SettingsPage />} />
       <Route path="/bookmark" element={<BookmarkPage />} />
-      <Route path="/messages" element={<MessagesPage />} />
       <Route path="/verify-email" element={<VerifyEmail />} />
       <Route path="/reset-password/:token" element={<SignUp />} />
 
@@ -143,8 +142,11 @@ function AppRoutes() {
           <Route path="bounties/:bountyId" element={<ViewBounty />} />
           <Route path="applications" element={<Applications />} />
           <Route path="earnings" element={<Earnings />} />
+          <Route path="messages" element={<Messages />} />
         </Route>
       </Route>
+
+      <Route path="/messages" element={<Navigate to="/dashboard/messages" replace />} />
 
       <Route path="*" element={<NotFound />} />
     </Routes>
