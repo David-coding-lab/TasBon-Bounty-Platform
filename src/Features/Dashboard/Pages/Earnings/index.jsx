@@ -5,6 +5,7 @@ import EarningsDashboard from './components/EarningsDashboard'
 import RecentTransactions from './components/RecentTransactions'
 import PayoutMethods from './components/PayoutMethods'
 import QuickStats from './components/QuickStats'
+import { formatWalletAddress } from './formatWalletAddress'
 import { getUserWallets, generateWallet } from '../../../../services/wallets'
 import {
   getEarningsMetrics,
@@ -198,20 +199,26 @@ const Earnings = () => {
                     Active
                   </span>
                 </div>
-                <div className="flex items-center space-x-2 mt-1">
-                  <span className="text-xs font-mono text-[#4B5563] break-all">
-                    {primaryWallet?.address}
-                  </span>
+                <div className="mt-1 flex min-w-0 items-center gap-2">
+                  <code className="max-w-[220px] truncate rounded-md border border-[#00B87C]/15 bg-white/80 px-2 py-1 text-xs text-[#4B5563]">
+                    {formatWalletAddress(primaryWallet?.address)}
+                  </code>
                   <button
-                    onClick={() => {
-                      navigator.clipboard.writeText(
-                        primaryWallet?.address || '',
-                      )
-                      toast.success('Wallet address copied to clipboard')
+                    type="button"
+                    aria-label="Copy full wallet address"
+                    onClick={async () => {
+                      try {
+                        await navigator.clipboard.writeText(
+                          primaryWallet?.address || '',
+                        )
+                        toast.success('Wallet address copied to clipboard')
+                      } catch {
+                        toast.error('Could not copy wallet address')
+                      }
                     }}
-                    className="text-xs text-[#00B87C] hover:text-[#009966] transition-colors cursor-pointer"
+                    className="shrink-0 rounded-md p-1.5 text-[#007A55] transition-colors hover:bg-[#ECFDF5] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#009966]"
                   >
-                    Copy
+                    <span className="text-xs font-semibold">Copy</span>
                   </button>
                 </div>
               </div>
@@ -244,7 +251,7 @@ const Earnings = () => {
           <RecentTransactions />
         </div>
         <div className="lg:col-span-1 flex flex-col gap-6">
-          <PayoutMethods wallets={wallets} />
+          <PayoutMethods />
           <QuickStats />
         </div>
       </div>
