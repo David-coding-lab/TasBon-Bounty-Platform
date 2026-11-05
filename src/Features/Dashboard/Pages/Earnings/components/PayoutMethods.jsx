@@ -1,20 +1,12 @@
 import { useState, useEffect, useCallback } from 'react'
-import {
-  Wallet,
-  Copy,
-  Plus,
-  Trash2,
-  Edit3,
-  ChevronRight,
-  AlertCircle,
-  CheckCircle2,
-} from 'lucide-react'
+import { Wallet, Copy, Plus, Trash2, AlertCircle } from 'lucide-react'
 import {
   getPayoutMethods,
   createPayoutMethod,
   deletePayoutMethod,
 } from '../../../../../services/earnings'
 import { toast } from 'sonner'
+import { formatWalletAddress } from '../formatWalletAddress'
 
 const NETWORK_LABELS = {
   bitcoin: 'Bitcoin (BTC)',
@@ -40,7 +32,7 @@ const NETWORK_COLORS = {
   },
 }
 
-const PayoutMethods = ({ wallets = [] }) => {
+const PayoutMethods = () => {
   const [payoutMethods, setPayoutMethods] = useState([])
   const [loading, setLoading] = useState(true)
   const [adding, setAdding] = useState(false)
@@ -107,52 +99,69 @@ const PayoutMethods = ({ wallets = [] }) => {
     }
   }
 
-  const handleCopy = (address) => {
-    navigator.clipboard.writeText(address)
-    toast.success('Address copied to clipboard')
+  const handleCopy = async (address) => {
+    try {
+      await navigator.clipboard.writeText(address)
+      toast.success('Address copied to clipboard')
+    } catch {
+      toast.error('Could not copy address')
+    }
   }
 
-  const primaryMethod =
-    payoutMethods.find((m) => m.isDefault) || payoutMethods[0]
-  const networkInfo =
-    NETWORK_COLORS[primaryMethod?.details?.network] || NETWORK_COLORS.bitcoin
-
   return (
-    <div className="bg-white border border-[#E5E7EB] rounded-2xl p-6 shadow-sm flex flex-col h-full justify-between">
-      {/* Header with add button */}
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h4 className="text-base font-semibold text-[#111827]">
-            Payout Methods
-          </h4>
-          <p className="text-xs text-[#6B7280] mt-0.5">
-            Manage your withdrawal destinations
-          </p>
+    <section className="flex h-full flex-col rounded-2xl border border-[#E5E7EB] bg-white p-5 shadow-sm sm:p-6">
+      <div className="mb-5 flex items-center justify-between gap-3 border-b border-gray-100 pb-4">
+        <div className="flex min-w-0 items-center gap-3">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#ECFDF5] text-[#007A55]">
+            <Wallet className="h-5 w-5" aria-hidden="true" />
+          </div>
+          <div className="min-w-0">
+            <h2 className="text-base font-semibold text-[#111827]">
+              Payout methods
+            </h2>
+            <p className="mt-0.5 text-xs text-[#6B7280]">
+              Manage your withdrawal destinations
+            </p>
+          </div>
         </div>
         <button
+          type="button"
           onClick={() => setShowForm(true)}
-          className="flex items-center space-x-1.5 px-3 py-1.5 bg-[#00B87C]/10 border border-[#00B87C]/20 rounded-lg text-xs font-semibold text-[#00B87C] hover:bg-[#00B87C]/20 transition-colors"
+          aria-label="Add payout method"
+          aria-expanded={showForm}
+          aria-controls="add-payout-method-form"
+          className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-[#009966] px-3 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#007A55] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#009966]"
         >
-          <Plus className="w-3 h-3" /> Add Method
+          <Plus className="h-4 w-4" aria-hidden="true" />
+          <span className="hidden sm:inline">Add method</span>
         </button>
       </div>
 
-      {/* Payout Methods List */}
-      <div className="flex-1 min-h-[200px]">
+      <div className="flex-1">
         {loading ? (
-          <div className="flex flex-col items-center justify-center h-40 text-center">
-            <div className="h-4 w-24 bg-gray-100 rounded animate-pulse mb-2" />
-            <p className="text-xs text-[#6B7280]">Loading payout methods...</p>
+          <div className="space-y-3" aria-label="Loading payout methods">
+            {[0, 1].map((item) => (
+              <div
+                key={item}
+                className="flex animate-pulse items-center gap-3 rounded-xl border border-gray-100 p-4"
+              >
+                <div className="h-10 w-10 rounded-lg bg-gray-100" />
+                <div className="flex-1 space-y-2">
+                  <div className="h-3 w-32 rounded bg-gray-100" />
+                  <div className="h-3 w-48 max-w-full rounded bg-gray-100" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : payoutMethods.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-12 text-center">
-            <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Wallet className="w-6 h-6 text-gray-400" />
+          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-200 bg-[#F9FAFB] px-5 py-9 text-center">
+            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-[#ECFDF5] text-[#007A55]">
+              <Wallet className="h-5 w-5" aria-hidden="true" />
             </div>
-            <h4 className="text-sm font-semibold text-[#111827] mb-1">
+            <h3 className="text-sm font-semibold text-[#111827]">
               No payout methods
-            </h4>
-            <p className="text-xs text-[#6B7280] max-w-xs mx-auto">
+            </h3>
+            <p className="mt-1 max-w-xs text-xs leading-5 text-[#6B7280]">
               Add a payout method to receive withdrawals directly to your
               wallet.
             </p>
@@ -167,58 +176,72 @@ const PayoutMethods = ({ wallets = [] }) => {
               return (
                 <div
                   key={method.id}
-                  className={`flex items-center justify-between p-4 rounded-xl border ${
+                  className={`flex items-center gap-3 rounded-xl border p-3 transition-colors sm:p-4 ${
                     isPrimary
-                      ? 'border-[#3B82F6]/20 bg-[#EFF6FF]'
-                      : 'border-[#E5E7EB] bg-white hover:border-[#E5E7EB]/50 transition-colors'
+                      ? 'border-[#009966]/25 bg-[#F2FBF7]'
+                      : 'border-[#E5E7EB] bg-white hover:border-[#009966]/25 hover:bg-[#FCFEFD]'
                   }`}
                 >
-                  <div className="flex items-center space-x-3 flex-1">
-                    <div
-                      className={`p-2.5 rounded-lg flex items-center justify-center ${netColor.bg}`}
-                    >
-                      <Wallet className="w-5 h-5" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm font-semibold text-[#111827]">
-                          {NETWORK_LABELS[method.details?.network] ||
-                            method.details?.network ||
-                            'Wallet'}
-                        </span>
-                        {isPrimary && (
-                          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#3B82F6]/20 text-[#3B82F6]">
-                            Default
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex items-center space-x-2 mt-1.5">
-                        <span className="text-xs font-mono text-[#4B5563] break-all truncate max-w-[220px]">
-                          {method.details?.address}
-                        </span>
-                        <button
-                          onClick={() => handleCopy(method.details?.address)}
-                          className="text-xs text-[#00B87C] hover:text-[#009966] transition-colors cursor-pointer"
-                        >
-                          Copy
-                        </button>
-                      </div>
-                    </div>
+                  <div
+                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${netColor.bg} ${netColor.text}`}
+                  >
+                    <Wallet className="h-5 w-5" aria-hidden="true" />
                   </div>
-
-                  <div className="flex items-center space-x-2">
-                    <button
-                      onClick={() => handleDeletePayoutMethod(method.id)}
-                      disabled={deleting === method.id}
-                      className="text-xs text-[#EF4444] hover:text-[#DC2626] transition-colors cursor-pointer disabled:opacity-50"
-                    >
-                      {deleting === method.id ? (
-                        <AlertCircle className="w-3 h-3 animate-spin" />
-                      ) : (
-                        <Trash2 className="w-3 h-3" />
+                  <div className="min-w-0 flex-1">
+                    <div className="flex min-w-0 flex-wrap items-center gap-2">
+                      <span className="truncate text-sm font-semibold text-[#111827]">
+                        {method.label ||
+                          NETWORK_LABELS[method.details?.network] ||
+                          method.details?.network ||
+                          'Wallet'}
+                      </span>
+                      {isPrimary && (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-[#DCF5E9] px-2 py-0.5 text-[10px] font-semibold text-[#007A55]">
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#009966]" />
+                          Default
+                        </span>
                       )}
-                    </button>
+                    </div>
+                    {method.label && (
+                      <p className="mt-0.5 text-xs text-[#6B7280]">
+                        {NETWORK_LABELS[method.details?.network] ||
+                          method.details?.network ||
+                          'Crypto wallet'}
+                      </p>
+                    )}
+                    <div className="mt-2 flex min-w-0 items-center gap-2">
+                      <code
+                        className="min-w-0 truncate rounded-md border border-gray-100 bg-white/80 px-2 py-1 text-xs text-[#4B5563]"
+                        aria-label="Wallet address, shortened"
+                      >
+                        {formatWalletAddress(method.details?.address)}
+                      </code>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleCopy(method.details?.address || '')
+                        }
+                        aria-label="Copy full wallet address"
+                        className="inline-flex shrink-0 items-center gap-1 rounded-md px-2 py-1 text-xs font-semibold text-[#007A55] transition-colors hover:bg-[#ECFDF5] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#009966]"
+                      >
+                        <Copy className="h-3.5 w-3.5" aria-hidden="true" />
+                        <span>Copy</span>
+                      </button>
+                    </div>
                   </div>
+                  <button
+                    type="button"
+                    onClick={() => handleDeletePayoutMethod(method.id)}
+                    disabled={deleting === method.id}
+                    aria-label={`Delete ${method.label || 'payout method'}`}
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-red-50 hover:text-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-500 disabled:cursor-wait disabled:opacity-50"
+                  >
+                    {deleting === method.id ? (
+                      <AlertCircle className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Trash2 className="h-4 w-4" aria-hidden="true" />
+                    )}
+                  </button>
                 </div>
               )
             })}
@@ -228,31 +251,42 @@ const PayoutMethods = ({ wallets = [] }) => {
 
       {/* Add Payout Method Form */}
       {showForm && (
-        <div className="mt-6 border border-[#E5E7EB] rounded-xl p-5 bg-[#F9FAFB] shadow-sm">
-          <h5 className="text-xs font-semibold text-[#111827] mb-3 uppercase tracking-wider">
-            Add New Payout Method
-          </h5>
+        <div
+          id="add-payout-method-form"
+          className="mt-5 rounded-xl border border-[#E5E7EB] bg-[#F9FAFB] p-4 sm:p-5"
+        >
+          <h3 className="mb-4 text-sm font-semibold text-[#111827]">
+            Add a payout method
+          </h3>
           <form onSubmit={handleAddPayoutMethod} className="space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div>
-                <label className="block text-[10px] font-semibold text-[#6B7280] mb-1 uppercase tracking-wider">
+                <label
+                  htmlFor="payout-method-label"
+                  className="mb-1.5 block text-xs font-semibold text-[#4B5563]"
+                >
                   Label
                 </label>
                 <input
+                  id="payout-method-label"
                   type="text"
                   value={formData.label}
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, label: e.target.value }))
                   }
                   placeholder="e.g. My BTC Wallet"
-                  className="w-full px-3 py-2 border border-[#E5E7EB] rounded-lg text-xs text-[#111827] focus:border-[#00B87C] focus:outline-none transition-colors"
+                  className="w-full rounded-lg border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm text-[#111827] outline-none transition-colors focus:border-[#009966] focus:ring-2 focus:ring-[#009966]/15"
                 />
               </div>
               <div>
-                <label className="block text-[10px] font-semibold text-[#6B7280] mb-1 uppercase tracking-wider">
+                <label
+                  htmlFor="payout-method-network"
+                  className="mb-1.5 block text-xs font-semibold text-[#4B5563]"
+                >
                   Network
                 </label>
                 <select
+                  id="payout-method-network"
                   value={formData.details.network}
                   onChange={(e) =>
                     setFormData((prev) => ({
@@ -260,7 +294,7 @@ const PayoutMethods = ({ wallets = [] }) => {
                       details: { ...prev.details, network: e.target.value },
                     }))
                   }
-                  className="w-full px-3 py-2 border border-[#E5E7EB] rounded-lg text-xs text-[#111827] focus:border-[#00B87C] focus:outline-none transition-colors"
+                  className="w-full rounded-lg border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm text-[#111827] outline-none transition-colors focus:border-[#009966] focus:ring-2 focus:ring-[#009966]/15"
                 >
                   <option value="">Select network</option>
                   <option value="bitcoin">Bitcoin (BTC)</option>
@@ -270,10 +304,14 @@ const PayoutMethods = ({ wallets = [] }) => {
               </div>
             </div>
             <div>
-              <label className="block text-[10px] font-semibold text-[#6B7280] mb-1 uppercase tracking-wider">
-                Wallet Address
+              <label
+                htmlFor="payout-method-address"
+                className="mb-1.5 block text-xs font-semibold text-[#4B5563]"
+              >
+                Wallet address
               </label>
               <input
+                id="payout-method-address"
                 type="text"
                 value={formData.details.address}
                 onChange={(e) =>
@@ -283,14 +321,14 @@ const PayoutMethods = ({ wallets = [] }) => {
                   }))
                 }
                 placeholder="Enter wallet address"
-                className="w-full px-3 py-2 border border-[#E5E7EB] rounded-lg text-xs text-[#111827] focus:border-[#00B87C] focus:outline-none transition-colors"
+                className="w-full rounded-lg border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm text-[#111827] outline-none transition-colors focus:border-[#009966] focus:ring-2 focus:ring-[#009966]/15"
               />
             </div>
             <div className="flex items-center justify-between mt-2">
               <button
                 type="button"
                 onClick={() => setShowForm(false)}
-                className="text-xs text-[#6B7280] hover:text-[#111827] transition-colors"
+                className="rounded-lg px-3 py-2 text-sm font-semibold text-[#6B7280] transition-colors hover:bg-white hover:text-[#111827] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#009966]"
               >
                 Cancel
               </button>
@@ -301,21 +339,21 @@ const PayoutMethods = ({ wallets = [] }) => {
                   !formData.details.network ||
                   !formData.details.address
                 }
-                className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+                className={`rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#009966] ${
                   adding ||
                   !formData.details.network ||
                   !formData.details.address
                     ? 'bg-gray-200 text-gray-400'
-                    : 'bg-[#00B87C] text-white hover:bg-[#009966]'
+                    : 'bg-[#009966] text-white hover:bg-[#007A55]'
                 }`}
               >
-                {adding ? 'Adding...' : 'Add Method'}
+                {adding ? 'Adding…' : 'Add method'}
               </button>
             </div>
           </form>
         </div>
       )}
-    </div>
+    </section>
   )
 }
 
