@@ -28,7 +28,7 @@ export default function PartnersSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
-          Our partner
+          Our partners
         </motion.h2>
         <motion.div
           className="flex flex-wrap items-center justify-center gap-10 md:gap-16"
