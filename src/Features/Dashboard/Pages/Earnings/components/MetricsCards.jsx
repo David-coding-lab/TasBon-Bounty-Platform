@@ -95,9 +95,12 @@ const MetricsCards = () => {
       value: `${metrics.successRate}%`,
       subtext: (
         <div className="flex items-center space-x-1.5 mt-2">
-          <span className="flex items-center text-xs font-semibold px-2 py-0.5 rounded-full bg-[#F3F4F6] text-[#4B5563]">
+          <span
+            className={`flex items-center text-xs font-semibold px-2 py-0.5 rounded-full ${metrics.monthlyGrowth >= 0 ? 'bg-[#E6F8F2] text-[#00B87C]' : 'bg-[#FEF2F2] text-[#EF4444]'}`}
+          >
             <RefreshCw className="w-3 h-3 mr-0.5" />
-            +5%
+            {metrics.monthlyGrowth >= 0 ? '+' : ''}
+            {metrics.monthlyGrowth}%
           </span>
           <span className="text-xs text-[#6B7280]">this month</span>
         </div>
