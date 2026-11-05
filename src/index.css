@@ -79,3 +79,17 @@
 .custom-scrollbar {
   -ms-overflow-style: none;
 }
+
+/* Keep scrolling available while hiding scrollbars only on the profile view. */
+.profile-page,
+.profile-page * {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.profile-page::-webkit-scrollbar,
+.profile-page *::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}

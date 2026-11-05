@@ -11,6 +11,7 @@ import {
   Settings,
   Gift,
   ArrowRight,
+  User,
 } from 'lucide-react'
 import Logo from '../../../../Assets/Tas-Logo.png'
 
@@ -25,6 +26,7 @@ const navItems = [
   { icon: Trophy, label: 'Hackathons', path: '/hackathons' },
   { icon: DollarSign, label: 'Grant', path: '/grants' },
   { icon: Wallet, label: 'Earnings', path: '/dashboard/earnings' },
+  { icon: User, label: 'Profile', path: '/dashboard/profile' },
 ]
 
 /**
