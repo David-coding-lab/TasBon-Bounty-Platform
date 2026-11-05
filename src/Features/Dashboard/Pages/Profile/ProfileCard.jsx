@@ -210,9 +210,6 @@ export default function ProfileCard({ profile, stats, onUpdateProfile }) {
           </p>
 
           <div className="mt-4 flex flex-wrap items-center gap-2">
-            <span className="basis-full text-xs text-slate-400">
-              Example skills
-            </span>
             {socialLinks.map(({ label, icon: Icon, field }) => {
               const href = safeExternalUrl(profile?.[field])
               return href ? (
@@ -240,6 +237,9 @@ export default function ProfileCard({ profile, stats, onUpdateProfile }) {
                 </button>
               )
             })}
+            <span className="basis-full text-xs text-slate-400">
+              Example skills
+            </span>
             {skillTags.map((skill, index) => (
               <span
                 key={skill}
