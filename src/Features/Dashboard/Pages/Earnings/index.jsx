@@ -5,8 +5,11 @@ import EarningsDashboard from './components/EarningsDashboard'
 import RecentTransactions from './components/RecentTransactions'
 import PayoutMethods from './components/PayoutMethods'
 import QuickStats from './components/QuickStats'
-import { getUserWallets, generateWallet } from '../../../../../services/wallets'
-import { getEarningsMetrics, withdrawFunds } from '../../../../../services/earnings'
+import { getUserWallets, generateWallet } from '../../../../services/wallets'
+import {
+  getEarningsMetrics,
+  withdrawFunds,
+} from '../../../../services/earnings'
 import { toast } from 'sonner'
 
 const NETWORK_LABELS = {
@@ -113,7 +116,9 @@ const Earnings = () => {
       setWithdrawForm({ amount: '', method: 'crypto_wallet', address: '' })
       setFeeBreakdown(null)
       await fetchMetrics()
-      toast.success('Withdrawal submitted', { description: 'Your funds are being processed' })
+      toast.success('Withdrawal submitted', {
+        description: 'Your funds are being processed',
+      })
     } catch (err) {
       setWithdrawError(err.message || 'Withdrawal failed')
     } finally {
@@ -204,7 +209,9 @@ const Earnings = () => {
                   </span>
                   <button
                     onClick={() => {
-                      navigator.clipboard.writeText(primaryWallet?.address || '')
+                      navigator.clipboard.writeText(
+                        primaryWallet?.address || '',
+                      )
                       toast.success('Wallet address copied to clipboard')
                     }}
                     className="text-xs text-[#00B87C] hover:text-[#009966] transition-colors cursor-pointer"
@@ -220,7 +227,9 @@ const Earnings = () => {
             <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-3">
               <Wallet className="w-5 h-5 text-gray-400" />
             </div>
-            <h4 className="text-sm font-semibold text-[#111827] mb-1">No wallet yet</h4>
+            <h4 className="text-sm font-semibold text-[#111827] mb-1">
+              No wallet yet
+            </h4>
             <p className="text-xs text-[#6B7280] mb-4">
               Generate a wallet address to receive payments and withdraw funds.
             </p>
@@ -250,7 +259,9 @@ const Earnings = () => {
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6">
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-lg font-bold text-[#111827]">Withdraw Funds</h3>
+              <h3 className="text-lg font-bold text-[#111827]">
+                Withdraw Funds
+              </h3>
               <button
                 onClick={() => setWithdrawModal(false)}
                 className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -283,7 +294,10 @@ const Earnings = () => {
                   type="text"
                   value={withdrawForm.address}
                   onChange={(e) =>
-                    setWithdrawForm((prev) => ({ ...prev, address: e.target.value }))
+                    setWithdrawForm((prev) => ({
+                      ...prev,
+                      address: e.target.value,
+                    }))
                   }
                   placeholder="Enter your wallet address"
                   className="w-full px-4 py-2.5 border border-[#E5E7EB] rounded-xl text-[#111827] focus:border-[#00B87C] focus:outline-none transition-colors"
@@ -294,7 +308,9 @@ const Earnings = () => {
                 <div className="bg-[#EFF6FF] rounded-xl p-4 border border-[#3B82F6]/20">
                   <div className="flex justify-between text-sm mb-2">
                     <span className="text-[#4B5563]">Withdrawal Amount</span>
-                    <span className="text-[#111827] font-medium">-{feeBreakdown.amount}</span>
+                    <span className="text-[#111827] font-medium">
+                      -{feeBreakdown.amount}
+                    </span>
                   </div>
                   <div className="flex justify-between text-sm mb-2">
                     <span className="text-[#4B5563]">Platform Fee (1%)</span>
@@ -305,7 +321,7 @@ const Earnings = () => {
                     <span>{feeBreakdown.netAmount}</span>
                   </div>
                 </div>
-              </div>
+              )}
 
               {withdrawError && (
                 <div className="bg-[#FEF2F2] border border-[#FECACA] text-[#991B1B] px-4 py-2 rounded-lg text-sm">
