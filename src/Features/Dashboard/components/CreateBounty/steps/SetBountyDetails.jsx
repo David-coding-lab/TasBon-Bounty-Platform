@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { X, Upload } from 'lucide-react'
 
 const DELIVERABLE_TYPES = [
   {
@@ -321,14 +322,7 @@ export default function Step1BountyDetails({
               onClick={() => updateFormData('imageUrl', '')}
               className="absolute top-2 right-2 bg-black/50 text-white rounded-full p-1 hover:bg-black/70 transition-colors cursor-pointer"
             >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path
-                  d="M4 4l8 8M12 4l-8 8"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                />
-              </svg>
+              <X className="w-4 h-4" strokeWidth={2} />
             </button>
           </div>
         ) : (
@@ -336,19 +330,10 @@ export default function Step1BountyDetails({
             className="border-2 border-dashed border-[#dce1e8] rounded-xl py-8 px-5 text-center cursor-pointer transition-all bg-[#fafbfc] hover:border-[#34A563] hover:bg-[#fafffe]"
             onClick={() => imageInputRef.current?.click()}
           >
-            <svg
+            <Upload
               className="w-10 h-10 mx-auto mb-2 text-[#a0b0c4]"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={1.5}
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21zm16.5-13.5h-3.75"
-              />
-            </svg>
+              strokeWidth={2}
+            />
             <p className="font-inter text-sm text-[#1a2a41] my-1">
               {uploadingImage ? 'Uploading...' : 'Click to upload cover image'}
             </p>

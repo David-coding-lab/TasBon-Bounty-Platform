@@ -76,15 +76,10 @@ const Earnings = () => {
     e.preventDefault()
     const network = 'bitcoin'
     const token = 'btc'
-    const customer = {
-      email: '',
-      first_name: '',
-      last_name: '',
-    }
 
     try {
       setGeneratingWallet(true)
-      const res = await generateWallet({ network, token, customer })
+      const res = await generateWallet({ network, token })
       const newWallet = res.data
       setWallets((prev) => [...prev, newWallet])
       setSelectedWallet(newWallet)

@@ -1,23 +1,29 @@
-import { ArrowRight } from 'lucide-react'
+import {
+  ArrowRight,
+  CheckCircle2,
+  Calendar,
+  ClipboardList,
+  FileText,
+} from 'lucide-react'
 
 const processSteps = [
   {
-    icon: '📋',
+    icon: <ClipboardList className="w-4 h-4" strokeWidth={2} />,
     step: '1. Apply for bounty',
     desc: 'Submit your application with your profile & portfolio',
   },
   {
-    icon: '✔',
+    icon: <CheckCircle2 className="w-4 h-4" strokeWidth={2} />,
     step: '2. Get selected',
     desc: 'Bounty creator reviews and selects builders',
   },
   {
-    icon: '📅',
+    icon: <Calendar className="w-4 h-4" strokeWidth={2} />,
     step: '3. Start working',
     desc: "Once selected, you'll get access to the bounty",
   },
   {
-    icon: '📄',
+    icon: <FileText className="w-4 h-4" strokeWidth={2} />,
     step: '4. Submit & earn',
     desc: 'Submit your work for review and get paid',
   },
@@ -27,8 +33,8 @@ const ProcessGuide = () => {
   return (
     <div className="border border-[#E5E7EB] rounded-lg p-5">
       <div className="flex flex-row items-start gap-4">
-        <div className="shrink-0 w-10 h-10 rounded-lg bg-[#D0FAE5] flex items-center justify-center text-lg">
-          📋
+        <div className="shrink-0 w-10 h-10 rounded-lg bg-[#D0FAE5] flex items-center justify-center">
+          <CheckCircle2 className="w-5 h-5 text-[#00B87C]" strokeWidth={2} />
         </div>
         <div className="flex flex-col gap-2 flex-1">
           <h3 className="text-sm font-semibold text-[#0A0A0A]">
@@ -41,7 +47,7 @@ const ProcessGuide = () => {
                 className="flex flex-col gap-1 flex-1 min-w-[120px]"
               >
                 <div className="flex items-center gap-1.5">
-                  <span className="text-xs text-[#6B7280]">{step.icon}</span>
+                  {step.icon}
                   <span className="text-xs font-semibold text-[#0A0A0A]">
                     {step.step}
                   </span>
