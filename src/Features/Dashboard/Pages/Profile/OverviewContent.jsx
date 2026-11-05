@@ -33,6 +33,29 @@ const tabIconMap = {
 export default function OverviewContent({ activeTab, onTabChange }) {
   const [expandedSetting, setExpandedSetting] = useState(null)
 
+  const handleTabKeyDown = (event, currentIndex) => {
+    let nextIndex = currentIndex
+    if (event.key === 'ArrowRight') {
+      nextIndex = (currentIndex + 1) % profileTabs.length
+    } else if (event.key === 'ArrowLeft') {
+      nextIndex = (currentIndex - 1 + profileTabs.length) % profileTabs.length
+    } else if (event.key === 'Home') {
+      nextIndex = 0
+    } else if (event.key === 'End') {
+      nextIndex = profileTabs.length - 1
+    } else {
+      return
+    }
+
+    event.preventDefault()
+    onTabChange(profileTabs[nextIndex].label)
+    const nextTab =
+      event.currentTarget.parentElement.querySelectorAll('[role="tab"]')[
+        nextIndex
+      ]
+    nextTab?.focus()
+  }
+
   return (
     <>
       <div className="mt-5 border-b border-slate-200">
@@ -41,7 +64,7 @@ export default function OverviewContent({ activeTab, onTabChange }) {
           role="tablist"
           aria-label="Profile sections"
         >
-          {profileTabs.map(({ label }) => {
+          {profileTabs.map(({ label }, index) => {
             const Icon = tabIconMap[label] || Eye
             const active = activeTab === label
 
@@ -51,9 +74,11 @@ export default function OverviewContent({ activeTab, onTabChange }) {
                 id={`profile-tab-${label.toLowerCase()}`}
                 type="button"
                 role="tab"
+                tabIndex={active ? 0 : -1}
                 aria-selected={active}
                 aria-controls={`profile-panel-${label.toLowerCase()}`}
                 onClick={() => onTabChange(label)}
+                onKeyDown={(event) => handleTabKeyDown(event, index)}
                 className={`flex shrink-0 items-center gap-2 border-b-2 pb-3 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#009966] ${
                   active
                     ? 'border-[#009966] text-[#007A55]'

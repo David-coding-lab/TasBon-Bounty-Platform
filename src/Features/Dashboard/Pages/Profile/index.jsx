@@ -99,7 +99,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="flex min-h-full flex-col gap-1 bg-gray-50 p-3 sm:p-6">
+    <div className="profile-page flex min-h-full flex-col gap-1 bg-gray-50 p-3 sm:p-6">
       <ProfileCard
         profile={profile}
         stats={buildProfileStats(stats)}

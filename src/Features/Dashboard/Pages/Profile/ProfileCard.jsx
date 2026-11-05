@@ -79,9 +79,9 @@ export default function ProfileCard({ profile, stats, onUpdateProfile }) {
   const copyProfileLink = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href)
-      toast.success('Profile link copied')
+      toast.success('Dashboard profile URL copied')
     } catch {
-      toast.error('Could not copy profile link')
+      toast.error('Could not copy dashboard profile URL')
     }
     setMoreOpen(false)
   }
@@ -197,7 +197,7 @@ export default function ProfileCard({ profile, stats, onUpdateProfile }) {
                       onClick={copyProfileLink}
                       className="w-full rounded-lg px-3 py-2 text-left text-sm text-slate-600 hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#009966]"
                     >
-                      Copy profile link
+                      Copy dashboard profile URL
                     </button>
                   </div>
                 )}
@@ -210,6 +210,9 @@ export default function ProfileCard({ profile, stats, onUpdateProfile }) {
           </p>
 
           <div className="mt-4 flex flex-wrap items-center gap-2">
+            <span className="basis-full text-xs text-slate-400">
+              Example skills
+            </span>
             {socialLinks.map(({ label, icon: Icon, field }) => {
               const href = safeExternalUrl(profile?.[field])
               return href ? (
