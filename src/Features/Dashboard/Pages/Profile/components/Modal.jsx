@@ -1,7 +1,13 @@
 import { useEffect, useRef } from 'react'
 import { X } from 'lucide-react'
 
-export default function Modal({ title, children, onClose, initialFocusRef }) {
+export default function Modal({
+  title,
+  description,
+  children,
+  onClose,
+  initialFocusRef,
+}) {
   const closeButtonRef = useRef(null)
   const dialogRef = useRef(null)
 
@@ -51,7 +57,7 @@ export default function Modal({ title, children, onClose, initialFocusRef }) {
 
   return (
     <div
-      className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/40 p-4"
+      className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/40 p-4 backdrop-blur-sm"
       role="presentation"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose()
@@ -62,21 +68,28 @@ export default function Modal({ title, children, onClose, initialFocusRef }) {
         aria-modal="true"
         aria-labelledby="profile-modal-title"
         ref={dialogRef}
-        className="w-full max-w-lg rounded-2xl bg-white p-5 shadow-2xl sm:p-6"
+        className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-white p-5 shadow-2xl sm:p-6"
       >
-        <div className="mb-5 flex items-center justify-between">
-          <h2
-            id="profile-modal-title"
-            className="text-base font-bold text-slate-800"
-          >
-            {title}
-          </h2>
+        <div className="mb-5 flex items-start justify-between gap-4">
+          <div>
+            <h2
+              id="profile-modal-title"
+              className="text-base font-bold text-[#111827]"
+            >
+              {title}
+            </h2>
+            {description && (
+              <p className="mt-1 text-xs leading-5 text-[#6B7280]">
+                {description}
+              </p>
+            )}
+          </div>
           <button
             ref={closeButtonRef}
             type="button"
             onClick={onClose}
             aria-label="Close dialog"
-            className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#009966]"
+            className="shrink-0 rounded-lg p-2 text-[#6B7280] transition-colors hover:bg-gray-100 hover:text-[#111827] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#009966]"
           >
             <X size={18} />
           </button>
