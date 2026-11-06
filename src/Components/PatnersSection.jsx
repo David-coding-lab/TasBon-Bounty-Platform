@@ -3,11 +3,17 @@ import Localism from '../Assets/localism.png'
 import M3tering from '../Assets/m3tering.png'
 import Greenpill from '../Assets/greenpill.png'
 import Switch from '../Assets/switch.png'
+import Roqqu from '../Assets/roqqu.png'
 
 const partners = [
   // { name: 'Switch Electric', image: Switch },
   // { name: 'Localism Fund', image: Localism },
   { name: 'GreenPill', image: Greenpill },
+  {
+    name: 'Roqqu',
+    image: Roqqu,
+    className: 'h-20 md:h-24 mix-blend-multiply',
+  },
   // { name: 'M3tering', image: M3tering },
 ]
 
@@ -22,13 +28,11 @@ export default function PartnersSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
-          Our partner
+          Our partners
         </motion.h2>
         <motion.div
           className="flex flex-wrap items-center justify-center gap-10 md:gap-16"
           initial="hidden"
-          our
-          p
           whileInView="visible"
           viewport={{ once: true }}
           variants={{
@@ -42,7 +46,7 @@ export default function PartnersSection() {
               key={partner.name}
               src={partner.image}
               alt={partner.name}
-              className="h-10 md:h-12 w-auto object-contain transition-all duration-300"
+              className={`${partner.className || 'h-10 md:h-12'} w-auto object-contain transition-all duration-300`}
               variants={{
                 hidden: { opacity: 0, x: -20 },
                 visible: {
